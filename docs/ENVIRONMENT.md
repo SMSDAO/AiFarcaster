@@ -61,12 +61,32 @@ NEXT_PUBLIC_PAYMENT_RECEIVER_ADDRESS=0x...
 
 ### Vercel Environment Variables
 
-For Vercel deployment, add environment variables in:
+For Vercel deployment, you have two options:
+
+#### Option 1: Vercel Dashboard (Recommended)
 
 1. Go to your Vercel project settings
 2. Navigate to "Environment Variables"
-3. Add each variable with appropriate values
+3. Add each variable with appropriate values:
+   - `NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID`
+   - `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` (optional)
+   - `STRIPE_SECRET_KEY` (optional)
+   - `NEXT_PUBLIC_PAYMENT_RECEIVER_ADDRESS` (optional)
 4. Set the scope (Production, Preview, Development)
+
+#### Option 2: vercel.json Configuration
+
+The `vercel.json` file references environment variables using `@` syntax (e.g., `@walletconnect-project-id`). This syntax indicates **Vercel Secrets** that must be pre-configured:
+
+```bash
+# Add secrets via Vercel CLI
+vercel secrets add walletconnect-project-id "your_project_id"
+vercel secrets add stripe-publishable-key "pk_live_..."
+vercel secrets add stripe-secret-key "sk_live_..."
+vercel secrets add payment-receiver-address "0x..."
+```
+
+**Important:** Secrets are separate from regular environment variables and provide enhanced security for sensitive values.
 
 ## Security Best Practices
 

@@ -125,8 +125,28 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2024-11-20.acacia' as Stripe.LatestApiVersion,
 });
 
+// SECURITY: Server-side price mapping to prevent client-side price manipulation
+// Map product/template IDs to their actual Stripe price IDs
+const PRICE_MAPPING: Record<string, string> = {
+  'template-basic': 'price_xxxxx', // $9.99 template
+  'template-pro': 'price_yyyyy',   // Premium template
+  'subscription-monthly': 'price_zzzzz', // Monthly subscription
+  // Add all your products here
+};
+
 export async function POST(req: Request) {
-  const { priceId } = await req.json();
+  // SECURITY: Accept product ID from client, not price ID
+  const { productId } = await req.json();
+
+  // SECURITY: Server derives the actual Stripe price ID from trusted mapping
+  const priceId = PRICE_MAPPING[productId];
+  
+  if (!priceId) {
+    return NextResponse.json(
+      { error: 'Invalid product ID' },
+      { status: 400 }
+    );
+  }
 
   try {
     const session = await stripe.checkout.sessions.create({
@@ -134,7 +154,7 @@ export async function POST(req: Request) {
       payment_method_types: ['card'],
       line_items: [
         {
-          price: priceId,
+          price: priceId, // Use server-side mapped price, not client input
           quantity: 1,
         },
       ],
@@ -147,6 +167,24 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Error creating checkout session' }, { status: 500 });
   }
 }
+```
+
+**Security Note:** This example shows the secure pattern where:
+1. Client sends a `productId` (e.g., "template-basic")
+2. Server looks up the actual `priceId` from a trusted server-side mapping
+3. Client can never manipulate the price by changing the `priceId`
+
+### Client-Side Usage
+
+```typescript
+// Secure: Send product ID, not price ID
+const response = await fetch('/api/stripe/checkout', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    productId: 'template-basic', // Product identifier
+  }),
+});
 ```
 
 ### Webhooks

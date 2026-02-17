@@ -16,12 +16,28 @@ export const PAYMENT_TOKENS = {
     name: 'Ethereum',
   },
   USDC: {
-    address: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
+    address: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913', // Base Mainnet
     symbol: 'USDC',
     decimals: 6,
     name: 'USD Coin',
   },
   // Add more Base tokens as needed
+};
+
+// Base Sepolia Testnet tokens for testing
+export const TESTNET_PAYMENT_TOKENS = {
+  ETH: {
+    address: '0x0000000000000000000000000000000000000000',
+    symbol: 'ETH',
+    decimals: 18,
+    name: 'Ethereum (Testnet)',
+  },
+  USDC: {
+    address: '0x036CbD53842c5426634e7929541eC2318f3dCF7e', // Base Sepolia USDC
+    symbol: 'USDC',
+    decimals: 6,
+    name: 'USD Coin (Testnet)',
+  },
 };
 
 export const PAYMENT_RECEIVER_ADDRESS = process.env.NEXT_PUBLIC_PAYMENT_RECEIVER_ADDRESS;
