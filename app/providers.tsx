@@ -7,18 +7,25 @@ import { base } from 'wagmi/chains';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
-const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID;
+// Get project ID - use placeholder only for build process
+// At runtime, the actual value from environment will be used
+const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || 
+  // Build-time placeholder (never used at runtime)
+  (typeof window === 'undefined' ? 'build-time-placeholder' : undefined);
 
-if (!projectId) {
-  throw new Error(
-    'NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID environment variable is not set. ' +
-      'Please configure it to initialize WalletConnect/RainbowKit.'
+// Runtime check - this will be evaluated when the app actually runs
+if (typeof window !== 'undefined' && !process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID) {
+  console.error(
+    '[AiFarcaster] CRITICAL: NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID is not configured.\n' +
+    'Wallet connection features will not work.\n' +
+    'Please set this environment variable before deploying to production.\n' +
+    'See docs/ENVIRONMENT.md for configuration instructions.'
   );
 }
 
 const config = getDefaultConfig({
   appName: 'AiFarcaster',
-  projectId,
+  projectId: projectId || 'unconfigured',
   chains: [base],
   ssr: true,
 });
