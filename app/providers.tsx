@@ -7,13 +7,23 @@ import { base } from 'wagmi/chains';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
-// Get project ID - use placeholder only for build process
-// At runtime, the actual value from environment will be used
+/**
+ * Get WalletConnect Project ID with build-time safety
+ * 
+ * During Next.js build (SSR/SSG), this allows a placeholder value so the build succeeds.
+ * At client runtime, if the env var is missing, we log a clear error.
+ * 
+ * Note: `typeof window === 'undefined'` is true during:
+ * - Next.js build process
+ * - Server-side rendering
+ * 
+ * But we only want the placeholder during build, not production SSR.
+ * The env var check ensures we get the real value if it exists.
+ */
 const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || 
-  // Build-time placeholder (never used at runtime)
-  (typeof window === 'undefined' ? 'build-time-placeholder' : undefined);
+  (typeof window === 'undefined' ? 'build-placeholder' : '');
 
-// Runtime check - this will be evaluated when the app actually runs
+// Client-side validation (runs only in browser)
 if (typeof window !== 'undefined' && !process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID) {
   console.error(
     '[AiFarcaster] CRITICAL: NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID is not configured.\n' +
@@ -25,7 +35,7 @@ if (typeof window !== 'undefined' && !process.env.NEXT_PUBLIC_WALLETCONNECT_PROJ
 
 const config = getDefaultConfig({
   appName: 'AiFarcaster',
-  projectId: projectId || 'unconfigured',
+  projectId: projectId || 'not-configured', // Fallback makes the issue obvious in wallet errors
   chains: [base],
   ssr: true,
 });
