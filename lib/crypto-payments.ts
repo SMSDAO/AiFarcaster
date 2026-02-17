@@ -55,19 +55,46 @@ export async function preparePayment(request: PaymentRequest) {
 
 /**
  * Encode ERC20 transfer function call
+ * @param to - Recipient address
+ * @param amount - Amount in wei/token units
+ * @returns Encoded function data
  */
 function encodeERC20Transfer(to: string, amount: string): string {
-  // TODO: Implement ERC20 transfer encoding
-  // This should encode the transfer function call for ERC20 tokens
+  // TODO: Implement ERC20 transfer encoding using viem
+  // Example implementation:
+  // import { encodeFunctionData } from 'viem';
+  // return encodeFunctionData({
+  //   abi: [{ name: 'transfer', type: 'function', inputs: [{ name: 'to', type: 'address' }, { name: 'amount', type: 'uint256' }] }],
+  //   functionName: 'transfer',
+  //   args: [to, BigInt(amount)]
+  // });
   return '0x';
 }
 
 /**
- * Verify payment transaction
+ * Verify payment transaction on Base network
+ * @param txHash - Transaction hash to verify
+ * @returns True if payment is valid and confirmed
  */
 export async function verifyPayment(txHash: string): Promise<boolean> {
-  // TODO: Implement payment verification
-  // This should verify the transaction on Base and confirm payment
+  // TODO: Implement payment verification using RPC provider
+  // Example implementation:
+  // import { createPublicClient, http } from 'viem';
+  // import { base } from 'viem/chains';
+  // 
+  // const client = createPublicClient({
+  //   chain: base,
+  //   transport: http()
+  // });
+  // 
+  // const receipt = await client.getTransactionReceipt({ hash: txHash as `0x${string}` });
+  // if (!receipt || receipt.status !== 'success') return false;
+  // 
+  // // Verify recipient and amount match expected values
+  // const tx = await client.getTransaction({ hash: txHash as `0x${string}` });
+  // // Add validation logic here
+  // return true;
+  
   return false;
 }
 
