@@ -137,7 +137,7 @@ function TemplateCard({ template }: { template: any }) {
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-xl transition cursor-pointer group">
       {/* Thumbnail */}
-      <div className="relative h-48 bg-gradient-to-br from-purple-400 to-purple-600 rounded-t-lg overflow-hidden">
+      <div className="relative h-48 bg-gradient-to-br from-purple-400 to-purple-600 rounded-t-lg overflow-hidden" role="presentation" aria-hidden="true">
         {template.featured && (
           <div className="absolute top-2 right-2 bg-yellow-400 text-yellow-900 px-2 py-1 rounded-full text-xs font-bold flex items-center">
             <Star className="w-3 h-3 mr-1" />
@@ -145,7 +145,11 @@ function TemplateCard({ template }: { template: any }) {
           </div>
         )}
         <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition flex items-center justify-center">
-          <button className="bg-white text-purple-600 px-4 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition font-semibold">
+          <button 
+            className="bg-white text-purple-600 px-4 py-2 rounded-lg opacity-0 group-hover:opacity-100 focus:opacity-100 transition font-semibold"
+            aria-label={`Preview ${template.name} template`}
+            tabIndex={0}
+          >
             Preview
           </button>
         </div>
@@ -161,6 +165,7 @@ function TemplateCard({ template }: { template: any }) {
                 ? "text-green-600"
                 : "text-purple-600"
             }`}
+            aria-label={`Price: ${template.price}`}
           >
             {template.price}
           </span>

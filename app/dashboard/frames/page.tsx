@@ -103,8 +103,12 @@ export default function FramesPage() {
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
           <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">Engagement</div>
           <div className="text-3xl font-bold text-gray-900 dark:text-white">
-            {((FRAMES.reduce((sum, f) => sum + f.likes + f.comments, 0) / 
-               FRAMES.reduce((sum, f) => sum + f.views, 0)) * 100).toFixed(1)}%
+            {(() => {
+              const totalViews = FRAMES.reduce((sum, f) => sum + f.views, 0);
+              if (totalViews === 0) return '0.0';
+              const totalEngagement = FRAMES.reduce((sum, f) => sum + f.likes + f.comments, 0);
+              return ((totalEngagement / totalViews) * 100).toFixed(1);
+            })()}%
           </div>
         </div>
       </div>

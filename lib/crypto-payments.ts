@@ -24,7 +24,14 @@ export const PAYMENT_TOKENS = {
   // Add more Base tokens as needed
 };
 
-export const PAYMENT_RECEIVER_ADDRESS = process.env.NEXT_PUBLIC_PAYMENT_RECEIVER_ADDRESS || '';
+export const PAYMENT_RECEIVER_ADDRESS = process.env.NEXT_PUBLIC_PAYMENT_RECEIVER_ADDRESS;
+
+if (!PAYMENT_RECEIVER_ADDRESS) {
+  console.warn(
+    'NEXT_PUBLIC_PAYMENT_RECEIVER_ADDRESS is not set. ' +
+    'Crypto payment features will not work until this is configured.'
+  );
+}
 
 export interface PaymentRequest {
   tokenAddress: string;
@@ -39,10 +46,25 @@ export interface PaymentRequest {
 
 /**
  * Prepare a crypto payment transaction
+ * 
+ * IMPORTANT: This function returns an incorrectly structured transaction.
+ * Before using in production:
+ * 1. For ERC-20: Set `to` to the token contract address, not recipient
+ * 2. For ERC-20: Implement proper `encodeERC20Transfer` function
+ * 3. For ETH: Convert amount to bigint wei using parseEther
+ * 4. Add proper validation and error handling
  */
 export async function preparePayment(request: PaymentRequest) {
-  // TODO: Implement payment transaction preparation
-  // This should create the transaction object for the user to sign
+  // TODO: Fix transaction structure
+  // Correct implementation should:
+  // - Use parseEther/parseUnits for amount conversion
+  // - Set `to` = token contract for ERC-20 (not recipient)
+  // - Set `value` as bigint, not string
+  // - Encode transfer data properly for ERC-20
+  
+  if (!PAYMENT_RECEIVER_ADDRESS) {
+    throw new Error('Payment receiver address is not configured');
+  }
   
   return {
     to: request.recipient,
@@ -58,6 +80,9 @@ export async function preparePayment(request: PaymentRequest) {
  * @param to - Recipient address
  * @param amount - Amount in wei/token units
  * @returns Encoded function data
+ * 
+ * WARNING: This function is not implemented and returns '0x'.
+ * ERC-20 transfers will fail until this is properly implemented.
  */
 function encodeERC20Transfer(to: string, amount: string): string {
   // TODO: Implement ERC20 transfer encoding using viem
@@ -68,13 +93,19 @@ function encodeERC20Transfer(to: string, amount: string): string {
   //   functionName: 'transfer',
   //   args: [to, BigInt(amount)]
   // });
-  return '0x';
+  throw new Error(
+    'ERC-20 transfer encoding is not implemented. ' +
+    'This function must be completed before ERC-20 payments can work.'
+  );
 }
 
 /**
  * Verify payment transaction on Base network
  * @param txHash - Transaction hash to verify
  * @returns True if payment is valid and confirmed
+ * 
+ * WARNING: This function always returns false.
+ * Payment verification will fail until this is properly implemented.
  */
 export async function verifyPayment(txHash: string): Promise<boolean> {
   // TODO: Implement payment verification using RPC provider
@@ -95,7 +126,10 @@ export async function verifyPayment(txHash: string): Promise<boolean> {
   // // Add validation logic here
   // return true;
   
-  return false;
+  throw new Error(
+    'Payment verification is not implemented. ' +
+    'This function must be completed before payment verification can work.'
+  );
 }
 
 export const BASE_CHAIN = base;

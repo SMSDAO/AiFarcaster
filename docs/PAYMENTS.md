@@ -27,11 +27,13 @@ NEXT_PUBLIC_PAYMENT_RECEIVER_ADDRESS=0xYourWalletAddress
 
 ```typescript
 import { preparePayment, verifyPayment, PAYMENT_TOKENS } from '@/lib/crypto-payments';
+import { parseEther } from 'viem';
 
 // Prepare a payment
 const paymentRequest = {
   tokenAddress: PAYMENT_TOKENS.ETH.address,
-  amount: '0.01', // Amount in ETH
+  // Amount must be in base units (wei). Use parseEther for ETH values.
+  amount: parseEther('0.01').toString(), // 0.01 ETH in wei
   recipient: process.env.NEXT_PUBLIC_PAYMENT_RECEIVER_ADDRESS!,
   metadata: {
     orderId: 'order_123',
@@ -60,16 +62,16 @@ const isVerified = await verifyPayment(txHash);
 
 ### Testing
 
-Use Base Goerli testnet for testing:
+Use Base Sepolia testnet for testing:
 
 ```typescript
-import { baseGoerli } from 'wagmi/chains';
+import { baseSepolia } from 'wagmi/chains';
 
-// In providers.tsx, add baseGoerli for testing
-chains: [base, baseGoerli]
+// In providers.tsx, add baseSepolia for testing
+chains: [base, baseSepolia]
 ```
 
-Get testnet ETH from [Base Goerli Faucet](https://www.coinbase.com/faucets/base-ethereum-goerli-faucet).
+Get testnet ETH from Base Sepolia faucets.
 
 ## Stripe Integration
 
@@ -120,7 +122,7 @@ import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2023-10-16',
+  apiVersion: '2024-11-20.acacia' as Stripe.LatestApiVersion,
 });
 
 export async function POST(req: Request) {
@@ -137,7 +139,7 @@ export async function POST(req: Request) {
         },
       ],
       success_url: `${process.env.NEXT_PUBLIC_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_URL}/templates`,
+      cancel_url: `${process.env.NEXT_PUBLIC_URL}/dashboard/templates`,
     });
 
     return NextResponse.json({ id: session.id });

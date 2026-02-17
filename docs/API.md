@@ -4,7 +4,9 @@ AiFarcaster API documentation for integrating with external services.
 
 ## Overview
 
-The AiFarcaster API is built with Next.js API routes and provides endpoints for:
+**NOTE:** The API endpoints described in this document are currently scaffolding/planned features. No API routes are implemented in the current codebase. You will need to implement these endpoints in your application under the `/app/api` directory.
+
+The AiFarcaster API (when implemented) will be built with Next.js API routes and provide endpoints for:
 - Frame management
 - Template operations
 - Payment processing
@@ -19,7 +21,9 @@ Development: http://localhost:3000/api
 
 ## Authentication
 
-All API requests should include wallet authentication:
+**NOTE:** Token-based authentication is not currently implemented. The application uses wallet-based authentication via RainbowKit on the frontend. You will need to implement API authentication separately.
+
+When implemented, API requests should include authentication:
 
 ```typescript
 headers: {
@@ -372,25 +376,34 @@ POST /api/webhooks/subscribe
 }
 ```
 
-## SDK Examples
+## Client Examples
 
-### JavaScript/TypeScript
+### JavaScript/TypeScript (fetch)
 
 ```typescript
-import { AiFarcasterClient } from '@aifarcaster/sdk';
-
-const client = new AiFarcasterClient({
-  apiKey: process.env.AIFARCASTER_API_KEY,
+// Example: Create a frame
+const response = await fetch('https://your-domain.com/api/frames', {
+  method: 'POST',
+  headers: {
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    title: 'My Frame',
+    type: 'token-launch',
+  })
 });
 
-// Create a frame
-const frame = await client.frames.create({
-  title: 'My Frame',
-  type: 'token-launch',
+const frame = await response.json();
+
+// Example: Get analytics
+const analyticsResponse = await fetch(`https://your-domain.com/api/analytics/frames/${frame.id}`, {
+  headers: {
+    'Authorization': `Bearer ${token}`
+  }
 });
 
-// Get analytics
-const analytics = await client.analytics.getFrameStats(frame.id);
+const analytics = await analyticsResponse.json();
 ```
 
 ### cURL
@@ -437,10 +450,7 @@ Use test API keys for development:
 Test Base URL: https://test-api.your-domain.com/api
 ```
 
-### Postman Collection
-
-Import our Postman collection for easy API testing:
-[Download Collection](./postman-collection.json)
+**NOTE:** API implementation and test environment setup are not included in the current release.
 
 ## Support
 

@@ -7,11 +7,7 @@
   "env": {
     "NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID": "@walletconnect-project-id",
     "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY": "@stripe-publishable-key",
-    "NEXT_PUBLIC_PAYMENT_RECEIVER_ADDRESS": "@payment-receiver-address"
-  },
-  "build": {
-    "env": {
-      "STRIPE_SECRET_KEY": "@stripe-secret-key"
-    }
+    "NEXT_PUBLIC_PAYMENT_RECEIVER_ADDRESS": "@payment-receiver-address",
+    "STRIPE_SECRET_KEY": "@stripe-secret-key"
   }
 }

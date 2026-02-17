@@ -42,6 +42,9 @@ export default function DashboardLayout({
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
           className="bg-white dark:bg-gray-800 p-2 rounded-lg shadow-lg"
+          aria-expanded={sidebarOpen}
+          aria-label="Toggle navigation menu"
+          aria-controls="mobile-menu"
         >
           {sidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
@@ -49,9 +52,11 @@ export default function DashboardLayout({
 
       {/* Sidebar */}
       <aside
+        id="mobile-menu"
         className={`fixed inset-y-0 left-0 z-40 w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transform transition-transform lg:translate-x-0 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
+        aria-hidden={!sidebarOpen && "true"}
       >
         <div className="flex flex-col h-full">
           <div className="p-6 border-b border-gray-200 dark:border-gray-700">

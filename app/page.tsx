@@ -42,7 +42,7 @@ export default function Home() {
             Start Building Free
           </Link>
           <Link 
-            href="/auth/signup" 
+            href="/dashboard/templates" 
             className="bg-white dark:bg-gray-800 text-purple-600 px-8 py-4 rounded-lg text-lg font-semibold border-2 border-purple-600 hover:bg-purple-50 dark:hover:bg-gray-700 transition"
           >
             View Templates
@@ -193,22 +193,22 @@ export default function Home() {
             <div>
               <h4 className="font-semibold mb-4">Resources</h4>
               <ul className="space-y-2 text-gray-400">
-                <li><Link href="/docs">Documentation</Link></li>
-                <li><Link href="/docs/guides">Guides</Link></li>
-                <li><Link href="/docs/api">API</Link></li>
+                <li><Link href="#features">Documentation</Link></li>
+                <li><Link href="#templates">Guides</Link></li>
+                <li><Link href="#pricing">API</Link></li>
               </ul>
             </div>
             <div>
               <h4 className="font-semibold mb-4">Company</h4>
               <ul className="space-y-2 text-gray-400">
-                <li><Link href="/about">About</Link></li>
-                <li><Link href="/privacy">Privacy</Link></li>
-                <li><Link href="/terms">Terms</Link></li>
+                <li><Link href="#features">About</Link></li>
+                <li><Link href="#pricing">Privacy</Link></li>
+                <li><Link href="#pricing">Terms</Link></li>
               </ul>
             </div>
           </div>
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 AiFarcaster. All rights reserved.</p>
+            <p>&copy; 2026 AiFarcaster. All rights reserved.</p>
           </div>
         </div>
       </footer>

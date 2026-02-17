@@ -105,6 +105,20 @@ vercel --prod
 
 Create `Dockerfile`:
 
+> **Note:** This Dockerfile uses Next.js standalone output. Make sure your `next.config.js` enables it:
+>
+> ```js
+> /** @type {import('next').NextConfig} */
+> const nextConfig = {
+>   output: 'standalone',
+>   reactStrictMode: true,
+>   swcMinify: true,
+>   // ... other config
+> };
+>
+> module.exports = nextConfig;
+> ```
+
 ```dockerfile
 FROM node:20-alpine AS base
 

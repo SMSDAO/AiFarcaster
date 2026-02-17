@@ -41,9 +41,9 @@ export default function SignupPage() {
           <div className="mt-6 text-sm text-gray-600 dark:text-gray-400">
             <p>By signing up, you agree to our</p>
             <div className="flex space-x-2 mt-1">
-              <Link href="/terms" className="text-purple-600 hover:text-purple-700">Terms</Link>
+              <Link href="#pricing" className="text-purple-600 hover:text-purple-700">Terms</Link>
               <span>and</span>
-              <Link href="/privacy" className="text-purple-600 hover:text-purple-700">Privacy Policy</Link>
+              <Link href="#pricing" className="text-purple-600 hover:text-purple-700">Privacy Policy</Link>
             </div>
           </div>
 
