@@ -27,4 +27,6 @@ CREATE POLICY "Admin users can read own data" ON admin_users
   FOR SELECT USING (auth.uid() = id);
 
 CREATE POLICY "Admin users can update own data" ON admin_users
-  FOR UPDATE USING (auth.uid() = id);
+  FOR UPDATE
+  USING (auth.uid() = id)
+  WITH CHECK (auth.uid() = id AND role = 'admin');
