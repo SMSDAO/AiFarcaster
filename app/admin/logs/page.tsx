@@ -73,7 +73,7 @@ export default function AdminLogsPage() {
           </thead>
           <tbody>
             {filtered.map((log) => (
-              <tr key={log.id} className="border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-750">
+              <tr key={log.id} className="border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700">
                 <td className="px-4 py-3 text-gray-500 dark:text-gray-400 whitespace-nowrap">{log.timestamp}</td>
                 <td className="px-4 py-3">
                   <span className={cn('inline-flex px-2 py-0.5 rounded-full text-xs font-medium', typeColors[log.type])}>
