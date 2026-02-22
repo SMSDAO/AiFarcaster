@@ -1,14 +1,15 @@
--- Creates the initial admin user in Supabase Auth
+-- Creates the initial admin user metadata in Supabase
 -- Run this in your Supabase SQL Editor after setting up the project
--- 
--- Default credentials:
---   Email: admin@admin.com
---   Password: admin123
 --
--- The user will be forced to change password on first login.
-
+-- IMPORTANT:
+--   Do NOT use hard-coded default credentials for your admin user.
+--   Instead, create an admin user via the Supabase Auth Dashboard or Auth API
+--   with a strong, unique password, and then insert that user's id/email into
+--   this admin_users table as needed.
+--
 -- Note: Supabase Auth user creation should be done via the Auth API or Dashboard.
--- This script creates the admin_users table for role tracking.
+-- This script creates the admin_users table for role tracking (including a
+-- must_change_password flag you can enforce in your application logic).
 
 CREATE TABLE IF NOT EXISTS admin_users (
   id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
