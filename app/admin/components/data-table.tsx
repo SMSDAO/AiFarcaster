@@ -38,11 +38,52 @@ export function DataTable<T extends Record<string, unknown>>({
     }
   }
 
+  function compareValues(aVal: unknown, bVal: unknown): number {
+    if (aVal == null && bVal == null) return 0;
+    if (aVal == null) return -1;
+    if (bVal == null) return 1;
+
+    const aIsNumber = typeof aVal === 'number';
+    const bIsNumber = typeof bVal === 'number';
+
+    if (aIsNumber && bIsNumber) {
+      return (aVal as number) - (bVal as number);
+    }
+
+    const aNum =
+      aIsNumber
+        ? (aVal as number)
+        : typeof aVal === 'string' && aVal.trim() !== '' && !Number.isNaN(Number(aVal))
+          ? Number(aVal)
+          : null;
+    const bNum =
+      bIsNumber
+        ? (bVal as number)
+        : typeof bVal === 'string' && bVal.trim() !== '' && !Number.isNaN(Number(bVal))
+          ? Number(bVal)
+          : null;
+
+    if (aNum !== null && bNum !== null) {
+      return aNum - bNum;
+    }
+
+    const aTime =
+      typeof aVal === 'string' ? Date.parse(aVal) : Number.NaN;
+    const bTime =
+      typeof bVal === 'string' ? Date.parse(bVal) : Number.NaN;
+
+    if (!Number.isNaN(aTime) && !Number.isNaN(bTime)) {
+      return aTime - bTime;
+    }
+
+    return String(aVal).localeCompare(String(bVal));
+  }
+
   const sorted = sortKey
     ? [...data].sort((a, b) => {
         const aVal = a[sortKey];
         const bVal = b[sortKey];
-        const cmp = String(aVal ?? '').localeCompare(String(bVal ?? ''));
+        const cmp = compareValues(aVal, bVal);
         return sortDir === 'asc' ? cmp : -cmp;
       })
     : data;
