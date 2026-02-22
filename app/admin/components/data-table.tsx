@@ -89,7 +89,7 @@ export function DataTable<T extends Record<string, unknown>>({
           {sorted.map((row, i) => (
             <tr
               key={`${i}-${Object.values(row).join('::')}`}
-              className="border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-750"
+              className="border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800"
             >
               {columns.map((col) => (
                 <td key={String(col.key)} className="px-4 py-3 text-gray-900 dark:text-white">
