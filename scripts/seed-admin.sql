@@ -20,6 +20,19 @@ CREATE TABLE IF NOT EXISTS admin_users (
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+-- Trigger to keep updated_at in sync on row updates
+CREATE OR REPLACE FUNCTION set_admin_users_updated_at()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.updated_at = NOW();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER set_admin_users_updated_at_trigger
+BEFORE UPDATE ON admin_users
+FOR EACH ROW
+EXECUTE FUNCTION set_admin_users_updated_at();
 -- RLS policies
 ALTER TABLE admin_users ENABLE ROW LEVEL SECURITY;
 
