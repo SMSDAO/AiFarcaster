@@ -41,5 +41,5 @@ CREATE POLICY "Admin users can read own data" ON admin_users
 
 CREATE POLICY "Admin users can update own data" ON admin_users
   FOR UPDATE
-  USING (auth.uid() = id)
+  USING (auth.uid() = id AND role = 'admin')
   WITH CHECK (auth.uid() = id AND role = 'admin');
