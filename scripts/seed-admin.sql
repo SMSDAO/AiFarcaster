@@ -43,3 +43,17 @@ CREATE POLICY "Admin users can update own data" ON admin_users
   FOR UPDATE
   USING (auth.uid() = id AND role = 'admin')
   WITH CHECK (auth.uid() = id AND role = 'admin');
+
+-- Trigger to keep updated_at in sync on row updates
+CREATE OR REPLACE FUNCTION set_admin_users_updated_at()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.updated_at = NOW();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER set_admin_users_updated_at_trigger
+BEFORE UPDATE ON admin_users
+FOR EACH ROW
+EXECUTE FUNCTION set_admin_users_updated_at();

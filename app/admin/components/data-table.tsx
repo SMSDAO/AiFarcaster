@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { ChevronUp, ChevronDown, Database } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { EmptyState } from './empty-state';
@@ -18,6 +18,8 @@ interface DataTableProps<T extends Record<string, unknown>> {
   data: T[];
   loading?: boolean;
   emptyMessage?: string;
+  /** Optional stable key extractor; falls back to row index when omitted. */
+  getRowKey?: (row: T, index: number) => string;
 }
 
 export function DataTable<T extends Record<string, unknown>>({
@@ -25,6 +27,7 @@ export function DataTable<T extends Record<string, unknown>>({
   data,
   loading = false,
   emptyMessage = 'No data available',
+  getRowKey,
 }: DataTableProps<T>) {
   const [sortKey, setSortKey] = useState<string | null>(null);
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc');
@@ -79,14 +82,18 @@ export function DataTable<T extends Record<string, unknown>>({
     return String(aVal).localeCompare(String(bVal));
   }
 
-  const sorted = sortKey
-    ? [...data].sort((a, b) => {
-        const aVal = a[sortKey];
-        const bVal = b[sortKey];
-        const cmp = compareValues(aVal, bVal);
-        return sortDir === 'asc' ? cmp : -cmp;
-      })
-    : data;
+  const sorted = useMemo(
+    () =>
+      sortKey
+        ? [...data].sort((a, b) => {
+            const aVal = a[sortKey];
+            const bVal = b[sortKey];
+            const cmp = compareValues(aVal, bVal);
+            return sortDir === 'asc' ? cmp : -cmp;
+          })
+        : data,
+    [data, sortKey, sortDir],
+  );
 
   if (loading) return <LoadingSkeleton rows={6} variant="table" />;
 
@@ -151,7 +158,7 @@ export function DataTable<T extends Record<string, unknown>>({
         <tbody>
           {sorted.map((row, i) => (
             <tr
-              key={`${i}-${Object.values(row).join('::')}`}
+              key={getRowKey ? getRowKey(row, i) : (row.id != null ? String(row.id) : String(i))}
               className="border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800"
             >
               {columns.map((col) => (

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { createBrowserClient } from '@/lib/supabase';
 import { cn } from '@/lib/utils';
@@ -13,6 +13,14 @@ export default function ChangePasswordPage() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const redirectTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (redirectTimerRef.current) clearTimeout(redirectTimerRef.current);
+    };
+  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -72,7 +80,8 @@ export default function ChangePasswordPage() {
     }
 
     setSuccess('Password updated successfully. Redirecting…');
-    setTimeout(() => router.push('/admin'), 1500);
+    setLoading(false);
+    redirectTimerRef.current = setTimeout(() => router.push('/admin'), 1500);
   }
 
   return (
