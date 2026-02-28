@@ -14,7 +14,8 @@ import {
   Wallet,
   TrendingUp,
   Menu,
-  X
+  X,
+  ShieldCheck
 } from "lucide-react";
 import { useState } from "react";
 
@@ -102,6 +103,14 @@ export default function DashboardLayout({
                 <TrendingUp className="w-4 h-4" />
                 <span>Track PNL</span>
               </button>
+              <Link
+                href="/admin"
+                className="w-full text-left px-4 py-2 text-sm text-purple-600 dark:text-purple-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg flex items-center space-x-2"
+                onClick={() => setSidebarOpen(false)}
+              >
+                <ShieldCheck className="w-4 h-4" />
+                <span>Admin Panel</span>
+              </Link>
             </div>
           </div>
         </div>
