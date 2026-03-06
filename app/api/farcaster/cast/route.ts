@@ -17,15 +17,32 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
   const { fid, text, signerPrivateKey } = body;
 
-  if (!fid || typeof fid !== 'number' || fid <= 0) {
+  if (!Number.isInteger(fid) || fid <= 0) {
     return NextResponse.json({ error: 'Invalid or missing field: fid' }, { status: 400 });
   }
-  if (!text || typeof text !== 'string' || text.trim().length === 0) {
+  if (typeof text !== 'string' || text.trim().length === 0) {
     return NextResponse.json({ error: 'Invalid or missing field: text' }, { status: 400 });
   }
-  if (!Array.isArray(signerPrivateKey) || signerPrivateKey.length !== 32) {
+  const encoder = new TextEncoder();
+  const textBytes = encoder.encode(text);
+  if (textBytes.length > 320) {
     return NextResponse.json(
-      { error: 'Invalid or missing field: signerPrivateKey (expected 32-byte array)' },
+      { error: 'Invalid field: text must be at most 320 bytes' },
+      { status: 400 },
+    );
+  }
+  if (
+    !Array.isArray(signerPrivateKey) ||
+    signerPrivateKey.length !== 32 ||
+    !signerPrivateKey.every(
+      (value) => Number.isInteger(value) && value >= 0 && value <= 255,
+    )
+  ) {
+    return NextResponse.json(
+      {
+        error:
+          'Invalid or missing field: signerPrivateKey (expected 32-byte array of integers in [0, 255])',
+      },
       { status: 400 },
     );
   }
