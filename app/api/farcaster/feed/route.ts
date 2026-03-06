@@ -17,6 +17,12 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
   }
 
   const pageSize = pageSizeParam ? parseInt(pageSizeParam, 10) : 20;
+  if (!Number.isInteger(pageSize) || pageSize < 1 || pageSize > 100) {
+    return NextResponse.json(
+      { error: 'Invalid pageSize: must be an integer between 1 and 100' },
+      { status: 400 },
+    );
+  }
   const pageToken = pageTokenParam
     ? new Uint8Array(Buffer.from(pageTokenParam, 'base64'))
     : undefined;
