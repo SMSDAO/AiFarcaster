@@ -10,9 +10,10 @@ import type { FarcasterCast, FarcasterUserProfile } from '@/types/farcaster';
 // Helpers
 // ---------------------------------------------------------------------------
 
+/** Farcaster epoch: Jan 1 2021 00:00:00 UTC in Unix seconds */
+const FARCASTER_EPOCH = 1609459200;
+
 function formatTimestamp(farcasterTs: number): string {
-  // Farcaster timestamps are seconds since the Farcaster epoch (Jan 1 2021 UTC)
-  const FARCASTER_EPOCH = 1609459200;
   const unixMs = (farcasterTs + FARCASTER_EPOCH) * 1000;
   return new Date(unixMs).toLocaleString();
 }
@@ -28,7 +29,7 @@ function CastCard({ cast }: { cast: FarcasterCast }) {
         <User size={14} aria-hidden="true" />
         <span>FID {cast.fid}</span>
         <span>·</span>
-        <time dateTime={new Date((cast.timestamp + 1609459200) * 1000).toISOString()}>
+        <time dateTime={new Date((cast.timestamp + FARCASTER_EPOCH) * 1000).toISOString()}>
           {formatTimestamp(cast.timestamp)}
         </time>
       </div>

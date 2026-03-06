@@ -23,23 +23,23 @@ function castFromMessage(msg: Message): FarcasterCast | null {
 
   const body = msg.data.castAddBody;
   const hashResult = bytesToHexString(msg.hash);
-  const hash = hashResult.isOk() ? hashResult.value : '';
+  // Skip messages whose hash cannot be decoded — they would produce empty/duplicate IDs.
+  if (hashResult.isErr()) return null;
 
-  const embeds: FarcasterEmbed[] = (body.embeds ?? []).map((e) => {
+  const embeds: FarcasterEmbed[] = (body.embeds ?? []).flatMap((e) => {
     const embed: FarcasterEmbed = {};
     if (e.url) embed.url = e.url;
     if (e.castId) {
       const castIdHashResult = bytesToHexString(e.castId.hash);
-      embed.castId = {
-        fid: e.castId.fid,
-        hash: castIdHashResult.isOk() ? castIdHashResult.value : '',
-      };
+      // Skip embeds with un-decodable hashes rather than emitting empty values.
+      if (castIdHashResult.isErr()) return [];
+      embed.castId = { fid: e.castId.fid, hash: castIdHashResult.value };
     }
-    return embed;
+    return [embed];
   });
 
   const result: FarcasterCast = {
-    hash,
+    hash: hashResult.value,
     fid: msg.data.fid,
     text: body.text,
     timestamp: msg.data.timestamp,
@@ -49,10 +49,10 @@ function castFromMessage(msg: Message): FarcasterCast | null {
 
   if (body.parentCastId) {
     const parentHashResult = bytesToHexString(body.parentCastId.hash);
-    result.parentCastId = {
-      fid: body.parentCastId.fid,
-      hash: parentHashResult.isOk() ? parentHashResult.value : '',
-    };
+    // Skip the parent reference if its hash cannot be decoded.
+    if (parentHashResult.isOk()) {
+      result.parentCastId = { fid: body.parentCastId.fid, hash: parentHashResult.value };
+    }
   }
 
   if (body.parentUrl) result.parentUrl = body.parentUrl;
