@@ -219,13 +219,15 @@ export default function FarcasterClientPage() {
 
       <div className="flex-1 overflow-y-auto px-4 pb-24 space-y-4 pt-4">
         {/* FID lookup */}
-        {!isConnected && fid === null && (
+        {fid === null && (
           <section
             aria-label="Look up a Farcaster feed"
             className="space-y-3 p-4 border border-gray-700 rounded-xl bg-gray-900"
           >
             <p className="text-sm text-gray-400">
-              Connect your wallet to auto-detect your FID, or enter one manually.
+              {!isConnected
+                ? 'Connect your wallet to auto-detect your FID, or enter one manually.'
+                : 'We couldn’t find a Farcaster ID for your connected wallet. Enter a FID to view a feed.'}
             </p>
             <div className="flex gap-2">
               <label htmlFor="fid-input" className="sr-only">
