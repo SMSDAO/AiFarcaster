@@ -107,9 +107,16 @@ export default function FarcasterClientPage() {
   const [composeText, setComposeText] = useState('');
   const [composeOpen, setComposeOpen] = useState(false);
 
-  // Resolve FID from connected wallet address
+  // Resolve FID from connected wallet address; reset all state on disconnect.
   useEffect(() => {
-    if (!isConnected || !address) return;
+    if (!isConnected || !address) {
+      setFid(null);
+      setProfile(null);
+      setCasts([]);
+      setNextPageToken(undefined);
+      setError(null);
+      return;
+    }
     fetch(`/api/farcaster/auth?address=${address}`)
       .then((r) => r.json())
       .then((data: { fid?: number }) => {
@@ -123,10 +130,14 @@ export default function FarcasterClientPage() {
     fetch(`/api/farcaster/user?fid=${targetFid}`)
       .then((r) => r.json())
       .then((data: FarcasterUserProfile & { error?: string }) => {
-        if (data.error) return;
+        if (data.error) {
+          // Clear any stale profile so the old card doesn't stay visible.
+          setProfile(null);
+          return;
+        }
         setProfile(data);
       })
-      .catch(() => null)
+      .catch(() => setProfile(null))
       .finally(() => setProfileLoading(false));
   }, []);
 
@@ -158,12 +169,12 @@ export default function FarcasterClientPage() {
       setError('Please enter a valid positive FID number.');
       return;
     }
-    setFid(parsed);
+    // Clear stale data and update FID — the [fid] effect will load profile + feed.
     setCasts([]);
     setNextPageToken(undefined);
     setProfile(null);
-    loadProfile(parsed);
-    loadFeed(parsed);
+    setError(null);
+    setFid(parsed);
   };
 
   // Auto-load when FID resolves from wallet

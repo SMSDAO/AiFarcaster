@@ -23,6 +23,15 @@ export interface PublishCastResult {
 }
 
 /**
+ * Farcaster network to use when signing casts.
+ * Set FARCASTER_NETWORK=testnet to target a testnet/dev hub; defaults to mainnet.
+ */
+const FARCASTER_CAST_NETWORK =
+  process.env.FARCASTER_NETWORK === 'testnet'
+    ? FarcasterNetwork.TESTNET
+    : FarcasterNetwork.MAINNET;
+
+/**
  * Publishes a new cast on behalf of a Farcaster user.
  *
  * @param fid              The Farcaster user ID of the author.
@@ -38,7 +47,7 @@ export async function publishCast(
 
   const castResult = await makeCastAdd(
     { text, type: CastType.CAST, embeds: [], embedsDeprecated: [], mentions: [], mentionsPositions: [] },
-    { fid, network: FarcasterNetwork.MAINNET },
+    { fid, network: FARCASTER_CAST_NETWORK },
     signer,
   );
 

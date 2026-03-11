@@ -35,6 +35,8 @@ function castFromMessage(msg: Message): FarcasterCast | null {
       if (castIdHashResult.isErr()) return [];
       embed.castId = { fid: e.castId.fid, hash: castIdHashResult.value };
     }
+    // Skip embeds that have no populated fields — they would render as empty list items.
+    if (!embed.url && !embed.castId) return [];
     return [embed];
   });
 

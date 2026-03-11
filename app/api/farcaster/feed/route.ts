@@ -23,9 +23,20 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       { status: 400 },
     );
   }
-  const pageToken = pageTokenParam
-    ? new Uint8Array(Buffer.from(pageTokenParam, 'base64'))
-    : undefined;
+
+  let pageToken: Uint8Array | undefined;
+  if (pageTokenParam !== null) {
+    // Validate that the token is a properly-padded base64 string before decoding.
+    // Buffer.from(str, 'base64') silently accepts many invalid inputs; an invalid
+    // token would produce garbage bytes and a confusing 500 from the hub.
+    if (!/^[A-Za-z0-9+/]*={0,2}$/.test(pageTokenParam)) {
+      return NextResponse.json(
+        { error: 'Invalid pageToken: must be a base64-encoded string' },
+        { status: 400 },
+      );
+    }
+    pageToken = new Uint8Array(Buffer.from(pageTokenParam, 'base64'));
+  }
 
   try {
     const feed = await getFeed(fid, pageSize, pageToken);

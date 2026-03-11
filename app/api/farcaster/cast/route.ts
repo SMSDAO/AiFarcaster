@@ -1,6 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { publishCast } from '@/lib/farcaster/cast';
 
+/**
+ * POST /api/farcaster/cast
+ *
+ * SECURITY NOTE: This endpoint currently accepts a raw Ed25519 private key
+ * (`signerPrivateKey`) in the request body. Transmitting private keys over
+ * HTTP — even to your own backend — is high-risk: keys can be captured by
+ * browser extensions, logs, proxies, or analytics.
+ *
+ * For production use, redesign this so the server holds the signer key
+ * (e.g., stored in a secret manager / environment variable), and the client
+ * authenticates via a session token. The client should submit only the cast
+ * text; the server looks up the registered signer key for the authenticated
+ * user.
+ */
+
 interface CastRequestBody {
   fid: number;
   text: string;

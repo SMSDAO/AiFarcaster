@@ -16,8 +16,10 @@ import type { FarcasterUserProfile } from '@/types/farcaster';
  * Retrieves the public profile for the given Farcaster user ID.
  *
  * @param fid  Farcaster user ID.
- * @returns    A populated {@link FarcasterUserProfile}, or `null` if the hub
- *             returns an error (e.g. unknown FID).
+ * @returns    A populated {@link FarcasterUserProfile}, or `null` if the FID
+ *             is not registered on the hub (errCode "not_found").
+ * @throws     If the hub returns any non-"not-found" error (e.g. timeout,
+ *             unavailable), so callers can propagate a 5xx response.
  */
 export async function getUserProfile(
   fid: number,
@@ -26,7 +28,10 @@ export async function getUserProfile(
   const result = await client.getUserDataByFid({ fid });
 
   if (result.isErr()) {
-    return null;
+    // Only treat an explicit "not found" as a null (unknown FID).
+    // All other errors (unavailable, network, etc.) should surface as 5xx.
+    if (result.error.errCode === 'not_found') return null;
+    throw new Error(`Hub error fetching profile for FID ${fid}: ${result.error.message}`);
   }
 
   const profile: FarcasterUserProfile = { fid };

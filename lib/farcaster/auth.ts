@@ -34,8 +34,12 @@ export async function getFidByAddress(
   });
 
   if (result.isErr()) {
-    // No FID registered to this address — not necessarily an error.
-    return null;
+    // Only treat an explicit "not found" as null — no FID registered to this address.
+    // All other errors (hub unavailable, network failure, etc.) should surface as 5xx.
+    if (result.error.errCode === 'not_found') return null;
+    throw new Error(
+      `Hub error looking up FID for address ${address}: ${result.error.message}`,
+    );
   }
 
   const fid = result.value.fid;
