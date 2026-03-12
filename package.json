@@ -10,6 +10,7 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "@farcaster/hub-nodejs": "~0.12.7",
     "@rainbow-me/rainbowkit": "^2.1.0",
     "@stripe/stripe-js": "^4.0.0",
     "@supabase/ssr": "^0.8.0",
