@@ -34,13 +34,15 @@ function CastCard({ cast }: { cast: FarcasterCast }) {
         </time>
       </div>
       <p className="text-sm text-gray-100 whitespace-pre-wrap break-words">{cast.text}</p>
-      {cast.embeds.length > 0 && (
-        <ul className="space-y-1">
-          {cast.embeds.map((embed, i) =>
-            embed.url ? (
+      {(() => {
+        const urlEmbeds = cast.embeds.filter((e) => e.url);
+        if (urlEmbeds.length === 0) return null;
+        return (
+          <ul className="space-y-1">
+            {urlEmbeds.map((embed, i) => (
               <li key={i}>
                 <a
-                  href={embed.url}
+                  href={embed.url ?? ''}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-xs text-purple-400 hover:underline break-all"
@@ -48,10 +50,10 @@ function CastCard({ cast }: { cast: FarcasterCast }) {
                   {embed.url}
                 </a>
               </li>
-            ) : null,
-          )}
-        </ul>
-      )}
+            ))}
+          </ul>
+        );
+      })()}
     </article>
   );
 }
@@ -107,6 +109,8 @@ export default function FarcasterClientPage() {
   const [composeText, setComposeText] = useState('');
   const [composeOpen, setComposeOpen] = useState(false);
   const composeTextareaRef = useRef<HTMLTextAreaElement>(null);
+  const profileControllerRef = useRef<AbortController | null>(null);
+  const feedControllerRef = useRef<AbortController | null>(null);
 
   // Resolve FID from connected wallet address; reset all state on disconnect.
   useEffect(() => {
@@ -141,8 +145,13 @@ export default function FarcasterClientPage() {
   }, [isConnected, address]);
 
   const loadProfile = useCallback((targetFid: number) => {
+    // Abort any in-flight profile request (stale FID response guard).
+    profileControllerRef.current?.abort();
+    const controller = new AbortController();
+    profileControllerRef.current = controller;
+
     setProfileLoading(true);
-    fetch(`/api/farcaster/user?fid=${targetFid}`)
+    fetch(`/api/farcaster/user?fid=${targetFid}`, { signal: controller.signal })
       .then((r) => r.json())
       .then((data: FarcasterUserProfile & { error?: string }) => {
         if (data.error) {
@@ -152,17 +161,27 @@ export default function FarcasterClientPage() {
         }
         setProfile(data);
       })
-      .catch(() => setProfile(null))
-      .finally(() => setProfileLoading(false));
+      .catch((err: Error) => {
+        if (err.name === 'AbortError') return;
+        setProfile(null);
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setProfileLoading(false);
+      });
   }, []);
 
   const loadFeed = useCallback(
     (targetFid: number, pageToken?: string, append = false) => {
+      // Abort any in-flight feed request (stale FID/pageToken response guard).
+      feedControllerRef.current?.abort();
+      const controller = new AbortController();
+      feedControllerRef.current = controller;
+
       setLoading(true);
       setError(null);
       const params = new URLSearchParams({ fid: String(targetFid), pageSize: '20' });
       if (pageToken) params.set('pageToken', pageToken);
-      fetch(`/api/farcaster/feed?${params}`)
+      fetch(`/api/farcaster/feed?${params}`, { signal: controller.signal })
         .then((r) => r.json())
         .then((data: { casts?: FarcasterCast[]; nextPageToken?: string; error?: string }) => {
           if (data.error) {
@@ -172,8 +191,13 @@ export default function FarcasterClientPage() {
           setCasts((prev) => (append ? [...prev, ...(data.casts ?? [])] : (data.casts ?? [])));
           setNextPageToken(data.nextPageToken);
         })
-        .catch((err: Error) => setError(err.message))
-        .finally(() => setLoading(false));
+        .catch((err: Error) => {
+          if (err.name === 'AbortError') return;
+          setError(err.message);
+        })
+        .finally(() => {
+          if (!controller.signal.aborted) setLoading(false);
+        });
     },
     [],
   );
@@ -332,6 +356,7 @@ export default function FarcasterClientPage() {
             onClick={() => setComposeOpen((o) => !o)}
             aria-label={composeOpen ? 'Close compose' : 'Compose cast'}
             aria-expanded={composeOpen}
+            aria-controls="compose-drawer"
             className="w-14 h-14 rounded-full bg-purple-600 hover:bg-purple-700 text-white shadow-lg flex items-center justify-center transition-colors"
           >
             <Send size={22} aria-hidden="true" />
@@ -342,6 +367,7 @@ export default function FarcasterClientPage() {
       {/* Compose drawer */}
       {composeOpen && (
         <div
+          id="compose-drawer"
           role="dialog"
           aria-modal="true"
           aria-label="Compose a new cast"

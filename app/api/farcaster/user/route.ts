@@ -9,8 +9,11 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: 'Missing required query param: fid' }, { status: 400 });
   }
 
-  const fid = parseInt(fidParam, 10);
-  if (isNaN(fid) || fid <= 0) {
+  if (!/^\d+$/.test(fidParam)) {
+    return NextResponse.json({ error: 'Invalid fid: must be a positive integer' }, { status: 400 });
+  }
+  const fid = Number(fidParam);
+  if (fid <= 0) {
     return NextResponse.json({ error: 'Invalid fid: must be a positive integer' }, { status: 400 });
   }
 
