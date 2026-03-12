@@ -4,10 +4,11 @@ import { publishCast } from '@/lib/farcaster/cast';
 /**
  * POST /api/farcaster/cast
  *
- * SECURITY NOTE: This endpoint currently accepts a raw Ed25519 private key
- * (`signerPrivateKey`) in the request body. Transmitting private keys over
- * HTTP — even to your own backend — is high-risk: keys can be captured by
- * browser extensions, logs, proxies, or analytics.
+ * SECURITY NOTE: This endpoint accepts a raw Ed25519 private key
+ * (`signerPrivateKey`) in the request body and is intentionally disabled in
+ * production. Transmitting private keys over HTTP — even to your own backend
+ * — is high-risk: keys can be captured by browser extensions, logs, proxies,
+ * or analytics.
  *
  * For production use, redesign this so the server holds the signer key
  * (e.g., stored in a secret manager / environment variable), and the client
@@ -23,6 +24,16 @@ interface CastRequestBody {
 }
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
+  if (process.env.NODE_ENV === 'production') {
+    return NextResponse.json(
+      {
+        error:
+          'This endpoint is disabled in production. See the security note in route.ts and redesign to use server-held signer keys.',
+      },
+      { status: 403 },
+    );
+  }
+
   let body: CastRequestBody;
   try {
     body = (await request.json()) as CastRequestBody;

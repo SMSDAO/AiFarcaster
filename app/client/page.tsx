@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useAccount } from 'wagmi';
 import { MessageSquare, RefreshCw, Send, User } from 'lucide-react';
@@ -106,6 +106,7 @@ export default function FarcasterClientPage() {
   const [error, setError] = useState<string | null>(null);
   const [composeText, setComposeText] = useState('');
   const [composeOpen, setComposeOpen] = useState(false);
+  const composeTextareaRef = useRef<HTMLTextAreaElement>(null);
 
   // Resolve FID from connected wallet address; reset all state on disconnect.
   useEffect(() => {
@@ -117,12 +118,26 @@ export default function FarcasterClientPage() {
       setError(null);
       return;
     }
-    fetch(`/api/farcaster/auth?address=${address}`)
+
+    const controller = new AbortController();
+    const { signal } = controller;
+    let active = true;
+
+    fetch(`/api/farcaster/auth?address=${address}`, { signal })
       .then((r) => r.json())
       .then((data: { fid?: number }) => {
+        if (!active) return;
         if (data.fid) setFid(data.fid);
       })
-      .catch(() => null);
+      .catch((err: Error) => {
+        // Ignore abort errors; swallow others as before.
+        if (err.name === 'AbortError') return;
+      });
+
+    return () => {
+      active = false;
+      controller.abort();
+    };
   }, [isConnected, address]);
 
   const loadProfile = useCallback((targetFid: number) => {
@@ -176,6 +191,13 @@ export default function FarcasterClientPage() {
     setError(null);
     setFid(parsed);
   };
+
+  // Auto-focus the textarea when the compose drawer opens.
+  useEffect(() => {
+    if (composeOpen) {
+      composeTextareaRef.current?.focus();
+    }
+  }, [composeOpen]);
 
   // Auto-load when FID resolves from wallet
   useEffect(() => {
@@ -321,13 +343,18 @@ export default function FarcasterClientPage() {
       {composeOpen && (
         <div
           role="dialog"
+          aria-modal="true"
           aria-label="Compose a new cast"
           className="fixed bottom-0 inset-x-0 z-10 bg-gray-950 border-t border-gray-700 p-4 space-y-3 max-w-lg mx-auto"
+          onKeyDown={(e) => {
+            if (e.key === 'Escape') setComposeOpen(false);
+          }}
         >
           <label htmlFor="compose-text" className="block text-sm font-medium text-gray-300">
             New cast
           </label>
           <textarea
+            ref={composeTextareaRef}
             id="compose-text"
             rows={3}
             maxLength={320}

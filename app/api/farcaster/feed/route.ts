@@ -25,13 +25,16 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
   }
 
   let pageToken: Uint8Array | undefined;
-  if (pageTokenParam !== null) {
-    // Validate that the token is a properly-padded base64 string before decoding.
-    // Buffer.from(str, 'base64') silently accepts many invalid inputs; an invalid
-    // token would produce garbage bytes and a confusing 500 from the hub.
-    if (!/^[A-Za-z0-9+/]*={0,2}$/.test(pageTokenParam)) {
+  if (pageTokenParam !== null && pageTokenParam !== '') {
+    // Validate: must be non-empty, properly padded base64 with length divisible
+    // by 4. Buffer.from(str, 'base64') silently accepts many invalid inputs;
+    // an invalid token produces garbage bytes and a confusing 500 from the hub.
+    if (
+      !/^[A-Za-z0-9+/]+={0,2}$/.test(pageTokenParam) ||
+      pageTokenParam.length % 4 !== 0
+    ) {
       return NextResponse.json(
-        { error: 'Invalid pageToken: must be a base64-encoded string' },
+        { error: 'Invalid pageToken: must be a valid base64-encoded string' },
         { status: 400 },
       );
     }
