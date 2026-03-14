@@ -32,6 +32,11 @@ After connecting, you'll see the main dashboard with:
 
 ## Dashboard Overview
 
+### User Dashboard
+
+![User Dashboard](../public/screenshots/user-dashboard.svg)
+*User dashboard — real-time stats, quick actions, activity feed, and frames timeline*
+
 ### Main Dashboard
 
 The dashboard shows:
