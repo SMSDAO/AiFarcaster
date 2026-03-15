@@ -53,7 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Base Sepolia testnet support for development
 
 #### Security & Middleware
-- Route protection middleware enforcing authentication on dashboard and admin routes
+- Route protection middleware enforcing authentication on `/admin/*` routes only (dashboard routes are not protected by middleware)
 - Supabase session refresh in middleware
 - Admin-only route guard redirecting unauthenticated users to `/admin/login`
 

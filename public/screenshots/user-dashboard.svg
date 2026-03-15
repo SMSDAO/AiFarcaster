@@ -1,209 +1,438 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750">
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="800" viewBox="0 0 1280 800">
   <defs>
-    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#0f0f1a;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#1a1028;stop-opacity:1" />
+    <!-- Background gradient -->
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0d0d1a"/>
+      <stop offset="100%" style="stop-color:#130f24"/>
     </linearGradient>
-    <linearGradient id="purpleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#7c3aed;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#a855f7;stop-opacity:1" />
+    <!-- Sidebar gradient -->
+    <linearGradient id="sidebarBg" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#100e1f"/>
+      <stop offset="100%" style="stop-color:#14112a"/>
     </linearGradient>
-    <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#2563eb;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:1" />
+    <!-- Purple gradient -->
+    <linearGradient id="purple" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#7c3aed"/>
+      <stop offset="100%" style="stop-color:#a855f7"/>
     </linearGradient>
-    <linearGradient id="greenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#059669;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#10b981;stop-opacity:1" />
+    <!-- Blue gradient -->
+    <linearGradient id="blue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2563eb"/>
+      <stop offset="100%" style="stop-color:#60a5fa"/>
     </linearGradient>
-    <linearGradient id="orangeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#d97706;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:1" />
+    <!-- Green gradient -->
+    <linearGradient id="green" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#059669"/>
+      <stop offset="100%" style="stop-color:#34d399"/>
     </linearGradient>
-    <filter id="glow">
-      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-      <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    <!-- Orange gradient -->
+    <linearGradient id="orange" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#d97706"/>
+      <stop offset="100%" style="stop-color:#fbbf24"/>
+    </linearGradient>
+    <!-- Card glass -->
+    <linearGradient id="card1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e1540;stop-opacity:0.9"/>
+      <stop offset="100%" style="stop-color:#1a1235;stop-opacity:0.8"/>
+    </linearGradient>
+    <!-- Sparkline purple -->
+    <linearGradient id="sparkPurple" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" style="stop-color:#7c3aed;stop-opacity:0.2"/>
+      <stop offset="100%" style="stop-color:#7c3aed;stop-opacity:0.8"/>
+    </linearGradient>
+    <!-- Sparkline blue -->
+    <linearGradient id="sparkBlue" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" style="stop-color:#2563eb;stop-opacity:0.2"/>
+      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:0.8"/>
+    </linearGradient>
+    <!-- Sparkline green -->
+    <linearGradient id="sparkGreen" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" style="stop-color:#059669;stop-opacity:0.2"/>
+      <stop offset="100%" style="stop-color:#10b981;stop-opacity:0.7"/>
+    </linearGradient>
+    <!-- Area chart gradient -->
+    <linearGradient id="areaGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#7c3aed;stop-opacity:0.5"/>
+      <stop offset="100%" style="stop-color:#7c3aed;stop-opacity:0.02"/>
+    </linearGradient>
+    <!-- Glow filter -->
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
-    <filter id="softGlow">
-      <feGaussianBlur stdDeviation="8" result="coloredBlur"/>
-      <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#000000" flood-opacity="0.4"/>
+    </filter>
+    <!-- Avatar clip -->
+    <clipPath id="avatarClip"><circle cx="12" cy="12" r="12"/></clipPath>
   </defs>
 
-  <!-- Background -->
-  <rect width="1200" height="750" fill="url(#bgGrad)"/>
+  <!-- ═══════════════════════════════ BACKGROUND ═══════════════════════════════ -->
+  <rect width="1280" height="800" fill="url(#bg)"/>
+  <!-- Subtle grid lines -->
+  <g stroke="#ffffff" stroke-opacity="0.02" stroke-width="1">
+    <line x1="240" y1="0" x2="240" y2="800"/>
+    <line x1="0" y1="60" x2="1280" y2="60"/>
+  </g>
 
-  <!-- Sidebar -->
-  <rect x="0" y="0" width="220" height="750" fill="#12111f" rx="0"/>
-  <rect x="220" y="0" width="1" height="750" fill="#2d2b45"/>
-
-  <!-- Sidebar glow accent -->
-  <rect x="0" y="0" width="4" height="750" fill="url(#purpleGrad)" filter="url(#glow)"/>
+  <!-- ═══════════════════════════════ SIDEBAR ═══════════════════════════════ -->
+  <rect x="0" y="0" width="232" height="800" fill="url(#sidebarBg)"/>
+  <rect x="231" y="0" width="1" height="800" fill="#2d2560" opacity="0.8"/>
+  <!-- Purple left accent bar -->
+  <rect x="0" y="0" width="3" height="800" fill="url(#purple)" filter="url(#glow)"/>
+  <!-- Sidebar ambient glow -->
+  <rect x="0" y="200" width="40" height="400" fill="#7c3aed" opacity="0.04"/>
 
   <!-- Logo area -->
-  <rect x="20" y="20" width="180" height="50" rx="8" fill="#1e1b35"/>
-  <circle cx="45" cy="45" r="14" fill="url(#purpleGrad)" filter="url(#glow)"/>
-  <text x="65" y="50" font-family="system-ui,sans-serif" font-size="16" font-weight="700" fill="#ffffff">AiFarcaster</text>
+  <rect x="16" y="16" width="200" height="52" rx="10" fill="#1a1638" stroke="#2d2560" stroke-width="1"/>
+  <!-- Logo icon -->
+  <circle cx="42" cy="42" r="15" fill="url(#purple)" filter="url(#glow)"/>
+  <text x="42" y="47" text-anchor="middle" font-family="system-ui,sans-serif" font-size="14" font-weight="700" fill="#fff">AI</text>
+  <text x="63" y="37" font-family="system-ui,sans-serif" font-size="13" font-weight="700" fill="#fff">AiFarcaster</text>
+  <text x="63" y="52" font-family="system-ui,sans-serif" font-size="10" fill="#7c3aed">Pro Account</text>
+
+  <!-- Nav label -->
+  <text x="20" y="90" font-family="system-ui,sans-serif" font-size="9" font-weight="600" fill="#4b4580" letter-spacing="1.5">NAVIGATION</text>
 
   <!-- Nav items -->
-  <rect x="10" y="90" width="200" height="38" rx="8" fill="url(#purpleGrad)" opacity="0.2"/>
-  <rect x="10" y="90" width="4" height="38" rx="2" fill="url(#purpleGrad)" filter="url(#glow)"/>
-  <text x="50" y="113" font-family="system-ui,sans-serif" font-size="13" fill="#c4b5fd" font-weight="600">Overview</text>
+  <!-- Dashboard (active) -->
+  <rect x="12" y="98" width="208" height="38" rx="8" fill="url(#purple)" opacity="0.15"/>
+  <rect x="12" y="98" width="3" height="38" rx="1.5" fill="url(#purple)" filter="url(#glow)"/>
+  <rect x="22" y="110" width="14" height="14" rx="3" fill="#a855f7" opacity="0.9"/>
+  <text x="43" y="121" font-family="system-ui,sans-serif" font-size="13" font-weight="600" fill="#c084fc">Dashboard</text>
+  <rect x="188" y="108" width="24" height="18" rx="9" fill="#7c3aed" opacity="0.3"/>
+  <text x="200" y="120" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" font-weight="700" fill="#c084fc">5</text>
 
-  <text x="50" y="148" font-family="system-ui,sans-serif" font-size="13" fill="#6b7280">Frames</text>
-  <text x="50" y="183" font-family="system-ui,sans-serif" font-size="13" fill="#6b7280">Projects</text>
-  <text x="50" y="218" font-family="system-ui,sans-serif" font-size="13" fill="#6b7280">Templates</text>
-  <text x="50" y="253" font-family="system-ui,sans-serif" font-size="13" fill="#6b7280">AI Prompts</text>
-  <text x="50" y="288" font-family="system-ui,sans-serif" font-size="13" fill="#6b7280">Tools</text>
+  <!-- Frames -->
+  <rect x="12" y="142" width="208" height="38" rx="8" fill="transparent"/>
+  <rect x="22" y="154" width="14" height="14" rx="3" fill="#4b4580" opacity="0.6"/>
+  <text x="43" y="165" font-family="system-ui,sans-serif" font-size="13" fill="#8b8ab0">Frames</text>
 
-  <!-- Sidebar icons (simplified squares) -->
-  <rect x="22" y="130" width="16" height="16" rx="3" fill="#4b5563"/>
-  <rect x="22" y="165" width="16" height="16" rx="3" fill="#4b5563"/>
-  <rect x="22" y="200" width="16" height="16" rx="3" fill="#4b5563"/>
-  <rect x="22" y="235" width="16" height="16" rx="3" fill="#4b5563"/>
-  <rect x="22" y="270" width="16" height="16" rx="3" fill="#4b5563"/>
+  <!-- Projects -->
+  <rect x="12" y="186" width="208" height="38" rx="8" fill="transparent"/>
+  <rect x="22" y="198" width="14" height="14" rx="3" fill="#4b4580" opacity="0.6"/>
+  <text x="43" y="209" font-family="system-ui,sans-serif" font-size="13" fill="#8b8ab0">Projects</text>
 
-  <!-- Quick Actions label -->
-  <text x="20" y="330" font-family="system-ui,sans-serif" font-size="11" fill="#4b5563" font-weight="600" text-transform="uppercase">QUICK ACTIONS</text>
-  <rect x="10" y="340" width="200" height="34" rx="6" fill="#1e1b35"/>
-  <text x="40" y="362" font-family="system-ui,sans-serif" font-size="12" fill="#9ca3af">Airdrop</text>
-  <rect x="10" y="380" width="200" height="34" rx="6" fill="#1e1b35"/>
-  <text x="40" y="402" font-family="system-ui,sans-serif" font-size="12" fill="#9ca3af">Monitor</text>
-  <rect x="10" y="420" width="200" height="34" rx="6" fill="#1e1b35"/>
-  <text x="40" y="442" font-family="system-ui,sans-serif" font-size="12" fill="#9ca3af">Track PNL</text>
-  <rect x="10" y="460" width="200" height="34" rx="6" fill="#1e1b35"/>
-  <text x="40" y="482" font-family="system-ui,sans-serif" font-size="12" fill="#a78bfa">Admin Panel</text>
+  <!-- Templates -->
+  <rect x="12" y="230" width="208" height="38" rx="8" fill="transparent"/>
+  <rect x="22" y="242" width="14" height="14" rx="3" fill="#4b4580" opacity="0.6"/>
+  <text x="43" y="253" font-family="system-ui,sans-serif" font-size="13" fill="#8b8ab0">Templates</text>
 
-  <!-- Main content area -->
-  <!-- Header bar -->
-  <rect x="220" y="0" width="980" height="62" fill="#12111f"/>
-  <rect x="220" y="62" width="980" height="1" fill="#2d2b45"/>
-  <text x="260" y="38" font-family="system-ui,sans-serif" font-size="18" font-weight="700" fill="#ffffff">Overview</text>
+  <!-- Prompts -->
+  <rect x="12" y="274" width="208" height="38" rx="8" fill="transparent"/>
+  <rect x="22" y="286" width="14" height="14" rx="3" fill="#4b4580" opacity="0.6"/>
+  <text x="43" y="297" font-family="system-ui,sans-serif" font-size="13" fill="#8b8ab0">AI Prompts</text>
 
-  <!-- Connect wallet button -->
-  <rect x="1060" y="14" width="120" height="34" rx="17" fill="url(#purpleGrad)" filter="url(#glow)"/>
-  <text x="1120" y="35" font-family="system-ui,sans-serif" font-size="12" fill="#ffffff" text-anchor="middle" font-weight="600">Connect Wallet</text>
+  <!-- Tools -->
+  <rect x="12" y="318" width="208" height="38" rx="8" fill="transparent"/>
+  <rect x="22" y="330" width="14" height="14" rx="3" fill="#4b4580" opacity="0.6"/>
+  <text x="43" y="341" font-family="system-ui,sans-serif" font-size="13" fill="#8b8ab0">Tools</text>
 
-  <!-- Stats cards row -->
+  <!-- Section divider -->
+  <line x1="20" y1="375" x2="212" y2="375" stroke="#2d2560" stroke-width="1"/>
+  <text x="20" y="392" font-family="system-ui,sans-serif" font-size="9" font-weight="600" fill="#4b4580" letter-spacing="1.5">WORKSPACE</text>
+
+  <!-- Token Launcher -->
+  <rect x="12" y="400" width="208" height="38" rx="8" fill="transparent"/>
+  <rect x="22" y="412" width="14" height="14" rx="3" fill="#4b4580" opacity="0.6"/>
+  <text x="43" y="423" font-family="system-ui,sans-serif" font-size="13" fill="#8b8ab0">Token Launcher</text>
+  <rect x="168" y="410" width="44" height="18" rx="9" fill="#059669" opacity="0.25"/>
+  <text x="190" y="422" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" font-weight="700" fill="#34d399">NEW</text>
+
+  <!-- Marketplace -->
+  <rect x="12" y="444" width="208" height="38" rx="8" fill="transparent"/>
+  <rect x="22" y="456" width="14" height="14" rx="3" fill="#4b4580" opacity="0.6"/>
+  <text x="43" y="467" font-family="system-ui,sans-serif" font-size="13" fill="#8b8ab0">Marketplace</text>
+
+  <!-- Upgrade card at bottom -->
+  <rect x="12" y="690" width="208" height="90" rx="12" fill="#1e1540" stroke="#7c3aed" stroke-width="1" stroke-opacity="0.4"/>
+  <circle cx="116" cy="705" r="20" fill="#7c3aed" opacity="0.15"/>
+  <text x="116" y="712" text-anchor="middle" font-family="system-ui,sans-serif" font-size="18">⚡</text>
+  <text x="116" y="732" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" font-weight="600" fill="#c084fc">Upgrade to Enterprise</text>
+  <text x="116" y="748" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#8b8ab0">Unlimited frames &amp; API calls</text>
+  <rect x="40" y="756" width="152" height="20" rx="10" fill="url(#purple)" opacity="0.8"/>
+  <text x="116" y="769" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" font-weight="600" fill="#fff">Upgrade Now →</text>
+
+  <!-- User avatar at bottom -->
+  <rect x="12" y="630" width="208" height="52" rx="10" fill="#16122e" stroke="#2d2560" stroke-width="1"/>
+  <circle cx="36" cy="656" r="14" fill="url(#purple)" opacity="0.4"/>
+  <text x="36" y="661" text-anchor="middle" font-family="system-ui,sans-serif" font-size="12" font-weight="700" fill="#c084fc">A</text>
+  <text x="58" y="651" font-family="system-ui,sans-serif" font-size="11" font-weight="600" fill="#e2e0ff">alice.eth</text>
+  <text x="58" y="665" font-family="system-ui,sans-serif" font-size="9" fill="#8b8ab0">Pro · 500 credits</text>
+  <rect x="196" y="648" width="16" height="16" rx="4" fill="#2d2560" opacity="0.8"/>
+
+  <!-- ═══════════════════════════════ TOP HEADER ═══════════════════════════════ -->
+  <rect x="232" y="0" width="1048" height="60" fill="#0f0e1e" opacity="0.95"/>
+  <line x1="232" y1="60" x2="1280" y2="60" stroke="#2d2560" stroke-width="1"/>
+
+  <!-- Breadcrumb -->
+  <text x="256" y="26" font-family="system-ui,sans-serif" font-size="11" fill="#4b4580">Home</text>
+  <text x="296" y="26" font-family="system-ui,sans-serif" font-size="11" fill="#4b4580">/</text>
+  <text x="308" y="26" font-family="system-ui,sans-serif" font-size="11" fill="#c084fc">Dashboard</text>
+  <text x="256" y="44" font-family="system-ui,sans-serif" font-size="16" font-weight="700" fill="#f0eeff">Overview</text>
+
+  <!-- Header right controls -->
+  <!-- Search -->
+  <rect x="920" y="16" width="160" height="30" rx="15" fill="#1a1638" stroke="#2d2560" stroke-width="1"/>
+  <text x="936" y="35" font-family="system-ui,sans-serif" font-size="11" fill="#4b4580">🔍</text>
+  <text x="952" y="35" font-family="system-ui,sans-serif" font-size="11" fill="#4b4580">Search...</text>
+  <!-- Notification bell -->
+  <rect x="1092" y="16" width="30" height="30" rx="8" fill="#1a1638" stroke="#2d2560" stroke-width="1"/>
+  <text x="1107" y="36" text-anchor="middle" font-family="system-ui,sans-serif" font-size="14">🔔</text>
+  <circle cx="1118" cy="20" r="5" fill="#ef4444"/>
+  <text x="1118" y="23" text-anchor="middle" font-family="system-ui,sans-serif" font-size="6" font-weight="700" fill="#fff">3</text>
+  <!-- Settings -->
+  <rect x="1134" y="16" width="30" height="30" rx="8" fill="#1a1638" stroke="#2d2560" stroke-width="1"/>
+  <text x="1149" y="36" text-anchor="middle" font-family="system-ui,sans-serif" font-size="14">⚙️</text>
+  <!-- Date badge -->
+  <rect x="1176" y="16" width="88" height="30" rx="8" fill="#1a1638" stroke="#2d2560" stroke-width="1"/>
+  <text x="1220" y="35" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#8b8ab0">Mar 15, 2026</text>
+
+  <!-- ═══════════════════════════════ MAIN CONTENT ═══════════════════════════════ -->
+
+  <!-- ─── QUICK STATS ROW ─── -->
   <!-- Card 1: Total Frames -->
-  <rect x="240" y="82" width="210" height="110" rx="12" fill="#1a1830"/>
-  <rect x="240" y="82" width="210" height="2" rx="1" fill="url(#purpleGrad)" opacity="0.7"/>
-  <text x="260" y="112" font-family="system-ui,sans-serif" font-size="12" fill="#9ca3af">Total Frames</text>
-  <text x="260" y="148" font-family="system-ui,sans-serif" font-size="32" font-weight="700" fill="#ffffff">12</text>
-  <text x="260" y="170" font-family="system-ui,sans-serif" font-size="12" fill="#10b981">+3 this week</text>
-  <rect x="395" y="95" width="40" height="40" rx="20" fill="#7c3aed" opacity="0.2"/>
-  <rect x="405" y="105" width="20" height="20" rx="3" fill="#7c3aed" filter="url(#glow)"/>
+  <rect x="256" y="80" width="228" height="110" rx="12" fill="#1a1435" stroke="#2d2560" stroke-width="1" filter="url(#shadow)"/>
+  <rect x="256" y="80" width="228" height="4" rx="2" fill="url(#purple)"/>
+  <text x="276" y="106" font-family="system-ui,sans-serif" font-size="11" fill="#8b8ab0">Total Frames</text>
+  <rect x="444" y="92" width="28" height="28" rx="8" fill="#7c3aed" opacity="0.2"/>
+  <text x="458" y="111" text-anchor="middle" font-family="system-ui,sans-serif" font-size="16">🖼️</text>
+  <text x="276" y="138" font-family="system-ui,sans-serif" font-size="30" font-weight="700" fill="#f0eeff">124</text>
+  <rect x="276" y="148" width="60" height="16" rx="8" fill="#059669" opacity="0.2"/>
+  <text x="306" y="160" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#34d399">▲ +12 this month</text>
+  <!-- Sparkline -->
+  <polyline points="350,168 360,158 370,162 380,150 390,155 400,143 410,148 420,138 430,135 440,128 450,130 460,120 470,118" 
+            fill="none" stroke="#7c3aed" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/>
+  <polygon points="350,175 360,165 370,168 380,156 390,161 400,150 410,155 420,145 430,141 440,135 450,137 460,127 470,125 470,175" 
+           fill="url(#sparkPurple)" opacity="0.4"/>
 
   <!-- Card 2: Active Projects -->
-  <rect x="464" y="82" width="210" height="110" rx="12" fill="#1a1830"/>
-  <rect x="464" y="82" width="210" height="2" rx="1" fill="url(#blueGrad)" opacity="0.7"/>
-  <text x="484" y="112" font-family="system-ui,sans-serif" font-size="12" fill="#9ca3af">Active Projects</text>
-  <text x="484" y="148" font-family="system-ui,sans-serif" font-size="32" font-weight="700" fill="#ffffff">5</text>
-  <text x="484" y="170" font-family="system-ui,sans-serif" font-size="12" fill="#10b981">+1 this month</text>
-  <rect x="619" y="95" width="40" height="40" rx="20" fill="#2563eb" opacity="0.2"/>
-  <rect x="629" y="105" width="20" height="20" rx="3" fill="#3b82f6" filter="url(#glow)"/>
+  <rect x="500" y="80" width="228" height="110" rx="12" fill="#1a1435" stroke="#2d2560" stroke-width="1" filter="url(#shadow)"/>
+  <rect x="500" y="80" width="228" height="4" rx="2" fill="url(#blue)"/>
+  <text x="520" y="106" font-family="system-ui,sans-serif" font-size="11" fill="#8b8ab0">Active Projects</text>
+  <rect x="688" y="92" width="28" height="28" rx="8" fill="#2563eb" opacity="0.2"/>
+  <text x="702" y="111" text-anchor="middle" font-family="system-ui,sans-serif" font-size="16">📁</text>
+  <text x="520" y="138" font-family="system-ui,sans-serif" font-size="30" font-weight="700" fill="#f0eeff">18</text>
+  <rect x="520" y="148" width="60" height="16" rx="8" fill="#2563eb" opacity="0.2"/>
+  <text x="550" y="160" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#60a5fa">▲ +3 this week</text>
+  <!-- Sparkline -->
+  <polyline points="595,168 605,162 615,165 625,155 635,158 645,148 655,152 665,144 675,147 685,138 695,140 705,132 715,128" 
+            fill="none" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/>
+  <polygon points="595,175 605,169 615,172 625,162 635,165 645,155 655,159 665,151 675,154 685,145 695,147 705,139 715,135 715,175" 
+           fill="url(#sparkBlue)" opacity="0.4"/>
 
-  <!-- Card 3: Engagement -->
-  <rect x="688" y="82" width="210" height="110" rx="12" fill="#1a1830"/>
-  <rect x="688" y="82" width="210" height="2" rx="1" fill="url(#greenGrad)" opacity="0.7"/>
-  <text x="708" y="112" font-family="system-ui,sans-serif" font-size="12" fill="#9ca3af">Engagement</text>
-  <text x="708" y="148" font-family="system-ui,sans-serif" font-size="32" font-weight="700" fill="#ffffff">1.2K</text>
-  <text x="708" y="170" font-family="system-ui,sans-serif" font-size="12" fill="#10b981">+15% this week</text>
-  <rect x="843" y="95" width="40" height="40" rx="20" fill="#059669" opacity="0.2"/>
-  <rect x="853" y="105" width="20" height="20" rx="3" fill="#10b981" filter="url(#glow)"/>
+  <!-- Card 3: Engagement Rate -->
+  <rect x="744" y="80" width="228" height="110" rx="12" fill="#1a1435" stroke="#2d2560" stroke-width="1" filter="url(#shadow)"/>
+  <rect x="744" y="80" width="228" height="4" rx="2" fill="url(#green)"/>
+  <text x="764" y="106" font-family="system-ui,sans-serif" font-size="11" fill="#8b8ab0">Engagement Rate</text>
+  <rect x="932" y="92" width="28" height="28" rx="8" fill="#059669" opacity="0.2"/>
+  <text x="946" y="111" text-anchor="middle" font-family="system-ui,sans-serif" font-size="16">📈</text>
+  <text x="764" y="138" font-family="system-ui,sans-serif" font-size="30" font-weight="700" fill="#f0eeff">8.4%</text>
+  <rect x="764" y="148" width="72" height="16" rx="8" fill="#059669" opacity="0.2"/>
+  <text x="800" y="160" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#34d399">▲ +1.2% vs last month</text>
+  <!-- Sparkline -->
+  <polyline points="840,168 850,158 860,164 870,152 880,155 890,145 900,148 910,140 920,143 930,134 940,137 950,126 960,122" 
+            fill="none" stroke="#10b981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/>
+  <polygon points="840,175 850,165 860,171 870,159 880,162 890,152 900,155 910,147 920,150 930,141 940,144 950,133 960,129 960,175" 
+           fill="url(#sparkGreen)" opacity="0.4"/>
 
   <!-- Card 4: Revenue -->
-  <rect x="912" y="82" width="210" height="110" rx="12" fill="#1a1830"/>
-  <rect x="912" y="82" width="210" height="2" rx="1" fill="url(#orangeGrad)" opacity="0.7"/>
-  <text x="932" y="112" font-family="system-ui,sans-serif" font-size="12" fill="#9ca3af">Revenue</text>
-  <text x="932" y="148" font-family="system-ui,sans-serif" font-size="32" font-weight="700" fill="#ffffff">$420</text>
-  <text x="932" y="170" font-family="system-ui,sans-serif" font-size="12" fill="#10b981">+$120 this month</text>
-  <rect x="1067" y="95" width="40" height="40" rx="20" fill="#d97706" opacity="0.2"/>
-  <rect x="1077" y="105" width="20" height="20" rx="3" fill="#f59e0b" filter="url(#glow)"/>
+  <rect x="988" y="80" width="268" height="110" rx="12" fill="#1a1435" stroke="#2d2560" stroke-width="1" filter="url(#shadow)"/>
+  <rect x="988" y="80" width="268" height="4" rx="2" fill="url(#orange)"/>
+  <text x="1008" y="106" font-family="system-ui,sans-serif" font-size="11" fill="#8b8ab0">Revenue (MTD)</text>
+  <rect x="1216" y="92" width="28" height="28" rx="8" fill="#d97706" opacity="0.2"/>
+  <text x="1230" y="111" text-anchor="middle" font-family="system-ui,sans-serif" font-size="16">💰</text>
+  <text x="1008" y="138" font-family="system-ui,sans-serif" font-size="30" font-weight="700" fill="#f0eeff">$4,280</text>
+  <rect x="1008" y="148" width="76" height="16" rx="8" fill="#d97706" opacity="0.2"/>
+  <text x="1046" y="160" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#fbbf24">▲ +22% vs last month</text>
+  <!-- Bar chart mini -->
+  <rect x="1145" y="158" width="10" height="12" rx="2" fill="#fbbf24" opacity="0.3"/>
+  <rect x="1158" y="150" width="10" height="20" rx="2" fill="#fbbf24" opacity="0.4"/>
+  <rect x="1171" y="145" width="10" height="25" rx="2" fill="#fbbf24" opacity="0.5"/>
+  <rect x="1184" y="140" width="10" height="30" rx="2" fill="#fbbf24" opacity="0.6"/>
+  <rect x="1197" y="135" width="10" height="35" rx="2" fill="#fbbf24" opacity="0.7"/>
+  <rect x="1210" y="130" width="10" height="40" rx="2" fill="url(#orange)"/>
 
-  <!-- Quick Actions panel -->
-  <rect x="240" y="210" width="882" height="100" rx="12" fill="#1a1830"/>
-  <text x="260" y="238" font-family="system-ui,sans-serif" font-size="15" font-weight="600" fill="#ffffff">Quick Actions</text>
-  <rect x="260" y="252" width="180" height="42" rx="8" fill="#252340" stroke="#3b3668" stroke-width="1"/>
-  <text x="350" y="278" font-family="system-ui,sans-serif" font-size="12" fill="#c4b5fd" text-anchor="middle">New Frame</text>
-  <rect x="454" y="252" width="180" height="42" rx="8" fill="#252340" stroke="#3b3668" stroke-width="1"/>
-  <text x="544" y="278" font-family="system-ui,sans-serif" font-size="12" fill="#93c5fd" text-anchor="middle">New Project</text>
-  <rect x="648" y="252" width="180" height="42" rx="8" fill="#252340" stroke="#3b3668" stroke-width="1"/>
-  <text x="738" y="278" font-family="system-ui,sans-serif" font-size="12" fill="#a7f3d0" text-anchor="middle">Browse Templates</text>
-  <rect x="842" y="252" width="180" height="42" rx="8" fill="#252340" stroke="#3b3668" stroke-width="1"/>
-  <text x="932" y="278" font-family="system-ui,sans-serif" font-size="12" fill="#fcd34d" text-anchor="middle">AI Assistant</text>
+  <!-- ─── QUICK ACTIONS ─── -->
+  <text x="256" y="220" font-family="system-ui,sans-serif" font-size="14" font-weight="600" fill="#f0eeff">Quick Actions</text>
 
-  <!-- Recent Activity panel -->
-  <rect x="240" y="328" width="540" height="230" rx="12" fill="#1a1830"/>
-  <rect x="240" y="328" width="540" height="1" rx="0" fill="#2d2b45"/>
-  <text x="260" y="358" font-family="system-ui,sans-serif" font-size="15" font-weight="600" fill="#ffffff">Recent Activity</text>
-  <rect x="240" y="370" width="540" height="1" fill="#2d2b45"/>
+  <!-- Action buttons -->
+  <rect x="256" y="232" width="160" height="42" rx="10" fill="url(#purple)" filter="url(#shadow)"/>
+  <text x="280" y="248" font-family="system-ui,sans-serif" font-size="13">✨</text>
+  <text x="300" y="257" font-family="system-ui,sans-serif" font-size="12" font-weight="600" fill="#fff">New Frame</text>
+
+  <rect x="428" y="232" width="160" height="42" rx="10" fill="#1a1638" stroke="#2d2560" stroke-width="1"/>
+  <text x="452" y="248" font-family="system-ui,sans-serif" font-size="13">📁</text>
+  <text x="472" y="257" font-family="system-ui,sans-serif" font-size="12" font-weight="600" fill="#c084fc">New Project</text>
+
+  <rect x="600" y="232" width="160" height="42" rx="10" fill="#1a1638" stroke="#2d2560" stroke-width="1"/>
+  <text x="624" y="248" font-family="system-ui,sans-serif" font-size="13">🚀</text>
+  <text x="644" y="257" font-family="system-ui,sans-serif" font-size="12" font-weight="600" fill="#60a5fa">Launch Token</text>
+
+  <rect x="772" y="232" width="160" height="42" rx="10" fill="#1a1638" stroke="#2d2560" stroke-width="1"/>
+  <text x="796" y="248" font-family="system-ui,sans-serif" font-size="13">📊</text>
+  <text x="816" y="257" font-family="system-ui,sans-serif" font-size="12" font-weight="600" fill="#34d399">View Analytics</text>
+
+  <!-- ─── MAIN GRID: Activity Feed + Frame Engagement Chart ─── -->
+
+  <!-- Activity Feed Panel -->
+  <rect x="256" y="296" width="460" height="360" rx="14" fill="#161330" stroke="#2d2560" stroke-width="1" filter="url(#shadow)"/>
+  <!-- Header -->
+  <rect x="256" y="296" width="460" height="48" rx="14" fill="#1a1638"/>
+  <rect x="256" y="328" width="460" height="16" fill="#1a1638"/>
+  <text x="276" y="326" font-family="system-ui,sans-serif" font-size="14" font-weight="600" fill="#f0eeff">Activity Feed</text>
+  <rect x="622" y="310" width="78" height="22" rx="11" fill="#7c3aed" opacity="0.2"/>
+  <text x="661" y="325" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#c084fc">View All →</text>
 
   <!-- Activity items -->
-  <text x="260" y="398" font-family="system-ui,sans-serif" font-size="13" fill="#e5e7eb">Frame created: Token Launch</text>
-  <text x="260" y="414" font-family="system-ui,sans-serif" font-size="11" fill="#6b7280">2 hours ago</text>
-  <rect x="690" y="385" width="70" height="20" rx="10" fill="#7c3aed" opacity="0.3"/>
-  <text x="725" y="399" font-family="system-ui,sans-serif" font-size="10" fill="#c4b5fd" text-anchor="middle">frame</text>
-  <rect x="240" y="420" width="540" height="1" fill="#2d2b45"/>
+  <!-- Item 1 -->
+  <circle cx="286" cy="382" r="16" fill="#7c3aed" opacity="0.2"/>
+  <text x="286" y="387" text-anchor="middle" font-family="system-ui,sans-serif" font-size="14">✨</text>
+  <text x="312" y="376" font-family="system-ui,sans-serif" font-size="12" font-weight="600" fill="#e2e0ff">Frame published</text>
+  <text x="312" y="391" font-family="system-ui,sans-serif" font-size="10" fill="#6b6890">NFT Gallery Frame · just now</text>
+  <rect x="620" y="372" width="80" height="18" rx="9" fill="#059669" opacity="0.2"/>
+  <text x="660" y="384" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" font-weight="600" fill="#34d399">Published</text>
+  <line x1="276" y1="408" x2="706" y2="408" stroke="#2d2560" stroke-width="1" stroke-opacity="0.5"/>
 
-  <text x="260" y="443" font-family="system-ui,sans-serif" font-size="13" fill="#e5e7eb">Template purchased: NFT Gallery</text>
-  <text x="260" y="459" font-family="system-ui,sans-serif" font-size="11" fill="#6b7280">5 hours ago</text>
-  <rect x="690" y="430" width="70" height="20" rx="10" fill="#7c3aed" opacity="0.3"/>
-  <text x="725" y="444" font-family="system-ui,sans-serif" font-size="10" fill="#c4b5fd" text-anchor="middle">template</text>
-  <rect x="240" y="465" width="540" height="1" fill="#2d2b45"/>
+  <!-- Item 2 -->
+  <circle cx="286" cy="432" r="16" fill="#2563eb" opacity="0.2"/>
+  <text x="286" y="437" text-anchor="middle" font-family="system-ui,sans-serif" font-size="14">🚀</text>
+  <text x="312" y="426" font-family="system-ui,sans-serif" font-size="12" font-weight="600" fill="#e2e0ff">Token launched</text>
+  <text x="312" y="441" font-family="system-ui,sans-serif" font-size="10" fill="#6b6890">$AIFT · Base mainnet · 2m ago</text>
+  <rect x="620" y="422" width="80" height="18" rx="9" fill="#2563eb" opacity="0.2"/>
+  <text x="660" y="434" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" font-weight="600" fill="#60a5fa">Live</text>
+  <line x1="276" y1="458" x2="706" y2="458" stroke="#2d2560" stroke-width="1" stroke-opacity="0.5"/>
 
-  <text x="260" y="488" font-family="system-ui,sans-serif" font-size="13" fill="#e5e7eb">Project deployed: Community Hub</text>
-  <text x="260" y="504" font-family="system-ui,sans-serif" font-size="11" fill="#6b7280">1 day ago</text>
-  <rect x="690" y="475" width="70" height="20" rx="10" fill="#7c3aed" opacity="0.3"/>
-  <text x="725" y="489" font-family="system-ui,sans-serif" font-size="10" fill="#c4b5fd" text-anchor="middle">project</text>
-  <rect x="240" y="510" width="540" height="1" fill="#2d2b45"/>
+  <!-- Item 3 -->
+  <circle cx="286" cy="482" r="16" fill="#d97706" opacity="0.2"/>
+  <text x="286" y="487" text-anchor="middle" font-family="system-ui,sans-serif" font-size="14">💎</text>
+  <text x="312" y="476" font-family="system-ui,sans-serif" font-size="12" font-weight="600" fill="#e2e0ff">Credits purchased</text>
+  <text x="312" y="491" font-family="system-ui,sans-serif" font-size="10" fill="#6b6890">500 credits · Stripe · 15m ago</text>
+  <rect x="620" y="472" width="80" height="18" rx="9" fill="#d97706" opacity="0.2"/>
+  <text x="660" y="484" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" font-weight="600" fill="#fbbf24">Completed</text>
+  <line x1="276" y1="508" x2="706" y2="508" stroke="#2d2560" stroke-width="1" stroke-opacity="0.5"/>
 
-  <text x="260" y="533" font-family="system-ui,sans-serif" font-size="13" fill="#e5e7eb">Airdrop completed: 100 participants</text>
-  <text x="260" y="549" font-family="system-ui,sans-serif" font-size="11" fill="#6b7280">2 days ago</text>
-  <rect x="690" y="520" width="70" height="20" rx="10" fill="#7c3aed" opacity="0.3"/>
-  <text x="725" y="534" font-family="system-ui,sans-serif" font-size="10" fill="#c4b5fd" text-anchor="middle">airdrop</text>
+  <!-- Item 4 -->
+  <circle cx="286" cy="532" r="16" fill="#059669" opacity="0.2"/>
+  <text x="286" y="537" text-anchor="middle" font-family="system-ui,sans-serif" font-size="14">🎯</text>
+  <text x="312" y="526" font-family="system-ui,sans-serif" font-size="12" font-weight="600" fill="#e2e0ff">Template applied</text>
+  <text x="312" y="541" font-family="system-ui,sans-serif" font-size="10" fill="#6b6890">Airdrop Collector · Project #7 · 1h ago</text>
+  <rect x="620" y="522" width="80" height="18" rx="9" fill="#059669" opacity="0.2"/>
+  <text x="660" y="534" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" font-weight="600" fill="#34d399">Done</text>
+  <line x1="276" y1="558" x2="706" y2="558" stroke="#2d2560" stroke-width="1" stroke-opacity="0.5"/>
 
-  <!-- Frames Timeline panel -->
-  <rect x="796" y="328" width="326" height="230" rx="12" fill="#1a1830"/>
-  <text x="816" y="358" font-family="system-ui,sans-serif" font-size="15" font-weight="600" fill="#ffffff">Frames Timeline</text>
-  <rect x="796" y="370" width="326" height="1" fill="#2d2b45"/>
+  <!-- Item 5 -->
+  <circle cx="286" cy="582" r="16" fill="#7c3aed" opacity="0.2"/>
+  <text x="286" y="587" text-anchor="middle" font-family="system-ui,sans-serif" font-size="14">🤖</text>
+  <text x="312" y="576" font-family="system-ui,sans-serif" font-size="12" font-weight="600" fill="#e2e0ff">AI prompt used</text>
+  <text x="312" y="591" font-family="system-ui,sans-serif" font-size="10" fill="#6b6890">Frame Description Generator · 2h ago</text>
+  <rect x="620" y="572" width="80" height="18" rx="9" fill="#7c3aed" opacity="0.2"/>
+  <text x="660" y="584" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" font-weight="600" fill="#c084fc">Queued</text>
+  <line x1="276" y1="608" x2="706" y2="608" stroke="#2d2560" stroke-width="1" stroke-opacity="0.5"/>
 
-  <!-- Frame cards -->
-  <rect x="816" y="382" width="286" height="56" rx="8" fill="#252340" stroke="#3b3668" stroke-width="1"/>
-  <text x="832" y="403" font-family="system-ui,sans-serif" font-size="13" font-weight="600" fill="#e5e7eb">Token Launch Frame</text>
-  <rect x="990" y="388" width="42" height="18" rx="9" fill="#065f46"/>
-  <text x="1011" y="400" font-family="system-ui,sans-serif" font-size="9" fill="#6ee7b7" text-anchor="middle">Active</text>
-  <text x="832" y="424" font-family="system-ui,sans-serif" font-size="11" fill="#6b7280">342 views · 89 interactions</text>
+  <!-- Item 6 -->
+  <circle cx="286" cy="632" r="16" fill="#2563eb" opacity="0.2"/>
+  <text x="286" y="637" text-anchor="middle" font-family="system-ui,sans-serif" font-size="14">📊</text>
+  <text x="312" y="626" font-family="system-ui,sans-serif" font-size="12" font-weight="600" fill="#e2e0ff">Analytics report</text>
+  <text x="312" y="641" font-family="system-ui,sans-serif" font-size="10" fill="#6b6890">Weekly summary exported · 4h ago</text>
+  <rect x="620" y="622" width="80" height="18" rx="9" fill="#2563eb" opacity="0.2"/>
+  <text x="660" y="634" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" font-weight="600" fill="#60a5fa">Exported</text>
 
-  <rect x="816" y="446" width="286" height="56" rx="8" fill="#252340" stroke="#3b3668" stroke-width="1"/>
-  <text x="832" y="467" font-family="system-ui,sans-serif" font-size="13" font-weight="600" fill="#e5e7eb">NFT Mint Frame</text>
-  <rect x="1002" y="452" width="42" height="18" rx="9" fill="#374151"/>
-  <text x="1023" y="464" font-family="system-ui,sans-serif" font-size="9" fill="#9ca3af" text-anchor="middle">Draft</text>
-  <text x="832" y="488" font-family="system-ui,sans-serif" font-size="11" fill="#6b7280">0 views · 0 interactions</text>
+  <!-- Frames Engagement Chart Panel -->
+  <rect x="736" y="296" width="520" height="360" rx="14" fill="#161330" stroke="#2d2560" stroke-width="1" filter="url(#shadow)"/>
+  <!-- Header -->
+  <rect x="736" y="296" width="520" height="48" rx="14" fill="#1a1638"/>
+  <rect x="736" y="328" width="520" height="16" fill="#1a1638"/>
+  <text x="756" y="326" font-family="system-ui,sans-serif" font-size="14" font-weight="600" fill="#f0eeff">Frame Engagement</text>
+  <!-- Legend -->
+  <rect x="896" y="312" width="10" height="10" rx="2" fill="#7c3aed"/>
+  <text x="910" y="322" font-family="system-ui,sans-serif" font-size="10" fill="#8b8ab0">Views</text>
+  <rect x="956" y="312" width="10" height="10" rx="2" fill="#3b82f6"/>
+  <text x="970" y="322" font-family="system-ui,sans-serif" font-size="10" fill="#8b8ab0">Clicks</text>
+  <rect x="1016" y="312" width="10" height="10" rx="2" fill="#10b981"/>
+  <text x="1030" y="322" font-family="system-ui,sans-serif" font-size="10" fill="#8b8ab0">Mints</text>
+  <!-- Period selector -->
+  <rect x="1148" y="308" width="32" height="22" rx="6" fill="#7c3aed" opacity="0.3"/>
+  <text x="1164" y="323" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#c084fc">7d</text>
+  <rect x="1184" y="308" width="32" height="22" rx="6" fill="transparent"/>
+  <text x="1200" y="323" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#6b6890">30d</text>
+  <rect x="1220" y="308" width="32" height="22" rx="6" fill="transparent"/>
+  <text x="1236" y="323" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#6b6890">90d</text>
 
-  <rect x="816" y="508" width="286" height="44" rx="8" fill="#252340" stroke="#3b3668" stroke-width="1"/>
-  <text x="832" y="529" font-family="system-ui,sans-serif" font-size="13" font-weight="600" fill="#e5e7eb">Community Poll</text>
-  <rect x="996" y="514" width="42" height="18" rx="9" fill="#065f46"/>
-  <text x="1017" y="526" font-family="system-ui,sans-serif" font-size="9" fill="#6ee7b7" text-anchor="middle">Active</text>
-  <text x="832" y="543" font-family="system-ui,sans-serif" font-size="11" fill="#6b7280">567 views · 234 interactions</text>
+  <!-- Chart area background -->
+  <rect x="756" y="360" width="480" height="240" rx="6" fill="#0f0d1e"/>
+  <!-- Y-axis labels -->
+  <text x="760" y="372" font-family="system-ui,sans-serif" font-size="9" fill="#4b4580">12k</text>
+  <text x="760" y="432" font-family="system-ui,sans-serif" font-size="9" fill="#4b4580">8k</text>
+  <text x="760" y="492" font-family="system-ui,sans-serif" font-size="9" fill="#4b4580">4k</text>
+  <text x="760" y="552" font-family="system-ui,sans-serif" font-size="9" fill="#4b4580">0</text>
+  <!-- Grid lines -->
+  <line x1="776" y1="368" x2="1228" y2="368" stroke="#2d2560" stroke-width="0.5" stroke-dasharray="4,4"/>
+  <line x1="776" y1="428" x2="1228" y2="428" stroke="#2d2560" stroke-width="0.5" stroke-dasharray="4,4"/>
+  <line x1="776" y1="488" x2="1228" y2="488" stroke="#2d2560" stroke-width="0.5" stroke-dasharray="4,4"/>
+  <line x1="776" y1="548" x2="1228" y2="548" stroke="#2d2560" stroke-width="0.5"/>
+  <!-- X-axis labels -->
+  <text x="796" y="562" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#4b4580">Mon</text>
+  <text x="860" y="562" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#4b4580">Tue</text>
+  <text x="924" y="562" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#4b4580">Wed</text>
+  <text x="988" y="562" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#4b4580">Thu</text>
+  <text x="1052" y="562" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#4b4580">Fri</text>
+  <text x="1116" y="562" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#4b4580">Sat</text>
+  <text x="1180" y="562" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#4b4580">Sun</text>
+  <!-- Views area chart (purple) -->
+  <polygon points="796,480 860,460 924,440 988,420 1052,400 1116,415 1180,390 1228,380 1228,548 796,548" fill="url(#areaGrad)" opacity="0.6"/>
+  <polyline points="796,480 860,460 924,440 988,420 1052,400 1116,415 1180,390 1228,380" 
+            fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Clicks line (blue) -->
+  <polyline points="796,510 860,500 924,488 988,470 1052,458 1116,472 1180,450 1228,440" 
+            fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="6,3"/>
+  <!-- Mints line (green) -->
+  <polyline points="796,535 860,530 924,525 988,515 1052,510 1116,518 1180,508 1228,502" 
+            fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3,3"/>
+  <!-- Data point dots -->
+  <circle cx="1180" cy="390" r="4" fill="#7c3aed" stroke="#161330" stroke-width="2"/>
+  <circle cx="1228" cy="380" r="4" fill="#7c3aed" stroke="#161330" stroke-width="2" filter="url(#glow)"/>
+  <!-- Tooltip on last point -->
+  <rect x="1188" y="348" width="80" height="36" rx="6" fill="#1e1540" stroke="#7c3aed" stroke-width="1" stroke-opacity="0.6"/>
+  <text x="1228" y="362" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" font-weight="600" fill="#c084fc">Sun Mar 15</text>
+  <text x="1228" y="378" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#e2e0ff">11,840 views</text>
 
-  <!-- Bottom section - AI Prompts preview -->
-  <rect x="240" y="574" width="882" height="90" rx="12" fill="#1a1830"/>
-  <text x="260" y="604" font-family="system-ui,sans-serif" font-size="15" font-weight="600" fill="#ffffff">AI Prompt Ideas</text>
-  <rect x="260" y="618" width="200" height="28" rx="14" fill="#252340" stroke="#7c3aed" stroke-width="1"/>
-  <text x="360" y="636" font-family="system-ui,sans-serif" font-size="11" fill="#c4b5fd" text-anchor="middle">Token Launch Frame</text>
-  <rect x="474" y="618" width="200" height="28" rx="14" fill="#252340" stroke="#7c3aed" stroke-width="1"/>
-  <text x="574" y="636" font-family="system-ui,sans-serif" font-size="11" fill="#c4b5fd" text-anchor="middle">NFT Minting Page</text>
-  <rect x="688" y="618" width="200" height="28" rx="14" fill="#252340" stroke="#7c3aed" stroke-width="1"/>
-  <text x="788" y="636" font-family="system-ui,sans-serif" font-size="11" fill="#c4b5fd" text-anchor="middle">Community Airdrop</text>
-  <rect x="902" y="618" width="200" height="28" rx="14" fill="#252340" stroke="#7c3aed" stroke-width="1"/>
-  <text x="1002" y="636" font-family="system-ui,sans-serif" font-size="11" fill="#c4b5fd" text-anchor="middle">DAO Governance Poll</text>
-
-  <!-- Neo-Glow ambient effects -->
-  <circle cx="600" cy="375" r="300" fill="#7c3aed" opacity="0.03" filter="url(#softGlow)"/>
-  <circle cx="240" cy="750" r="200" fill="#a855f7" opacity="0.04" filter="url(#softGlow)"/>
-
-  <!-- Label overlay -->
-  <rect x="0" y="720" width="1200" height="30" fill="#0a0916" opacity="0.9"/>
-  <text x="600" y="740" font-family="system-ui,sans-serif" font-size="12" fill="#6b7280" text-anchor="middle">AiFarcaster — User Dashboard · AI-Powered Farcaster Frame Builder &amp; Token Launcher</text>
+  <!-- ─── BOTTOM: Recent Frames Table ─── -->
+  <rect x="256" y="676" width="1000" height="108" rx="14" fill="#161330" stroke="#2d2560" stroke-width="1" filter="url(#shadow)"/>
+  <!-- Header -->
+  <rect x="256" y="676" width="1000" height="40" rx="14" fill="#1a1638"/>
+  <rect x="256" y="700" width="1000" height="16" fill="#1a1638"/>
+  <text x="276" y="700" font-family="system-ui,sans-serif" font-size="13" font-weight="600" fill="#f0eeff">Recent Frames</text>
+  <rect x="1154" y="686" width="90" height="22" rx="11" fill="#7c3aed" opacity="0.2"/>
+  <text x="1199" y="701" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#c084fc">View All Frames →</text>
+  <!-- Table header row -->
+  <text x="280" y="730" font-family="system-ui,sans-serif" font-size="10" font-weight="600" fill="#4b4580">NAME</text>
+  <text x="520" y="730" font-family="system-ui,sans-serif" font-size="10" font-weight="600" fill="#4b4580">TYPE</text>
+  <text x="680" y="730" font-family="system-ui,sans-serif" font-size="10" font-weight="600" fill="#4b4580">VIEWS</text>
+  <text x="820" y="730" font-family="system-ui,sans-serif" font-size="10" font-weight="600" fill="#4b4580">STATUS</text>
+  <text x="960" y="730" font-family="system-ui,sans-serif" font-size="10" font-weight="600" fill="#4b4580">UPDATED</text>
+  <line x1="268" y1="736" x2="1248" y2="736" stroke="#2d2560" stroke-width="0.5"/>
+  <!-- Row 1 -->
+  <circle cx="290" cy="756" r="10" fill="#7c3aed" opacity="0.25"/>
+  <text x="290" y="760" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9">🖼️</text>
+  <text x="310" y="758" font-family="system-ui,sans-serif" font-size="11" fill="#e2e0ff">NFT Gallery Frame</text>
+  <text x="520" y="758" font-family="system-ui,sans-serif" font-size="10" fill="#8b8ab0">Gallery</text>
+  <text x="680" y="758" font-family="system-ui,sans-serif" font-size="11" fill="#e2e0ff">4,280</text>
+  <rect x="815" y="748" width="62" height="18" rx="9" fill="#059669" opacity="0.2"/>
+  <text x="846" y="760" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" font-weight="600" fill="#34d399">● Live</text>
+  <text x="960" y="758" font-family="system-ui,sans-serif" font-size="10" fill="#6b6890">Just now</text>
+  <line x1="268" y1="768" x2="1248" y2="768" stroke="#2d2560" stroke-width="0.3" opacity="0.5"/>
+  <!-- Row 2 -->
+  <circle cx="290" cy="784" r="10" fill="#2563eb" opacity="0.25"/>
+  <text x="290" y="788" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9">🪂</text>
+  <text x="310" y="786" font-family="system-ui,sans-serif" font-size="11" fill="#e2e0ff">Airdrop Collector</text>
+  <text x="520" y="786" font-family="system-ui,sans-serif" font-size="10" fill="#8b8ab0">Airdrop</text>
+  <text x="680" y="786" font-family="system-ui,sans-serif" font-size="11" fill="#e2e0ff">2,140</text>
+  <rect x="815" y="776" width="62" height="18" rx="9" fill="#2563eb" opacity="0.2"/>
+  <text x="846" y="788" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" font-weight="600" fill="#60a5fa">● Draft</text>
+  <text x="960" y="786" font-family="system-ui,sans-serif" font-size="10" fill="#6b6890">2 hours ago</text>
 </svg>

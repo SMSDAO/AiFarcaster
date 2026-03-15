@@ -6,7 +6,7 @@ Complete guide for administrators managing the AiFarcaster enterprise platform.
 
 1. [Admin Dashboard](#admin-dashboard)
 2. [User Management](#user-management)
-3. [Role-Based Access Control (RBAC)](#role-based-access-control-rbac)
+3. [Role-Based Access Control (RBAC)](#role-based-access-control-rbac--planned)
 4. [System Health Monitoring](#system-health-monitoring)
 5. [API Key Management](#api-key-management)
 6. [Billing & Payments](#billing--payments)
