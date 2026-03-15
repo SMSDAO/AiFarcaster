@@ -7,11 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [Unreleased]
+## [Unreleased] — upcoming v1.0.0
 
----
-
-## [1.0.0] — 2026-03-14
+> **Note:** The entries below are staged for the `v1.0.0` release. `package.json` will be bumped to `1.0.0` when the release tag is created.
 
 ### Added
 
@@ -115,6 +113,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-[Unreleased]: https://github.com/SMSDAO/AiFarcaster/compare/v1.0.0...HEAD
-[1.0.0]: https://github.com/SMSDAO/AiFarcaster/releases/tag/v1.0.0
+[Unreleased]: https://github.com/SMSDAO/AiFarcaster/compare/v0.1.0...HEAD
 [0.1.0]: https://github.com/SMSDAO/AiFarcaster/releases/tag/v0.1.0

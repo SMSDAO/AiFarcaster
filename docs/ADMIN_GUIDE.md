@@ -44,21 +44,24 @@ The admin overview displays four key performance indicators:
 2. Sign in with your admin credentials (Supabase email/password)
 3. The dashboard loads at `/admin`
 
-> **Security Note:** Admin access is protected by Supabase authentication. Only users with admin-level credentials can access the `/admin` routes.
+> **Security Note:** Admin routes (`/admin/*`) are protected by Supabase session authentication in `middleware.ts`. Any authenticated Supabase user can currently access the admin panel — no additional role check is enforced in the middleware. For production deployments, restrict access to specific user IDs or add a role claim to Supabase JWTs and validate it in the middleware.
 
 ---
 
 ## User Management
 
-The **Users** section (`/admin/users`) allows full lifecycle management of platform users.
+The **Users** section (`/admin/users`) allows searching and viewing platform users.
+
+> **Note:** The current implementation displays a mock/placeholder dataset. Edit, ban, restore, and delete actions are planned for a future release once the Supabase `users` table and server actions are wired up.
 
 ### Viewing Users
 
-- Browse all registered users in a searchable, paginated table
-- See each user's role, status, and registration date
-- Filter by role: Admin, Developer, User, Auditor
+- Search users by email or wallet address
+- See each user's plan, credits, and status (active / banned)
 
-### User Actions
+### Planned User Actions
+
+The following actions are planned and not yet implemented:
 
 | Action | Description |
 |--------|-------------|
@@ -67,18 +70,17 @@ The **Users** section (`/admin/users`) allows full lifecycle management of platf
 | **Restore** | Reinstate a suspended user |
 | **Delete** | Permanently remove a user (irreversible) |
 
-### Adding a New User
+### Adding a New User (Planned)
 
-1. Click **+ Add User** in the top-right of the Users table
-2. Enter the user's email address
-3. Set their initial role
-4. Click **Create User** — an invitation email is sent via Supabase
+> This feature is not yet implemented. Currently, new users must be created directly in Supabase Authentication.
 
 ---
 
-## Role-Based Access Control (RBAC)
+## Role-Based Access Control (RBAC) — Planned
 
-AiFarcaster uses four roles with escalating permissions:
+> **Note:** Role-based access control is planned but not yet implemented in the codebase. The middleware currently enforces only Supabase session authentication (any authenticated user), not role-level authorization. The role model below describes the intended future design.
+
+The planned RBAC model uses four roles with escalating permissions:
 
 | Role | Access Level | Description |
 |------|-------------|-------------|
@@ -87,14 +89,7 @@ AiFarcaster uses four roles with escalating permissions:
 | **User** | Standard | Dashboard, frames, projects, templates |
 | **Auditor** | Read-only | View logs, metrics, and reports; no write access |
 
-### Assigning Roles
-
-1. Navigate to **Users** → find the target user
-2. Click **Edit**
-3. Select the new role from the dropdown
-4. Save — changes take effect immediately
-
-### Permission Matrix
+### Planned Permission Matrix
 
 | Feature | Admin | Developer | User | Auditor |
 |---------|-------|-----------|------|---------|
@@ -133,7 +128,20 @@ The **System Health** panel (visible on the admin overview) shows real-time stat
 GET /api/health
 ```
 
-Returns JSON with service statuses and uptime metrics.
+Returns a JSON response with API status and current timestamp:
+
+```json
+{
+  "status": "ok",
+  "version": "0.1.0",
+  "timestamp": "2026-03-15T07:00:00.000Z",
+  "services": {
+    "api": "operational"
+  }
+}
+```
+
+The health endpoint is implemented at `app/api/health/route.ts`. For deeper service health checks (database, auth, storage), monitor your Supabase project directly at [app.supabase.com](https://app.supabase.com).
 
 ---
 
@@ -238,26 +246,17 @@ The **Oracles** section (`/admin/oracles`) manages data feed connections for on-
 
 ### Password Policy
 
-The admin can enforce platform-wide password requirements:
-- Minimum length (default: 12 characters)
-- Require uppercase, lowercase, numbers, symbols
-- Password expiry (0 = never)
-- Prevent password reuse (last N passwords)
+The change-password flow (`/admin/settings/change-password`) enforces:
+- **Minimum length: 8 characters** (validated client-side before submission)
+- Supabase enforces its own server-side password requirements based on your project settings
+
+To strengthen password requirements, configure the minimum password length and complexity rules in your [Supabase project authentication settings](https://app.supabase.com/project/_/auth/providers).
 
 ### Session Management
 
-- Session timeout (default: 24 hours)
-- Force logout all sessions for a user
-- View active sessions per user
-
-### Rate Limiting
-
-Configure request limits in the environment:
-
-```env
-RATE_LIMIT_REQUESTS=100
-RATE_LIMIT_WINDOW_MS=60000
-```
+- Supabase manages session lifetime via JWT expiry (default: 1 hour access token, 1 week refresh token)
+- The `must_change_password` user metadata flag forces a password change on next login
+- To force a logout, invalidate sessions via the Supabase dashboard or the Admin API
 
 ---
 
