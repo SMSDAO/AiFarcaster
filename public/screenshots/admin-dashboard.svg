@@ -1,0 +1,459 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="800" viewBox="0 0 1280 800">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#080f1e"/>
+      <stop offset="100%" style="stop-color:#0c1528"/>
+    </linearGradient>
+    <linearGradient id="sidebarBg" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#091020"/>
+      <stop offset="100%" style="stop-color:#0e1a30"/>
+    </linearGradient>
+    <linearGradient id="blue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1d4ed8"/>
+      <stop offset="100%" style="stop-color:#60a5fa"/>
+    </linearGradient>
+    <linearGradient id="green" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#059669"/>
+      <stop offset="100%" style="stop-color:#34d399"/>
+    </linearGradient>
+    <linearGradient id="orange" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#d97706"/>
+      <stop offset="100%" style="stop-color:#fbbf24"/>
+    </linearGradient>
+    <linearGradient id="purple" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#7c3aed"/>
+      <stop offset="100%" style="stop-color:#a855f7"/>
+    </linearGradient>
+    <linearGradient id="red" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#dc2626"/>
+      <stop offset="100%" style="stop-color:#f87171"/>
+    </linearGradient>
+    <linearGradient id="areaBlue" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1d4ed8;stop-opacity:0.5"/>
+      <stop offset="100%" style="stop-color:#1d4ed8;stop-opacity:0.02"/>
+    </linearGradient>
+    <linearGradient id="sparkBlue" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" style="stop-color:#1d4ed8;stop-opacity:0.1"/>
+      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:0.6"/>
+    </linearGradient>
+    <linearGradient id="sparkGreen" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" style="stop-color:#059669;stop-opacity:0.1"/>
+      <stop offset="100%" style="stop-color:#34d399;stop-opacity:0.6"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="4" stdDeviation="10" flood-color="#000000" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+
+  <!-- ═══════════════════════════════ BACKGROUND ═══════════════════════════════ -->
+  <rect width="1280" height="800" fill="url(#bg)"/>
+  <g stroke="#ffffff" stroke-opacity="0.015" stroke-width="1">
+    <line x1="248" y1="0" x2="248" y2="800"/>
+    <line x1="0" y1="60" x2="1280" y2="60"/>
+  </g>
+
+  <!-- ═══════════════════════════════ SIDEBAR ═══════════════════════════════ -->
+  <rect x="0" y="0" width="248" height="800" fill="url(#sidebarBg)"/>
+  <rect x="247" y="0" width="1" height="800" fill="#1e3a5f" opacity="0.6"/>
+  <!-- Blue accent bar -->
+  <rect x="0" y="0" width="3" height="800" fill="url(#blue)" filter="url(#glow)"/>
+
+  <!-- Logo -->
+  <rect x="16" y="14" width="216" height="54" rx="10" fill="#0a1628" stroke="#1e3a5f" stroke-width="1"/>
+  <rect x="26" y="24" width="34" height="34" rx="8" fill="url(#blue)" opacity="0.25"/>
+  <text x="43" y="46" text-anchor="middle" font-family="system-ui,sans-serif" font-size="16" font-weight="700" fill="#3b82f6">⚡</text>
+  <text x="70" y="37" font-family="system-ui,sans-serif" font-size="13" font-weight="700" fill="#e0eeff">Admin Panel</text>
+  <text x="70" y="52" font-family="system-ui,sans-serif" font-size="9" fill="#1d4ed8">AiFarcaster Enterprise</text>
+  <!-- Status indicator -->
+  <circle cx="216" cy="27" r="5" fill="#059669"/>
+  <text x="216" y="42" text-anchor="middle" font-family="system-ui,sans-serif" font-size="7" fill="#059669">LIVE</text>
+
+  <!-- Nav section label -->
+  <text x="20" y="90" font-family="system-ui,sans-serif" font-size="9" font-weight="600" fill="#2a4a6a" letter-spacing="1.5">ADMINISTRATION</text>
+
+  <!-- Dashboard (active) -->
+  <rect x="12" y="98" width="224" height="38" rx="8" fill="url(#blue)" opacity="0.12"/>
+  <rect x="12" y="98" width="3" height="38" rx="1.5" fill="url(#blue)" filter="url(#glow)"/>
+  <rect x="22" y="108" width="14" height="14" rx="3" fill="#3b82f6" opacity="0.6"/>
+  <text x="43" y="121" font-family="system-ui,sans-serif" font-size="13" font-weight="600" fill="#60a5fa">Overview</text>
+  <rect x="196" y="107" width="32" height="20" rx="10" fill="#1d4ed8" opacity="0.3"/>
+  <text x="212" y="120" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#60a5fa">LIVE</text>
+
+  <!-- Users -->
+  <rect x="12" y="142" width="224" height="38" rx="8" fill="transparent"/>
+  <rect x="22" y="152" width="14" height="14" rx="3" fill="#2a4a6a" opacity="0.5"/>
+  <text x="43" y="165" font-family="system-ui,sans-serif" font-size="13" fill="#6b8ab0">Users</text>
+  <rect x="188" y="150" width="36" height="20" rx="10" fill="#1e3a5f" opacity="0.5"/>
+  <text x="206" y="163" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#60a5fa">1,248</text>
+
+  <!-- API Keys -->
+  <rect x="12" y="186" width="224" height="38" rx="8" fill="transparent"/>
+  <rect x="22" y="196" width="14" height="14" rx="3" fill="#2a4a6a" opacity="0.5"/>
+  <text x="43" y="209" font-family="system-ui,sans-serif" font-size="13" fill="#6b8ab0">API Keys</text>
+
+  <!-- Billing -->
+  <rect x="12" y="230" width="224" height="38" rx="8" fill="transparent"/>
+  <rect x="22" y="240" width="14" height="14" rx="3" fill="#2a4a6a" opacity="0.5"/>
+  <text x="43" y="253" font-family="system-ui,sans-serif" font-size="13" fill="#6b8ab0">Billing</text>
+
+  <!-- Audit Logs -->
+  <rect x="12" y="274" width="224" height="38" rx="8" fill="transparent"/>
+  <rect x="22" y="284" width="14" height="14" rx="3" fill="#2a4a6a" opacity="0.5"/>
+  <text x="43" y="297" font-family="system-ui,sans-serif" font-size="13" fill="#6b8ab0">Audit Logs</text>
+
+  <!-- Agents -->
+  <rect x="12" y="318" width="224" height="38" rx="8" fill="transparent"/>
+  <rect x="22" y="328" width="14" height="14" rx="3" fill="#2a4a6a" opacity="0.5"/>
+  <text x="43" y="341" font-family="system-ui,sans-serif" font-size="13" fill="#6b8ab0">Agents</text>
+
+  <!-- Section divider -->
+  <line x1="20" y1="375" x2="228" y2="375" stroke="#1e3a5f" stroke-width="1"/>
+  <text x="20" y="392" font-family="system-ui,sans-serif" font-size="9" font-weight="600" fill="#2a4a6a" letter-spacing="1.5">SYSTEM</text>
+
+  <!-- Settings -->
+  <rect x="12" y="400" width="224" height="38" rx="8" fill="transparent"/>
+  <rect x="22" y="410" width="14" height="14" rx="3" fill="#2a4a6a" opacity="0.5"/>
+  <text x="43" y="423" font-family="system-ui,sans-serif" font-size="13" fill="#6b8ab0">Settings</text>
+
+  <!-- Health Monitor -->
+  <rect x="12" y="444" width="224" height="38" rx="8" fill="transparent"/>
+  <rect x="22" y="454" width="14" height="14" rx="3" fill="#2a4a6a" opacity="0.5"/>
+  <text x="43" y="467" font-family="system-ui,sans-serif" font-size="13" fill="#6b8ab0">Health Monitor</text>
+  <circle cx="218" cy="463" r="5" fill="#059669"/>
+
+  <!-- System health summary card -->
+  <rect x="12" y="600" width="224" height="86" rx="12" fill="#0a1628" stroke="#1e3a5f" stroke-width="1"/>
+  <text x="124" y="620" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" font-weight="600" fill="#e0eeff">System Health</text>
+  <!-- Status row -->
+  <circle cx="36" cy="640" r="5" fill="#059669"/>
+  <text x="46" y="644" font-family="system-ui,sans-serif" font-size="10" fill="#8baac8">API</text>
+  <text x="46" y="656" font-family="system-ui,sans-serif" font-size="9" fill="#34d399">Operational</text>
+  <circle cx="110" cy="640" r="5" fill="#059669"/>
+  <text x="120" y="644" font-family="system-ui,sans-serif" font-size="10" fill="#8baac8">DB</text>
+  <text x="120" y="656" font-family="system-ui,sans-serif" font-size="9" fill="#34d399">Operational</text>
+  <circle cx="184" cy="640" r="5" fill="#fbbf24"/>
+  <text x="194" y="644" font-family="system-ui,sans-serif" font-size="10" fill="#8baac8">CDN</text>
+  <text x="194" y="656" font-family="system-ui,sans-serif" font-size="9" fill="#fbbf24">Degraded</text>
+  <!-- Uptime bar -->
+  <rect x="24" y="668" width="200" height="10" rx="5" fill="#0e1a30"/>
+  <rect x="24" y="668" width="194" height="10" rx="5" fill="#059669" opacity="0.7"/>
+  <text x="124" y="692" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#8baac8">99.7% uptime (30d)</text>
+
+  <!-- Admin user at bottom -->
+  <rect x="12" y="704" width="224" height="52" rx="10" fill="#091020" stroke="#1e3a5f" stroke-width="1"/>
+  <rect x="24" y="716" width="28" height="28" rx="8" fill="url(#blue)" opacity="0.3"/>
+  <text x="38" y="735" text-anchor="middle" font-family="system-ui,sans-serif" font-size="12" font-weight="700" fill="#60a5fa">A</text>
+  <text x="60" y="727" font-family="system-ui,sans-serif" font-size="11" font-weight="600" fill="#e0eeff">admin@aifarcaster</text>
+  <text x="60" y="741" font-family="system-ui,sans-serif" font-size="9" fill="#2a4a6a">Super Admin · Last: now</text>
+  <rect x="210" y="716" width="20" height="28" rx="5" fill="#0e1a30" stroke="#1e3a5f" stroke-width="1"/>
+  <text x="220" y="734" text-anchor="middle" font-family="system-ui,sans-serif" font-size="12">⋮</text>
+
+  <!-- ═══════════════════════════════ TOP HEADER ═══════════════════════════════ -->
+  <rect x="248" y="0" width="1032" height="60" fill="#080f1e" opacity="0.97"/>
+  <line x1="248" y1="60" x2="1280" y2="60" stroke="#1e3a5f" stroke-width="1"/>
+  <!-- Breadcrumb -->
+  <text x="272" y="26" font-family="system-ui,sans-serif" font-size="11" fill="#2a4a6a">Admin</text>
+  <text x="310" y="26" font-family="system-ui,sans-serif" font-size="11" fill="#2a4a6a">/</text>
+  <text x="322" y="26" font-family="system-ui,sans-serif" font-size="11" fill="#3b82f6">Overview</text>
+  <text x="272" y="44" font-family="system-ui,sans-serif" font-size="16" font-weight="700" fill="#e0eeff">Admin Overview</text>
+  <!-- Date filter -->
+  <rect x="860" y="16" width="136" height="30" rx="8" fill="#0e1a30" stroke="#1e3a5f" stroke-width="1"/>
+  <text x="928" y="35" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#60a5fa">📅 Last 30 days ▾</text>
+  <!-- Export -->
+  <rect x="1006" y="16" width="90" height="30" rx="8" fill="#0e1a30" stroke="#1e3a5f" stroke-width="1"/>
+  <text x="1051" y="35" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#6b8ab0">⬇ Export</text>
+  <!-- Refresh -->
+  <rect x="1106" y="16" width="30" height="30" rx="8" fill="#0e1a30" stroke="#1e3a5f" stroke-width="1"/>
+  <text x="1121" y="35" text-anchor="middle" font-family="system-ui,sans-serif" font-size="14">🔄</text>
+  <!-- Alert badge -->
+  <rect x="1148" y="16" width="30" height="30" rx="8" fill="#0e1a30" stroke="#1e3a5f" stroke-width="1"/>
+  <text x="1163" y="35" text-anchor="middle" font-family="system-ui,sans-serif" font-size="14">🔔</text>
+  <circle cx="1174" cy="18" r="6" fill="#dc2626"/>
+  <text x="1174" y="21" text-anchor="middle" font-family="system-ui,sans-serif" font-size="7" font-weight="700" fill="#fff">2</text>
+  <!-- User pill -->
+  <rect x="1190" y="14" width="84" height="34" rx="17" fill="#0e1a30" stroke="#1e3a5f" stroke-width="1"/>
+  <circle cx="1208" cy="31" r="11" fill="#1d4ed8" opacity="0.4"/>
+  <text x="1208" y="35" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" font-weight="700" fill="#60a5fa">A</text>
+  <text x="1232" y="35" font-family="system-ui,sans-serif" font-size="10" fill="#8baac8">Admin</text>
+
+  <!-- ═══════════════════════════════ KPI CARDS ═══════════════════════════════ -->
+  <!-- KPI 1: Total Users -->
+  <rect x="272" y="80" width="232" height="116" rx="12" fill="#0d1526" stroke="#1e3a5f" stroke-width="1" filter="url(#shadow)"/>
+  <rect x="272" y="80" width="232" height="4" rx="2" fill="url(#blue)"/>
+  <text x="292" y="106" font-family="system-ui,sans-serif" font-size="11" fill="#6b8ab0">Total Users</text>
+  <rect x="462" y="90" width="30" height="30" rx="8" fill="#1d4ed8" opacity="0.15"/>
+  <text x="477" y="110" text-anchor="middle" font-family="system-ui,sans-serif" font-size="17">👥</text>
+  <text x="292" y="140" font-family="system-ui,sans-serif" font-size="32" font-weight="700" fill="#e0eeff">1,248</text>
+  <rect x="292" y="152" width="88" height="16" rx="8" fill="#059669" opacity="0.15"/>
+  <text x="336" y="163" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#34d399">▲ +84 this month</text>
+  <!-- Mini sparkline -->
+  <polyline points="360,178 370,165 380,170 390,155 400,160 410,148 420,152 430,140 440,135 450,128 460,130 470,120 480,116" 
+            fill="none" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/>
+  <polygon points="360,185 370,172 380,177 390,162 400,167 410,155 420,159 430,147 440,142 450,135 460,137 470,127 480,123 480,185" 
+           fill="url(#sparkBlue)" opacity="0.3"/>
+
+  <!-- KPI 2: Active Agents -->
+  <rect x="520" y="80" width="232" height="116" rx="12" fill="#0d1526" stroke="#1e3a5f" stroke-width="1" filter="url(#shadow)"/>
+  <rect x="520" y="80" width="232" height="4" rx="2" fill="url(#purple)"/>
+  <text x="540" y="106" font-family="system-ui,sans-serif" font-size="11" fill="#6b8ab0">Active Agents</text>
+  <rect x="710" y="90" width="30" height="30" rx="8" fill="#7c3aed" opacity="0.15"/>
+  <text x="725" y="110" text-anchor="middle" font-family="system-ui,sans-serif" font-size="17">🤖</text>
+  <text x="540" y="140" font-family="system-ui,sans-serif" font-size="32" font-weight="700" fill="#e0eeff">347</text>
+  <rect x="540" y="152" width="82" height="16" rx="8" fill="#7c3aed" opacity="0.15"/>
+  <text x="581" y="163" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#c084fc">● 23 executing now</text>
+  <!-- Animated dots -->
+  <circle cx="608" cy="174" r="4" fill="#7c3aed" opacity="0.9"/>
+  <circle cx="624" cy="168" r="4" fill="#7c3aed" opacity="0.7"/>
+  <circle cx="640" cy="175" r="4" fill="#a855f7" opacity="0.8"/>
+  <circle cx="656" cy="165" r="4" fill="#7c3aed" opacity="0.6"/>
+  <circle cx="672" cy="172" r="4" fill="#a855f7" opacity="0.9"/>
+  <circle cx="688" cy="162" r="4" fill="#7c3aed" opacity="0.7"/>
+  <circle cx="704" cy="170" r="4" fill="#a855f7" opacity="0.8"/>
+  <circle cx="720" cy="160" r="4" fill="#7c3aed" opacity="1.0" filter="url(#glow)"/>
+  <circle cx="736" cy="168" r="4" fill="#a855f7" opacity="0.9"/>
+
+  <!-- KPI 3: Revenue (MTD) -->
+  <rect x="768" y="80" width="232" height="116" rx="12" fill="#0d1526" stroke="#1e3a5f" stroke-width="1" filter="url(#shadow)"/>
+  <rect x="768" y="80" width="232" height="4" rx="2" fill="url(#green)"/>
+  <text x="788" y="106" font-family="system-ui,sans-serif" font-size="11" fill="#6b8ab0">Revenue (MTD)</text>
+  <rect x="958" y="90" width="30" height="30" rx="8" fill="#059669" opacity="0.15"/>
+  <text x="973" y="110" text-anchor="middle" font-family="system-ui,sans-serif" font-size="17">💵</text>
+  <text x="788" y="140" font-family="system-ui,sans-serif" font-size="32" font-weight="700" fill="#e0eeff">$42.8k</text>
+  <rect x="788" y="152" width="90" height="16" rx="8" fill="#059669" opacity="0.15"/>
+  <text x="833" y="163" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#34d399">▲ +31% vs last month</text>
+  <!-- Bar chart mini -->
+  <rect x="882" y="165" width="10" height="16" rx="2" fill="#34d399" opacity="0.3"/>
+  <rect x="895" y="158" width="10" height="23" rx="2" fill="#34d399" opacity="0.4"/>
+  <rect x="908" y="152" width="10" height="29" rx="2" fill="#34d399" opacity="0.5"/>
+  <rect x="921" y="145" width="10" height="36" rx="2" fill="#34d399" opacity="0.6"/>
+  <rect x="934" y="140" width="10" height="41" rx="2" fill="#34d399" opacity="0.7"/>
+  <rect x="947" y="133" width="10" height="48" rx="2" fill="url(#green)"/>
+
+  <!-- KPI 4: API Calls (24h) -->
+  <rect x="1016" y="80" width="240" height="116" rx="12" fill="#0d1526" stroke="#1e3a5f" stroke-width="1" filter="url(#shadow)"/>
+  <rect x="1016" y="80" width="240" height="4" rx="2" fill="url(#orange)"/>
+  <text x="1036" y="106" font-family="system-ui,sans-serif" font-size="11" fill="#6b8ab0">API Calls (24h)</text>
+  <rect x="1214" y="90" width="30" height="30" rx="8" fill="#d97706" opacity="0.15"/>
+  <text x="1229" y="110" text-anchor="middle" font-family="system-ui,sans-serif" font-size="17">⚡</text>
+  <text x="1036" y="140" font-family="system-ui,sans-serif" font-size="32" font-weight="700" fill="#e0eeff">1.84M</text>
+  <rect x="1036" y="152" width="96" height="16" rx="8" fill="#d97706" opacity="0.15"/>
+  <text x="1084" y="163" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#fbbf24">▲ +18% vs yesterday</text>
+  <!-- Pulse indicator -->
+  <circle cx="1192" cy="175" r="18" fill="#d97706" opacity="0.08"/>
+  <circle cx="1192" cy="175" r="12" fill="#d97706" opacity="0.12"/>
+  <circle cx="1192" cy="175" r="7" fill="url(#orange)" opacity="0.8"/>
+  <text x="1192" y="179" text-anchor="middle" font-family="system-ui,sans-serif" font-size="8" font-weight="700" fill="#fff">LIVE</text>
+
+  <!-- ═══════════════════════════════ MAIN GRID ═══════════════════════════════ -->
+
+  <!-- ─── Revenue Chart Panel ─── -->
+  <rect x="272" y="216" width="580" height="300" rx="14" fill="#0d1526" stroke="#1e3a5f" stroke-width="1" filter="url(#shadow)"/>
+  <!-- Header -->
+  <rect x="272" y="216" width="580" height="48" rx="14" fill="#0e1a30"/>
+  <rect x="272" y="248" width="580" height="16" fill="#0e1a30"/>
+  <text x="292" y="246" font-family="system-ui,sans-serif" font-size="14" font-weight="600" fill="#e0eeff">Revenue Analytics</text>
+  <text x="380" y="246" font-family="system-ui,sans-serif" font-size="10" fill="#34d399">↑ 31% MoM</text>
+  <!-- Legend -->
+  <rect x="636" y="230" width="10" height="10" rx="2" fill="#1d4ed8"/>
+  <text x="650" y="240" font-family="system-ui,sans-serif" font-size="9" fill="#6b8ab0">Revenue</text>
+  <rect x="700" y="230" width="10" height="10" rx="2" fill="#059669"/>
+  <text x="714" y="240" font-family="system-ui,sans-serif" font-size="9" fill="#6b8ab0">Target</text>
+  <!-- Period tabs -->
+  <rect x="752" y="228" width="30" height="20" rx="5" fill="#1d4ed8" opacity="0.3"/>
+  <text x="767" y="241" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#60a5fa">1M</text>
+  <rect x="786" y="228" width="30" height="20" rx="5" fill="transparent"/>
+  <text x="801" y="241" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#4b6a8a">3M</text>
+  <rect x="820" y="228" width="30" height="20" rx="5" fill="transparent"/>
+  <text x="835" y="241" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#4b6a8a">1Y</text>
+
+  <!-- Chart area -->
+  <rect x="292" y="276" width="540" height="220" rx="6" fill="#080f1e"/>
+  <!-- Grid lines -->
+  <line x1="308" y1="288" x2="824" y2="288" stroke="#1e3a5f" stroke-width="0.5" stroke-dasharray="4,4"/>
+  <line x1="308" y1="332" x2="824" y2="332" stroke="#1e3a5f" stroke-width="0.5" stroke-dasharray="4,4"/>
+  <line x1="308" y1="376" x2="824" y2="376" stroke="#1e3a5f" stroke-width="0.5" stroke-dasharray="4,4"/>
+  <line x1="308" y1="420" x2="824" y2="420" stroke="#1e3a5f" stroke-width="0.5" stroke-dasharray="4,4"/>
+  <line x1="308" y1="488" x2="824" y2="488" stroke="#1e3a5f" stroke-width="0.5"/>
+  <!-- Y labels -->
+  <text x="292" y="292" font-family="system-ui,sans-serif" font-size="9" fill="#2a4a6a">$60k</text>
+  <text x="292" y="336" font-family="system-ui,sans-serif" font-size="9" fill="#2a4a6a">$45k</text>
+  <text x="292" y="380" font-family="system-ui,sans-serif" font-size="9" fill="#2a4a6a">$30k</text>
+  <text x="292" y="424" font-family="system-ui,sans-serif" font-size="9" fill="#2a4a6a">$15k</text>
+  <text x="292" y="492" font-family="system-ui,sans-serif" font-size="9" fill="#2a4a6a">$0</text>
+  <!-- X labels -->
+  <text x="340" y="500" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#2a4a6a">Jan</text>
+  <text x="380" y="500" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#2a4a6a">Feb</text>
+  <text x="420" y="500" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#2a4a6a">Mar</text>
+  <text x="460" y="500" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#2a4a6a">Apr</text>
+  <text x="500" y="500" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#2a4a6a">May</text>
+  <text x="540" y="500" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#2a4a6a">Jun</text>
+  <text x="580" y="500" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#2a4a6a">Jul</text>
+  <text x="620" y="500" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#2a4a6a">Aug</text>
+  <text x="660" y="500" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#2a4a6a">Sep</text>
+  <text x="700" y="500" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#2a4a6a">Oct</text>
+  <text x="740" y="500" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#2a4a6a">Nov</text>
+  <text x="780" y="500" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#60a5fa">Dec</text>
+  <!-- Revenue area chart (blue) -->
+  <polygon points="316,478 356,465 396,452 436,440 476,428 516,415 556,402 596,390 636,375 676,360 716,342 756,325 796,308 824,296 824,488 316,488" fill="url(#areaBlue)" opacity="0.6"/>
+  <polyline points="316,478 356,465 396,452 436,440 476,428 516,415 556,402 596,390 636,375 676,360 716,342 756,325 796,308 824,296" 
+            fill="none" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Target line (green dashed) -->
+  <polyline points="316,460 356,448 396,436 436,424 476,412 516,400 556,388 596,376 636,364 676,352 716,340 756,328 796,316 824,308" 
+            fill="none" stroke="#34d399" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="6,4"/>
+  <!-- Data point (current) -->
+  <circle cx="824" cy="296" r="5" fill="#3b82f6" stroke="#0d1526" stroke-width="2" filter="url(#glow)"/>
+  <!-- Tooltip -->
+  <rect x="768" y="270" width="82" height="30" rx="6" fill="#0e1a30" stroke="#3b82f6" stroke-width="1" stroke-opacity="0.6"/>
+  <text x="809" y="283" text-anchor="middle" font-family="system-ui,sans-serif" font-size="8" font-weight="600" fill="#60a5fa">Dec 2025</text>
+  <text x="809" y="295" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#e0eeff">$58,240</text>
+
+  <!-- ─── Recent Activity + User Table (Right column) ─── -->
+  <rect x="868" y="216" width="388" height="300" rx="14" fill="#0d1526" stroke="#1e3a5f" stroke-width="1" filter="url(#shadow)"/>
+  <!-- Header -->
+  <rect x="868" y="216" width="388" height="48" rx="14" fill="#0e1a30"/>
+  <rect x="868" y="248" width="388" height="16" fill="#0e1a30"/>
+  <text x="888" y="246" font-family="system-ui,sans-serif" font-size="14" font-weight="600" fill="#e0eeff">Recent Activity</text>
+  <rect x="1160" y="228" width="78" height="22" rx="11" fill="#1d4ed8" opacity="0.2"/>
+  <text x="1199" y="243" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#60a5fa">View Logs →</text>
+
+  <!-- Activity items -->
+  <!-- Item 1 -->
+  <rect x="882" y="280" width="36" height="36" rx="8" fill="#dc2626" opacity="0.15"/>
+  <text x="900" y="303" text-anchor="middle" font-family="system-ui,sans-serif" font-size="18">⚠️</text>
+  <text x="928" y="294" font-family="system-ui,sans-serif" font-size="11" font-weight="600" fill="#f87171">High API error rate</text>
+  <text x="928" y="308" font-family="system-ui,sans-serif" font-size="9" fill="#4b6a8a">/api/farcaster/cast · 12% errors · 2m ago</text>
+  <rect x="1188" y="282" width="52" height="18" rx="9" fill="#dc2626" opacity="0.2"/>
+  <text x="1214" y="294" text-anchor="middle" font-family="system-ui,sans-serif" font-size="8" font-weight="600" fill="#f87171">ALERT</text>
+  <line x1="882" y1="322" x2="1248" y2="322" stroke="#1e3a5f" stroke-width="0.5"/>
+
+  <!-- Item 2 -->
+  <rect x="882" y="330" width="36" height="36" rx="8" fill="#059669" opacity="0.15"/>
+  <text x="900" y="353" text-anchor="middle" font-family="system-ui,sans-serif" font-size="18">👤</text>
+  <text x="928" y="344" font-family="system-ui,sans-serif" font-size="11" font-weight="600" fill="#e0eeff">New user registered</text>
+  <text x="928" y="358" font-family="system-ui,sans-serif" font-size="9" fill="#4b6a8a">frank@example.com · Pro plan · 8m ago</text>
+  <rect x="1188" y="332" width="52" height="18" rx="9" fill="#059669" opacity="0.2"/>
+  <text x="1214" y="344" text-anchor="middle" font-family="system-ui,sans-serif" font-size="8" font-weight="600" fill="#34d399">NEW</text>
+  <line x1="882" y1="372" x2="1248" y2="372" stroke="#1e3a5f" stroke-width="0.5"/>
+
+  <!-- Item 3 -->
+  <rect x="882" y="380" width="36" height="36" rx="8" fill="#d97706" opacity="0.15"/>
+  <text x="900" y="403" text-anchor="middle" font-family="system-ui,sans-serif" font-size="18">💰</text>
+  <text x="928" y="394" font-family="system-ui,sans-serif" font-size="11" font-weight="600" fill="#e0eeff">Enterprise subscription</text>
+  <text x="928" y="408" font-family="system-ui,sans-serif" font-size="9" fill="#4b6a8a">Acme Corp · $2,400/mo · 22m ago</text>
+  <rect x="1188" y="382" width="52" height="18" rx="9" fill="#d97706" opacity="0.2"/>
+  <text x="1214" y="394" text-anchor="middle" font-family="system-ui,sans-serif" font-size="8" font-weight="600" fill="#fbbf24">PAID</text>
+  <line x1="882" y1="422" x2="1248" y2="422" stroke="#1e3a5f" stroke-width="0.5"/>
+
+  <!-- Item 4 -->
+  <rect x="882" y="430" width="36" height="36" rx="8" fill="#1d4ed8" opacity="0.15"/>
+  <text x="900" y="453" text-anchor="middle" font-family="system-ui,sans-serif" font-size="18">🔑</text>
+  <text x="928" y="444" font-family="system-ui,sans-serif" font-size="11" font-weight="600" fill="#e0eeff">API key created</text>
+  <text x="928" y="458" font-family="system-ui,sans-serif" font-size="9" fill="#4b6a8a">user: bob@example.com · scope: read · 45m ago</text>
+  <rect x="1188" y="432" width="52" height="18" rx="9" fill="#1d4ed8" opacity="0.2"/>
+  <text x="1214" y="444" text-anchor="middle" font-family="system-ui,sans-serif" font-size="8" font-weight="600" fill="#60a5fa">KEY</text>
+  <line x1="882" y1="472" x2="1248" y2="472" stroke="#1e3a5f" stroke-width="0.5"/>
+
+  <!-- Item 5 -->
+  <rect x="882" y="480" width="36" height="36" rx="8" fill="#7c3aed" opacity="0.15"/>
+  <text x="900" y="503" text-anchor="middle" font-family="system-ui,sans-serif" font-size="18">🤖</text>
+  <text x="928" y="494" font-family="system-ui,sans-serif" font-size="11" font-weight="600" fill="#e0eeff">Agent deployed</text>
+  <text x="928" y="508" font-family="system-ui,sans-serif" font-size="9" fill="#4b6a8a">NFT Mint Bot v2 · Base mainnet · 1h ago</text>
+  <rect x="1188" y="482" width="52" height="18" rx="9" fill="#7c3aed" opacity="0.2"/>
+  <text x="1214" y="494" text-anchor="middle" font-family="system-ui,sans-serif" font-size="8" font-weight="600" fill="#c084fc">AGENT</text>
+
+  <!-- ═══════════════════════════════ USER TABLE ═══════════════════════════════ -->
+  <rect x="272" y="536" width="984" height="248" rx="14" fill="#0d1526" stroke="#1e3a5f" stroke-width="1" filter="url(#shadow)"/>
+  <!-- Table header -->
+  <rect x="272" y="536" width="984" height="48" rx="14" fill="#0e1a30"/>
+  <rect x="272" y="568" width="984" height="16" fill="#0e1a30"/>
+  <text x="292" y="565" font-family="system-ui,sans-serif" font-size="14" font-weight="600" fill="#e0eeff">User Management</text>
+  <text x="456" y="560" font-family="system-ui,sans-serif" font-size="9" fill="#2a4a6a">Showing 1–5 of 1,248</text>
+  <!-- Search -->
+  <rect x="976" y="550" width="140" height="24" rx="12" fill="#080f1e" stroke="#1e3a5f" stroke-width="1"/>
+  <text x="990" y="566" font-family="system-ui,sans-serif" font-size="10" fill="#2a4a6a">🔍</text>
+  <text x="1004" y="566" font-family="system-ui,sans-serif" font-size="10" fill="#2a4a6a">Search users…</text>
+  <!-- Add user btn -->
+  <rect x="1124" y="549" width="120" height="26" rx="8" fill="url(#blue)" opacity="0.9"/>
+  <text x="1184" y="566" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" font-weight="600" fill="#fff">+ Add User</text>
+
+  <!-- Table column headers -->
+  <text x="292" y="603" font-family="system-ui,sans-serif" font-size="9" font-weight="600" fill="#2a4a6a" letter-spacing="0.5">EMAIL</text>
+  <text x="528" y="603" font-family="system-ui,sans-serif" font-size="9" font-weight="600" fill="#2a4a6a" letter-spacing="0.5">WALLET</text>
+  <text x="720" y="603" font-family="system-ui,sans-serif" font-size="9" font-weight="600" fill="#2a4a6a" letter-spacing="0.5">PLAN</text>
+  <text x="840" y="603" font-family="system-ui,sans-serif" font-size="9" font-weight="600" fill="#2a4a6a" letter-spacing="0.5">CREDITS</text>
+  <text x="960" y="603" font-family="system-ui,sans-serif" font-size="9" font-weight="600" fill="#2a4a6a" letter-spacing="0.5">STATUS</text>
+  <text x="1100" y="603" font-family="system-ui,sans-serif" font-size="9" font-weight="600" fill="#2a4a6a" letter-spacing="0.5">JOINED</text>
+  <line x1="280" y1="608" x2="1248" y2="608" stroke="#1e3a5f" stroke-width="0.8"/>
+
+  <!-- Row 1 -->
+  <rect x="272" y="614" width="984" height="40" fill="#0d1b30" opacity="0.4"/>
+  <circle cx="302" cy="634" r="12" fill="#1d4ed8" opacity="0.3"/>
+  <text x="302" y="638" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" font-weight="700" fill="#60a5fa">A</text>
+  <text x="320" y="638" font-family="system-ui,sans-serif" font-size="11" fill="#e0eeff">alice@example.com</text>
+  <text x="528" y="638" font-family="monospace" font-size="10" fill="#6b8ab0">0x1234…abcd</text>
+  <rect x="816" y="625" width="50" height="18" rx="9" fill="#7c3aed" opacity="0.2"/>
+  <text x="841" y="637" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" font-weight="600" fill="#c084fc">Pro</text>
+  <text x="840" y="638" font-family="system-ui,sans-serif" font-size="11" fill="#e0eeff">500</text>
+  <rect x="950" y="625" width="60" height="18" rx="9" fill="#059669" opacity="0.18"/>
+  <circle cx="960" cy="634" r="3" fill="#34d399"/>
+  <text x="990" y="637" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#34d399">Active</text>
+  <text x="1100" y="638" font-family="system-ui,sans-serif" font-size="10" fill="#6b8ab0">Jan 15, 2024</text>
+  <line x1="280" y1="654" x2="1248" y2="654" stroke="#1e3a5f" stroke-width="0.3"/>
+
+  <!-- Row 2 -->
+  <circle cx="302" cy="674" r="12" fill="#059669" opacity="0.2"/>
+  <text x="302" y="678" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" font-weight="700" fill="#34d399">B</text>
+  <text x="320" y="678" font-family="system-ui,sans-serif" font-size="11" fill="#e0eeff">bob@example.com</text>
+  <text x="528" y="678" font-family="monospace" font-size="10" fill="#6b8ab0">0xabcd…5678</text>
+  <rect x="816" y="665" width="50" height="18" rx="9" fill="#4b6a8a" opacity="0.3"/>
+  <text x="841" y="677" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" font-weight="600" fill="#8baac8">Free</text>
+  <text x="840" y="678" font-family="system-ui,sans-serif" font-size="11" fill="#e0eeff">100</text>
+  <rect x="950" y="665" width="60" height="18" rx="9" fill="#059669" opacity="0.18"/>
+  <circle cx="960" cy="674" r="3" fill="#34d399"/>
+  <text x="990" y="677" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#34d399">Active</text>
+  <text x="1100" y="678" font-family="system-ui,sans-serif" font-size="10" fill="#6b8ab0">Feb 20, 2024</text>
+  <line x1="280" y1="694" x2="1248" y2="694" stroke="#1e3a5f" stroke-width="0.3"/>
+
+  <!-- Row 3 -->
+  <rect x="272" y="698" width="984" height="36" fill="#0d1b30" opacity="0.4"/>
+  <circle cx="302" cy="716" r="12" fill="#d97706" opacity="0.25"/>
+  <text x="302" y="720" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" font-weight="700" fill="#fbbf24">C</text>
+  <text x="320" y="720" font-family="system-ui,sans-serif" font-size="11" fill="#e0eeff">carol@example.com</text>
+  <text x="528" y="720" font-family="monospace" font-size="10" fill="#6b8ab0">0x9999…1111</text>
+  <rect x="816" y="707" width="76" height="18" rx="9" fill="#1d4ed8" opacity="0.2"/>
+  <text x="854" y="719" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" font-weight="600" fill="#60a5fa">Enterprise</text>
+  <text x="840" y="720" font-family="system-ui,sans-serif" font-size="11" fill="#e0eeff">2,000</text>
+  <rect x="950" y="707" width="60" height="18" rx="9" fill="#059669" opacity="0.18"/>
+  <circle cx="960" cy="716" r="3" fill="#34d399"/>
+  <text x="990" y="719" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#34d399">Active</text>
+  <text x="1100" y="720" font-family="system-ui,sans-serif" font-size="10" fill="#6b8ab0">Mar 1, 2024</text>
+  <line x1="280" y1="734" x2="1248" y2="734" stroke="#1e3a5f" stroke-width="0.3"/>
+
+  <!-- Row 4 -->
+  <circle cx="302" cy="756" r="12" fill="#dc2626" opacity="0.18"/>
+  <text x="302" y="760" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" font-weight="700" fill="#f87171">D</text>
+  <text x="320" y="760" font-family="system-ui,sans-serif" font-size="11" fill="#e0eeff">dave@example.com</text>
+  <text x="528" y="760" font-family="monospace" font-size="10" fill="#6b8ab0">0xaaaa…bbbb</text>
+  <rect x="816" y="747" width="50" height="18" rx="9" fill="#7c3aed" opacity="0.2"/>
+  <text x="841" y="759" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" font-weight="600" fill="#c084fc">Pro</text>
+  <text x="840" y="760" font-family="system-ui,sans-serif" font-size="11" fill="#e0eeff">0</text>
+  <rect x="950" y="747" width="60" height="18" rx="9" fill="#dc2626" opacity="0.18"/>
+  <circle cx="960" cy="756" r="3" fill="#f87171"/>
+  <text x="990" y="759" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#f87171">Banned</text>
+  <text x="1100" y="760" font-family="system-ui,sans-serif" font-size="10" fill="#6b8ab0">Mar 10, 2024</text>
+
+  <!-- Pagination -->
+  <rect x="272" y="774" width="984" height="22" rx="0" fill="transparent"/>
+  <rect x="272" y="773" width="984" height="1" fill="#1e3a5f" opacity="0.6"/>
+  <rect x="272" y="774" width="984" height="8" rx="0" fill="#0d1526"/>
+  <text x="900" y="785" font-family="system-ui,sans-serif" font-size="9" fill="#2a4a6a">← Previous</text>
+  <rect x="970" y="775" width="20" height="16" rx="4" fill="#1d4ed8" opacity="0.4"/>
+  <text x="980" y="786" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#60a5fa">1</text>
+  <text x="1004" y="786" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#2a4a6a">2</text>
+  <text x="1024" y="786" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#2a4a6a">3</text>
+  <text x="1060" y="785" font-family="system-ui,sans-serif" font-size="9" fill="#2a4a6a">Next →</text>
+</svg>

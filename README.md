@@ -22,9 +22,13 @@
 ![Landing Page](https://github.com/user-attachments/assets/08f6139c-470e-4ffe-aea9-95008800e340)
 *Modern landing page with hero section, features showcase, and pricing tiers*
 
-### Dashboard Overview
-![Dashboard](https://github.com/user-attachments/assets/1dc415e9-8cb5-4b8c-9776-09d7ab28740b)
-*Real-time stats, quick actions, and activity feed*
+### User Dashboard
+![User Dashboard](./public/screenshots/user-dashboard.svg)
+*User dashboard — real-time stats, quick actions, activity feed, and frames timeline*
+
+### Admin Dashboard
+![Admin Dashboard](./public/screenshots/admin-dashboard.svg)
+*Enterprise admin dashboard — system overview, user management, and health monitoring*
 
 ### 100+ Templates Gallery
 ![Templates Gallery](https://github.com/user-attachments/assets/3932cf9c-7e14-41d4-8ddc-b8a77ae3022a)
@@ -292,8 +296,10 @@ AiFarcaster/
 - 📖 [Environment Variables Setup](./docs/ENVIRONMENT.md)
 - 🚀 [Deployment Guide](./docs/DEPLOYMENT.md) - Vercel, Netlify, Docker, VPS
 - 👤 [User Guide](./docs/USER_GUIDE.md) - Step-by-step tutorials
+- 🛡️ [Admin Guide](./docs/ADMIN_GUIDE.md) - Admin dashboard, RBAC, user management
 - 💳 [Payment Integration](./docs/PAYMENTS.md) - Stripe & Crypto setup
 - 🔧 [API Reference](./docs/API.md) - Endpoint documentation (scaffolding)
+- 📋 [Changelog](./CHANGELOG.md) - Version history and release notes
 
 ---
 
