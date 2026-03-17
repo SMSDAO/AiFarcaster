@@ -31,7 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - System Overview dashboard with KPI cards: Total Users, Active Agents, Revenue (MTD), API Calls (24h)
 - Recent Activity log with user attribution and timestamps
 - System Health monitor: API, Database, Auth, Storage status indicators
-- User Management table with role badges and action controls (Edit, Ban, Restore)
+- User Management table with search, plan badges, and status indicators (read-only mock data; Edit/Ban/Restore actions are planned)
 - Agent Management page (`/admin/agents`) for AI agent lifecycle control
 - Billing & Payments dashboard (`/admin/billing`)
 - Wallet management (`/admin/wallets`)

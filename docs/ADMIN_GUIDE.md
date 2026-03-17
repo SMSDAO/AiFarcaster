@@ -297,13 +297,15 @@ See [ENVIRONMENT.md](./ENVIRONMENT.md) for the complete list.
 
 ### Cannot Access Admin Panel
 
-1. Verify you have admin-level Supabase credentials
+1. Verify you are signed in with a valid Supabase session (any authenticated user can currently access `/admin/*` — role-based restriction is not yet enforced)
 2. Check that `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` are set
 3. Check the browser console for authentication errors
 
 ### Users Not Loading
 
-1. Verify `SUPABASE_SERVICE_ROLE_KEY` is set (required for admin user queries)
+> **Note:** The Users page currently displays mock/placeholder data and does not query Supabase. If you wire up a live Supabase query in the future, the steps below will apply.
+
+1. Verify `SUPABASE_SERVICE_ROLE_KEY` is set (will be required once live Supabase user queries are implemented)
 2. Check that the `users` table exists in your Supabase project
 3. Run pending migrations if the schema is missing
 
