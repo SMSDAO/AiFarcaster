@@ -1,5 +1,5 @@
 {
-  "buildCommand": "npm run build",
+  "buildCommand": "npm run vercel-build",
   "outputDirectory": ".next",
   "devCommand": "npm run dev",
   "installCommand": "npm install",
@@ -8,6 +8,15 @@
     "NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID": "@walletconnect-project-id",
     "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY": "@stripe-publishable-key",
     "NEXT_PUBLIC_PAYMENT_RECEIVER_ADDRESS": "@payment-receiver-address",
-    "STRIPE_SECRET_KEY": "@stripe-secret-key"
+    "STRIPE_SECRET_KEY": "@stripe-secret-key",
+    "DATABASE_URL": "@database-url",
+    "OPENAI_API_KEY": "@openai-api-key",
+    "UPSTASH_REDIS_REST_URL": "@upstash-redis-rest-url",
+    "UPSTASH_REDIS_REST_TOKEN": "@upstash-redis-rest-token",
+    "NEXT_PUBLIC_FIREBASE_API_KEY": "@firebase-api-key",
+    "NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN": "@firebase-auth-domain",
+    "NEXT_PUBLIC_FIREBASE_DATABASE_URL": "@firebase-database-url",
+    "NEXT_PUBLIC_FIREBASE_PROJECT_ID": "@firebase-project-id",
+    "NEXT_PUBLIC_FIREBASE_APP_ID": "@firebase-app-id"
   }
 }

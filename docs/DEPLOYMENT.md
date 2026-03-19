@@ -44,19 +44,66 @@ Follow the prompts to:
 4. **Set Environment Variables**
 
 ```bash
+# Core
+vercel env add DATABASE_URL
+vercel env add OPENAI_API_KEY
+vercel env add UPSTASH_REDIS_REST_URL
+vercel env add UPSTASH_REDIS_REST_TOKEN
+
+# Auth / Supabase
+vercel env add NEXT_PUBLIC_SUPABASE_URL
+vercel env add NEXT_PUBLIC_SUPABASE_ANON_KEY
+vercel env add SUPABASE_SERVICE_ROLE_KEY
+
+# Web3 / Payments
 vercel env add NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID
 vercel env add NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 vercel env add STRIPE_SECRET_KEY
 vercel env add NEXT_PUBLIC_PAYMENT_RECEIVER_ADDRESS
+
+# Firebase Realtime (optional – realtime prompt sync)
+vercel env add NEXT_PUBLIC_FIREBASE_API_KEY
+vercel env add NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
+vercel env add NEXT_PUBLIC_FIREBASE_DATABASE_URL
+vercel env add NEXT_PUBLIC_FIREBASE_PROJECT_ID
+vercel env add NEXT_PUBLIC_FIREBASE_APP_ID
 ```
 
 Or add them in the Vercel dashboard.
+
+> **Note:** The `vercel.json` build command is already set to `npm run vercel-build`,
+> which runs `prisma generate && prisma migrate deploy && next build` automatically.
 
 5. **Deploy to Production**
 
 ```bash
 vercel --prod
 ```
+
+## Required Environment Variables
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `DATABASE_URL` | ✅ Yes | PostgreSQL connection string (Neon, Supabase, Railway, etc.) |
+| `OPENAI_API_KEY` | ✅ Yes | OpenAI API key for the AI Prompt Optimizer |
+| `UPSTASH_REDIS_REST_URL` | ✅ Yes | Upstash Redis REST URL for rate limiting |
+| `UPSTASH_REDIS_REST_TOKEN` | ✅ Yes | Upstash Redis REST token |
+| `NEXT_PUBLIC_SUPABASE_URL` | ✅ Yes | Supabase project URL |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | ✅ Yes | Supabase anon key |
+| `SUPABASE_SERVICE_ROLE_KEY` | ✅ Yes | Supabase service role key (server-only) |
+| `NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID` | ✅ Yes | WalletConnect project ID |
+| `STRIPE_SECRET_KEY` | ⚠️ Payments | Stripe secret key |
+| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | ⚠️ Payments | Stripe publishable key |
+| `STRIPE_WEBHOOK_SECRET` | ⚠️ Payments | Stripe webhook signing secret |
+| `NEXT_PUBLIC_PAYMENT_RECEIVER_ADDRESS` | ⚠️ Crypto pay | Wallet address for crypto payments |
+| `NEXT_PUBLIC_FIREBASE_API_KEY` | ⚠️ Realtime | Firebase project API key |
+| `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN` | ⚠️ Realtime | Firebase auth domain |
+| `NEXT_PUBLIC_FIREBASE_DATABASE_URL` | ⚠️ Realtime | Firebase Realtime Database URL |
+| `NEXT_PUBLIC_FIREBASE_PROJECT_ID` | ⚠️ Realtime | Firebase project ID |
+| `NEXT_PUBLIC_FIREBASE_APP_ID` | ⚠️ Realtime | Firebase web app ID |
+| `FARCASTER_HUB_URL` | ⚠️ Farcaster | Farcaster hub gRPC URL |
+
+
 
 ## Deploy to Other Platforms
 
