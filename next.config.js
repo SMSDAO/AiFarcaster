@@ -1,6 +1,13 @@
 /** @type {import('next').NextConfig} */
+const { version } = require('./package.json');
+
 const nextConfig = {
   reactStrictMode: true,
+  env: {
+    // Bake the package.json version into the build so it is available in all
+    // runtimes (next start, standalone containers, etc.) via process.env.APP_VERSION.
+    APP_VERSION: version,
+  },
   images: {
     domains: ['localhost'],
   },
