@@ -56,17 +56,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // 4. Optimize prompt
   const result = await optimizePrompt(body.input);
 
-  // 5. Persist to database
-  const prompt = await prisma.prompt.create({
-    data: {
-      userId: user.id,
-      input: body.input,
-      optimized: result.optimized,
-      version: 1,
-      shared: false,
-    },
-  });
-
+  // 5. Persist to database atomically – both writes succeed or both fail.
   // Track token usage. This is an approximation (1 token ≈ 4 chars for English
   // text). For precise billing, replace with a proper tokenizer such as
   // `tiktoken` (js-tiktoken on npm). The approximation is acceptable for
@@ -74,9 +64,20 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const tokensUsed = Math.ceil(
     (body.input.length + result.optimized.length) / 4,
   );
-  await prisma.usage.create({
-    data: { userId: user.id, tokensUsed },
-  });
+  const [prompt] = await prisma.$transaction([
+    prisma.prompt.create({
+      data: {
+        userId: user.id,
+        input: body.input,
+        optimized: result.optimized,
+        version: 1,
+        shared: false,
+      },
+    }),
+    prisma.usage.create({
+      data: { userId: user.id, tokensUsed },
+    }),
+  ]);
 
   // 7. Broadcast realtime event (fire-and-forget)
   broadcastPromptCreated({

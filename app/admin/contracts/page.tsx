@@ -3,21 +3,28 @@
 // app/admin/contracts/page.tsx
 // Admin Contract Deployment page.
 // Allows ADMIN users to register deployed contract addresses, view the
-// registry, and initiate new deployments by submitting bytecode.
+// registry, and update records with real on-chain addresses after deployment.
 
 import { useState, useEffect, useCallback } from 'react';
-import { Code2, Plus, RefreshCw, Copy, CheckCircle2 } from 'lucide-react';
+import { Code2, Plus, RefreshCw, Copy, CheckCircle2, Pencil } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface Contract {
   id: string;
   address: string;
-  deployedBy: string;
+  label: string | null;
+  deployedById: string;
   createdAt: string;
 }
 
 interface DeployFormState {
   bytecode: string;
+  label: string;
+}
+
+interface PatchFormState {
+  contractId: string;
+  address: string;
   label: string;
 }
 
@@ -29,11 +36,16 @@ export default function AdminContractsPage() {
   const [deploying, setDeploying] = useState(false);
   const [deployError, setDeployError] = useState<string | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [patchForm, setPatchForm] = useState<PatchFormState | null>(null);
+  const [patching, setPatching] = useState(false);
+  const [patchError, setPatchError] = useState<string | null>(null);
 
   const fetchContracts = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
+      // Cookies are sent automatically for same-origin requests; the API
+      // validates the Supabase session from those cookies.
       const res = await fetch('/api/admin/contracts');
       if (!res.ok) {
         const body = (await res.json()) as { error?: string };
@@ -75,6 +87,39 @@ export default function AdminContractsPage() {
       setDeployError(e instanceof Error ? e.message : 'Deployment failed');
     } finally {
       setDeploying(false);
+    }
+  }
+
+  async function handlePatch(e: React.FormEvent) {
+    e.preventDefault();
+    if (!patchForm) return;
+    setPatching(true);
+    setPatchError(null);
+
+    try {
+      const res = await fetch('/api/admin/contracts', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: patchForm.contractId,
+          address: patchForm.address,
+          label: patchForm.label || undefined,
+        }),
+      });
+
+      const body = (await res.json()) as Contract & { error?: string };
+      if (!res.ok) {
+        throw new Error(body.error ?? `HTTP ${res.status}`);
+      }
+
+      setContracts((prev) =>
+        prev.map((c) => (c.id === body.id ? body : c)),
+      );
+      setPatchForm(null);
+    } catch (e) {
+      setPatchError(e instanceof Error ? e.message : 'Update failed');
+    } finally {
+      setPatching(false);
     }
   }
 
@@ -144,7 +189,9 @@ export default function AdminContractsPage() {
               className="w-full px-3 py-2 text-sm font-mono border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-600 resize-y"
             />
             <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-              Paste the compiled EVM bytecode (0x-prefixed hex string).
+              Paste the compiled EVM bytecode (0x-prefixed hex string). A
+              placeholder address is derived from the hash until you update it
+              with the real on-chain address via the edit button.
             </p>
           </div>
 
@@ -162,6 +209,74 @@ export default function AdminContractsPage() {
           </button>
         </form>
       </div>
+
+      {/* Update Address Modal */}
+      {patchForm && (
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 border-2 border-purple-500">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center space-x-2">
+            <Pencil className="w-5 h-5 text-purple-600" />
+            <span>Update Contract Address</span>
+          </h2>
+          <form onSubmit={handlePatch} className="space-y-4">
+            <div>
+              <label
+                htmlFor="patch-address"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+              >
+                Real On-chain Address <span className="text-red-500">*</span>
+              </label>
+              <input
+                id="patch-address"
+                type="text"
+                required
+                placeholder="0xAbCd…1234"
+                value={patchForm.address}
+                onChange={(e) =>
+                  setPatchForm((f) => f && { ...f, address: e.target.value })
+                }
+                className="w-full px-3 py-2 text-sm font-mono border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-600"
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="patch-label"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+              >
+                Label <span className="text-gray-400">(optional)</span>
+              </label>
+              <input
+                id="patch-label"
+                type="text"
+                maxLength={100}
+                value={patchForm.label}
+                onChange={(e) =>
+                  setPatchForm((f) => f && { ...f, label: e.target.value })
+                }
+                className="w-full px-3 py-2 text-sm border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-600"
+              />
+            </div>
+            {patchError && (
+              <p className="text-sm text-red-600 dark:text-red-400">{patchError}</p>
+            )}
+            <div className="flex space-x-3">
+              <button
+                type="submit"
+                disabled={patching}
+                className="px-4 py-2 bg-purple-600 hover:bg-purple-700 disabled:bg-purple-400 text-white text-sm font-medium rounded-lg transition"
+              >
+                {patching ? 'Saving…' : 'Save Address'}
+              </button>
+              <button
+                type="button"
+                onClick={() => setPatchForm(null)}
+                className="px-4 py-2 text-sm text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
 
       {/* Contract List */}
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow">
@@ -205,28 +320,50 @@ export default function AdminContractsPage() {
             {contracts.map((c) => (
               <div
                 key={c.id}
-                className="flex items-center justify-between p-4 hover:bg-gray-50 dark:hover:bg-gray-750"
+                className="flex items-center justify-between p-4 hover:bg-gray-50 dark:hover:bg-gray-700"
               >
                 <div className="min-w-0 flex-1 mr-4">
+                  {c.label && (
+                    <p className="text-xs font-medium text-purple-600 dark:text-purple-400 mb-0.5">
+                      {c.label}
+                    </p>
+                  )}
                   <p className="text-sm font-mono text-gray-900 dark:text-white truncate">
                     {c.address}
                   </p>
                   <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-                    Deployed by {c.deployedBy} ·{' '}
+                    Deployed by{' '}
+                    <span className="font-mono">{c.deployedById}</span>
+                    {' · '}
                     {new Date(c.createdAt).toLocaleDateString()}
                   </p>
                 </div>
-                <button
-                  onClick={() => copyAddress(c.address, c.id)}
-                  className="flex-shrink-0 p-1.5 text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 rounded"
-                  aria-label="Copy address"
-                >
-                  {copiedId === c.id ? (
-                    <CheckCircle2 className="w-4 h-4 text-green-500" />
-                  ) : (
-                    <Copy className="w-4 h-4" />
-                  )}
-                </button>
+                <div className="flex items-center space-x-1 flex-shrink-0">
+                  <button
+                    onClick={() =>
+                      setPatchForm({
+                        contractId: c.id,
+                        address: c.address,
+                        label: c.label ?? '',
+                      })
+                    }
+                    className="p-1.5 text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 rounded"
+                    aria-label="Edit address"
+                  >
+                    <Pencil className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => copyAddress(c.address, c.id)}
+                    className="p-1.5 text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 rounded"
+                    aria-label="Copy address"
+                  >
+                    {copiedId === c.id ? (
+                      <CheckCircle2 className="w-4 h-4 text-green-500" />
+                    ) : (
+                      <Copy className="w-4 h-4" />
+                    )}
+                  </button>
+                </div>
               </div>
             ))}
           </div>

@@ -21,9 +21,10 @@ model User {
   role      Role     @default(USER)
   createdAt DateTime @default(now())
 
-  prompts  Prompt[]
-  sessions Session[]
-  usage    Usage[]
+  prompts   Prompt[]
+  sessions  Session[]
+  usage     Usage[]
+  contracts Contract[]
 }
 
 model Prompt {
@@ -65,8 +66,12 @@ model Feed {
 }
 
 model Contract {
-  id         String   @id @default(uuid())
-  address    String   @unique
-  deployedBy String
-  createdAt  DateTime @default(now())
+  id           String   @id @default(uuid())
+  address      String   @unique
+  label        String?
+  deployedById String
+  deployedBy   User     @relation(fields: [deployedById], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now())
+
+  @@index([deployedById])
 }

@@ -15,7 +15,6 @@ import {
   ref,
   set,
   onValue,
-  off,
   type Unsubscribe,
   type Database,
 } from 'firebase/database';
@@ -110,10 +109,13 @@ export function subscribeToUserPrompts(
   if (!db) return null;
 
   const promptRef = ref(db, `prompts/${userId}/latest`);
-  onValue(promptRef, (snapshot) => {
+  // onValue returns an Unsubscribe function. Use it directly so we only remove
+  // this specific listener and don't inadvertently clear other listeners on the
+  // same ref (which off(promptRef) without a callback would do).
+  const unsubscribe = onValue(promptRef, (snapshot) => {
     const data = snapshot.val();
     if (data) callback(data as PromptEvent & { _event: string });
   });
 
-  return () => off(promptRef);
+  return unsubscribe;
 }

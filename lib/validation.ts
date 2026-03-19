@@ -24,5 +24,20 @@ export const DeployContractSchema = z.object({
     .optional(),
 });
 
+/** Schema for PATCH /api/admin/contracts — update address after real deployment */
+export const UpdateContractSchema = z.object({
+  id: z.string().uuid('id must be a valid UUID'),
+  /** The real on-chain address returned by the deployment transaction */
+  address: z
+    .string()
+    .regex(/^0x[0-9a-fA-F]{40}$/, 'address must be a valid 40-hex-char Ethereum address'),
+  /** Optionally update the human-readable label at the same time */
+  label: z
+    .string()
+    .max(100, 'label must be at most 100 characters')
+    .optional(),
+});
+
 export type CreatePromptInput = z.infer<typeof CreatePromptSchema>;
 export type DeployContractInput = z.infer<typeof DeployContractSchema>;
+export type UpdateContractInput = z.infer<typeof UpdateContractSchema>;
