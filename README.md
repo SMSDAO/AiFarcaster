@@ -298,7 +298,7 @@ AiFarcaster/
 - 👤 [User Guide](./docs/USER_GUIDE.md) - Step-by-step tutorials
 - 🛡️ [Admin Guide](./docs/ADMIN_GUIDE.md) - Admin dashboard, RBAC, user management
 - 💳 [Payment Integration](./docs/PAYMENTS.md) - Stripe & Crypto setup
-- 🔧 [API Reference](./docs/API.md) - Endpoint documentation (scaffolding)
+- 🔧 [API Reference](./docs/API.md) - Implemented routes + planned endpoint reference
 - 📋 [Changelog](./CHANGELOG.md) - Version history and release notes
 
 ---

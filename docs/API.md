@@ -4,13 +4,44 @@ AiFarcaster API documentation for integrating with external services.
 
 ## Overview
 
-**NOTE:** The API endpoints described in this document are currently scaffolding/planned features. No API routes are implemented in the current codebase. You will need to implement these endpoints in your application under the `/app/api` directory.
+This document covers both **implemented** API routes and **planned** (scaffolding) endpoints.
 
-The AiFarcaster API (when implemented) will be built with Next.js API routes and provide endpoints for:
-- Frame management
-- Template operations
-- Payment processing
-- Analytics and metrics
+### Implemented Routes
+
+The following API routes exist in the codebase today:
+
+| Route | Method | Description |
+|-------|--------|-------------|
+| `/api/health` | GET | Returns service status, build version, and timestamp |
+| `/api/farcaster/auth` | POST | Farcaster hub authentication |
+| `/api/farcaster/feed` | GET | Fetch Farcaster feed |
+| `/api/farcaster/user` | GET | Fetch Farcaster user profile |
+| `/api/farcaster/cast` | POST | Submit a Farcaster cast |
+
+#### `GET /api/health`
+
+Returns build version, timestamp, and `services.api` status.
+
+```json
+{
+  "status": "ok",
+  "version": "0.1.0",
+  "timestamp": "2026-03-19T00:00:00.000Z",
+  "services": {
+    "api": "operational"
+  }
+}
+```
+
+#### Farcaster Routes (`/api/farcaster/*`)
+
+All Farcaster routes connect to the Farcaster hub via `FARCASTER_HUB_URL` using `@farcaster/hub-nodejs` (SSL gRPC). See the source in `app/api/farcaster/` and `lib/farcaster/`.
+
+---
+
+### Planned / Scaffolding Endpoints
+
+The following endpoints are **not yet implemented**. They describe the intended future API surface and serve as a design reference.
 
 ## Base URL
 
@@ -21,9 +52,9 @@ Development: http://localhost:3000/api
 
 ## Authentication
 
-**NOTE:** Token-based authentication is not currently implemented. The application uses wallet-based authentication via RainbowKit on the frontend. You will need to implement API authentication separately.
+The implemented Farcaster routes use hub-level authentication via the Farcaster hub gRPC client. The `/api/health` endpoint is public.
 
-When implemented, API requests should include authentication:
+**NOTE:** Token-based REST API authentication for the planned frame/template/payment endpoints is not currently implemented. When added, API requests should include authentication:
 
 ```typescript
 headers: {

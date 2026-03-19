@@ -28,19 +28,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Mobile-responsive layout with hamburger menu
 
 #### Admin Panel (`/admin`)
-- System Overview dashboard with KPI cards: Total Users, Active Agents, Revenue (MTD), API Calls (24h)
-- Recent Activity log with user attribution and timestamps
-- System Health monitor: API, Database, Auth, Storage status indicators
-- User Management table with search, plan badges, and status indicators (read-only mock data; Edit/Ban/Restore actions are planned)
-- Agent Management page (`/admin/agents`) for AI agent lifecycle control
-- Billing & Payments dashboard (`/admin/billing`)
-- Wallet management (`/admin/wallets`)
-- Oracle management (`/admin/oracles`)
-- API Key management (`/admin/api-keys`)
-- Audit Logs viewer (`/admin/logs`)
-- Add-on marketplace (`/admin/addons`)
-- Settings with change-password flow (`/admin/settings`, `/admin/settings/change-password`)
-- Admin login page with Supabase authentication (`/admin/login`)
+- System Overview dashboard with KPI cards: Total Users, Active Agents, Revenue (MTD), API Calls (24h) — **UI scaffolding with mock data**
+- Recent Activity log with user attribution and timestamps — **mock data**
+- System Health indicator panel: API, Database, Auth, Storage — **mock data; `/api/health` endpoint reports `services.api` only**
+- User Management table with search, plan badges, and status indicators — **read-only mock data; Edit/Ban/Restore actions are planned**
+- Agent Management page (`/admin/agents`) — **UI scaffolding with mock data**
+- Billing & Payments dashboard (`/admin/billing`) — **UI scaffolding with mock data; no Stripe/crypto integration yet**
+- Wallet management (`/admin/wallets`) — **UI scaffolding**
+- Oracle management (`/admin/oracles`) — **UI scaffolding**
+- API Key management (`/admin/api-keys`) — **UI scaffolding with mock data; no key generation/revocation yet**
+- Audit Logs viewer (`/admin/logs`) — **UI scaffolding with mock data; no persistent log storage yet**
+- Add-on marketplace (`/admin/addons`) — **UI scaffolding**
+- Settings with change-password flow (`/admin/settings`, `/admin/settings/change-password`) — **change-password implemented via Supabase**
+- Admin login page with Supabase authentication (`/admin/login`) — **implemented**
 
 #### Farcaster Integration
 - Hub client with SSL gRPC connection via `@farcaster/hub-nodejs`

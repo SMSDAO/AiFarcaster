@@ -105,7 +105,9 @@ The planned RBAC model uses four roles with escalating permissions:
 
 ## System Health Monitoring
 
-The **System Health** panel (visible on the admin overview) shows real-time status of all platform services.
+> **Note:** The System Health panel on the admin overview (`/admin`) currently displays **mock/placeholder data** (`systemHealth` array in `app/admin/page.tsx`). Live service checks are planned for a future release.
+
+The status indicators below describe the intended UI legend when live checks are implemented:
 
 ### Service Status Indicators
 
@@ -115,7 +117,9 @@ The **System Health** panel (visible on the admin overview) shows real-time stat
 | 🟡 Yellow | Degraded | Service running with reduced capacity |
 | 🔴 Red | Down | Service unavailable |
 
-### Monitored Services
+### Planned Monitored Services
+
+The following services are shown in the mock UI. Real-time checks for each are planned:
 
 - **API** — Next.js API routes and Farcaster hub connection
 - **Database** — Supabase PostgreSQL connection
@@ -124,11 +128,13 @@ The **System Health** panel (visible on the admin overview) shows real-time stat
 
 ### Health Check Endpoint
 
+The `/api/health` endpoint **is implemented** at `app/api/health/route.ts`:
+
 ```
 GET /api/health
 ```
 
-Returns a JSON response with API status and current timestamp:
+Returns a JSON response with API status, build version, and timestamp:
 
 ```json
 {
@@ -141,15 +147,17 @@ Returns a JSON response with API status and current timestamp:
 }
 ```
 
-The health endpoint is implemented at `app/api/health/route.ts`. For deeper service health checks (database, auth, storage), monitor your Supabase project directly at [app.supabase.com](https://app.supabase.com).
+Currently only `services.api` is reported. Database, Auth, and Storage checks are not yet implemented — monitor those services directly at [app.supabase.com](https://app.supabase.com).
 
 ---
 
 ## API Key Management
 
-The **API Keys** section (`/admin/api-keys`) manages keys for external integrations.
+> **Note:** The **API Keys** page (`/admin/api-keys`) currently displays **mock/placeholder data** only. Key generation, permission scoping, and revocation are planned for a future release once the backend key-management service is implemented.
 
-### Creating an API Key
+The section below describes the intended workflow when API key management is implemented.
+
+### Creating an API Key (Planned)
 
 1. Navigate to **Admin → API Keys**
 2. Click **Generate New Key**
@@ -157,13 +165,13 @@ The **API Keys** section (`/admin/api-keys`) manages keys for external integrati
 4. Copy the key immediately — it will not be shown again
 5. Store securely in your application's environment variables
 
-### Key Permissions
+### Key Permissions (Planned)
 
 - `read` — Read-only access to data endpoints
 - `write` — Create and update operations
 - `admin` — Full API access including user management
 
-### Revoking Keys
+### Revoking Keys (Planned)
 
 1. Find the key in the list
 2. Click **Revoke**
@@ -173,14 +181,16 @@ The **API Keys** section (`/admin/api-keys`) manages keys for external integrati
 
 ## Billing & Payments
 
-The **Billing** section (`/admin/billing`) manages subscriptions and payment records.
+> **Note:** The **Billing** page (`/admin/billing`) currently displays **mock/placeholder data** only. Stripe and on-chain payment integrations are planned — the UI is scaffolding for the intended future feature.
 
-### Supported Payment Methods
+The section below describes the intended billing management workflow when the integration is implemented.
+
+### Supported Payment Methods (Planned)
 
 - **Crypto (Base mainnet)** — ETH, USDC, and platform tokens
 - **Stripe** — Credit/debit card processing
 
-### Viewing Payment History
+### Viewing Payment History (Planned)
 
 - Filter by date range, user, or payment method
 - Export reports as CSV
@@ -197,9 +207,11 @@ The **Billing** section (`/admin/billing`) manages subscriptions and payment rec
 
 ## Audit Logs
 
-The **Audit Logs** section (`/admin/logs`) provides a complete, tamper-evident record of all platform actions.
+> **Note:** The **Audit Logs** page (`/admin/logs`) currently displays a **mock/placeholder log list** with a simple filter UI. Persistent, tamper-evident logging with full-text search and export is planned for a future release.
 
-### Log Categories
+The section below describes the intended log categories and search capabilities when the feature is implemented.
+
+### Log Categories (Planned)
 
 | Category | Events |
 |----------|--------|
@@ -209,7 +221,7 @@ The **Audit Logs** section (`/admin/logs`) provides a complete, tamper-evident r
 | **API** | Key creation/revocation, rate limit events |
 | **System** | Config changes, deployments, health events |
 
-### Searching Logs
+### Searching Logs (Planned)
 
 - Full-text search on event description
 - Filter by user, category, date range
@@ -266,17 +278,20 @@ The **Settings** section (`/admin/settings`) provides system-wide configuration.
 
 ### Environment Variables
 
-Critical variables required for admin features:
+Variables required for the currently-implemented admin features:
 
 ```env
-# Authentication (required)
+# Authentication (required — used by middleware and admin login)
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
-SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
 
-# Payments
-STRIPE_SECRET_KEY=sk_...
-STRIPE_WEBHOOK_SECRET=whsec_...
+# Service role key — NOT required by current admin routes (all use mock data).
+# Will be required once live Supabase server-side queries are implemented.
+# SUPABASE_SERVICE_ROLE_KEY=your-service-role-key  # optional / future
+
+# Payments — planned; not yet wired to the billing UI
+# STRIPE_SECRET_KEY=sk_...
+# STRIPE_WEBHOOK_SECRET=whsec_...
 
 # Farcaster
 FARCASTER_HUB_URL=nemes.farcaster.xyz:2283
