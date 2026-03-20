@@ -12,7 +12,14 @@ const nextConfig = {
     domains: ['localhost'],
   },
   webpack: (config) => {
-    config.resolve.fallback = { fs: false, net: false, tls: false };
+    config.cache = false;
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      fs: false,
+      net: false,
+      tls: false,
+      '@react-native-async-storage/async-storage': false,
+    };
     config.externals.push(
       'pino-pretty',
       'encoding',
