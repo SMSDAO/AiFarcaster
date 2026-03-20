@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
+    "postinstall": "prisma generate",
     "vercel-build": "prisma generate && prisma migrate deploy && next build"
   },
   "dependencies": {
