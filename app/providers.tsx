@@ -6,7 +6,7 @@ import { coinbaseWallet, injectedWallet, walletConnectWallet } from '@rainbow-me
 import { WagmiProvider } from 'wagmi';
 import { base } from 'wagmi/chains';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || 'build-placeholder';
 
@@ -40,7 +40,7 @@ const getQueryClient = () => {
 };
 
 export function Providers({ children }: { children: React.ReactNode }) {
-  const queryClient = getQueryClient();
+  const [queryClient] = useState(getQueryClient);
 
   useEffect(() => {
     if (!process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID) {

@@ -111,7 +111,7 @@ export default function DashboardPage() {
             <div className="flex h-full items-end gap-2">
               {[18, 26, 14, 30, 20, 38, 28, 42, 35, 44].map((height, index) => (
                 <div
-                  key={index}
+                  key={`${height}-${index}`}
                   className="w-full rounded-sm bg-gradient-to-t from-cyan-500/30 to-violet-500/40 transition-all duration-300"
                   style={{ height: `${height * 2}px` }}
                 />
