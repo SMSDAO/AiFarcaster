@@ -8,17 +8,20 @@ import { base } from 'wagmi/chains';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
-const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || 'build-placeholder';
+const walletConnectProjectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID;
+const hasWalletConnectProjectId = Boolean(walletConnectProjectId);
 
 const config = getDefaultConfig({
   appName: 'AiFarcaster',
-  projectId,
+  projectId: walletConnectProjectId || '',
   chains: [base],
   ssr: true,
   wallets: [
     {
       groupName: 'Recommended',
-      wallets: [injectedWallet, walletConnectWallet, coinbaseWallet],
+      wallets: hasWalletConnectProjectId
+        ? [injectedWallet, walletConnectWallet, coinbaseWallet]
+        : [injectedWallet, coinbaseWallet],
     },
   ],
 });
@@ -43,9 +46,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(getQueryClient);
 
   useEffect(() => {
-    if (!process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID) {
+    if (!hasWalletConnectProjectId) {
       console.warn(
-        '[AiFarcaster] NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID is not configured. WalletConnect-based flows will be disabled.',
+        '[AiFarcaster] NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID is not configured. WalletConnect has been hidden from wallet options.',
       );
     }
   }, []);
