@@ -255,7 +255,6 @@ model PaymentEvent {
 
   user User? @relation(fields: [userId], references: [id])
 
-  @@index([stripeEventId])
   @@index([eventType])
 }
 

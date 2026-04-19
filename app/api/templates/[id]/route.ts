@@ -22,7 +22,9 @@ export async function GET(req: NextRequest, { params }: Params) {
 
   if (user && template.tier === 'PREMIUM') {
     const [activeSub, purchase] = await Promise.all([
-      prisma.subscription.findFirst({ where: { userId: user.id, status: 'ACTIVE' } }),
+      prisma.subscription.findFirst({
+        where: { userId: user.id, status: { in: ['ACTIVE', 'TRIALING'] } },
+      }),
       prisma.templatePurchase.findFirst({ where: { userId: user.id, templateId: id } }),
     ]);
     hasAccess = Boolean(activeSub ?? purchase);

@@ -1,17 +1,26 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { getUserFromRequest } from '@/lib/auth';
 
 /**
  * POST /api/farcaster/cast
  *
- * SECURITY: This endpoint no longer accepts raw private keys in the request
- * body. The signer key is stored server-side (via FARCASTER_SIGNER_PRIVATE_KEY
- * environment variable) and the client submits only the cast text together
- * with an authenticated session token.
+ * SECURITY: This endpoint requires an authenticated session. The signer key is
+ * stored server-side (via FARCASTER_SIGNER_PRIVATE_KEY environment variable)
+ * and the client submits only the cast text together with an authenticated
+ * session token.
  *
- * The authenticated user's FID must match the signer's registered FID.
+ * The fid field is optional — when omitted the server uses its own registered
+ * FID. When supplied, the authenticated user must match the requested FID to
+ * prevent cross-user impersonation.
  */
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
+  // Authenticate the caller first
+  const user = await getUserFromRequest(request);
+  if (!user) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   // Validate the server-side signer key is configured
   const signerKeyHex = process.env.FARCASTER_SIGNER_PRIVATE_KEY;
   if (!signerKeyHex) {

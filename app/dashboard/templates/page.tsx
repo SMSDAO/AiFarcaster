@@ -1,44 +1,28 @@
 'use client';
 
 import { useState, useEffect, useCallback } from "react";
-import { Search, Filter, Star, Lock, Zap } from "lucide-react";
+import { Search, Filter, Star, Lock, Zap, Loader2 } from "lucide-react";
 import { createCheckoutSession } from "@/lib/stripe";
 
-const STATIC_TEMPLATES = [
-  // Free templates (20)
-  { id: "tpl-01", name: "Token Launch", category: "DeFi", price: "Free", tier: "FREE", featured: true },
-  { id: "tpl-02", name: "NFT Gallery", category: "NFT", price: "Free", tier: "FREE", featured: true },
-  { id: "tpl-03", name: "Airdrop Campaign", category: "Marketing", price: "Free", tier: "FREE", featured: true },
-  { id: "tpl-04", name: "Tip Jar", category: "Monetization", price: "Free", tier: "FREE", featured: false },
-  { id: "tpl-05", name: "Community Poll", category: "Engagement", price: "Free", tier: "FREE", featured: false },
-  { id: "tpl-06", name: "Simple Fundraiser", category: "Fundraising", price: "Free", tier: "FREE", featured: false },
-  { id: "tpl-07", name: "Basic Profile", category: "Social", price: "Free", tier: "FREE", featured: false },
-  { id: "tpl-08", name: "Link Directory", category: "Content", price: "Free", tier: "FREE", featured: false },
-  { id: "tpl-09", name: "Event RSVP", category: "Events", price: "Free", tier: "FREE", featured: false },
-  { id: "tpl-10", name: "Newsletter Signup", category: "Marketing", price: "Free", tier: "FREE", featured: false },
-  { id: "tpl-11", name: "Contact Form", category: "Content", price: "Free", tier: "FREE", featured: false },
-  { id: "tpl-12", name: "Quiz Basic", category: "Engagement", price: "Free", tier: "FREE", featured: false },
-  { id: "tpl-13", name: "Giveaway Entry", category: "Marketing", price: "Free", tier: "FREE", featured: false },
-  { id: "tpl-14", name: "Meme Generator", category: "Social", price: "Free", tier: "FREE", featured: false },
-  { id: "tpl-15", name: "Voting System", category: "Engagement", price: "Free", tier: "FREE", featured: false },
-  { id: "tpl-16", name: "Whitelist Entry", category: "NFT", price: "Free", tier: "FREE", featured: false },
-  { id: "tpl-17", name: "Wallet Connect", category: "Tools", price: "Free", tier: "FREE", featured: false },
-  { id: "tpl-18", name: "Social Links", category: "Social", price: "Free", tier: "FREE", featured: false },
-  { id: "tpl-19", name: "Price Checker", category: "DeFi", price: "Free", tier: "FREE", featured: false },
-  { id: "tpl-20", name: "Transaction Status", category: "Tools", price: "Free", tier: "FREE", featured: false },
-
-  // Paid templates (80)
-  ...Array.from({ length: 80 }, (_, i) => ({
-    id: `tpl-premium-${i + 1}`,
-    name: `Premium Template ${i + 1}`,
-    category: ["DeFi", "NFT", "Marketing", "Engagement", "Fundraising", "Tools", "Social", "Content"][i % 8] as string,
-    price: "$9.99",
-    tier: "PREMIUM",
-    featured: i < 10,
-  })),
-];
-
 const CATEGORIES = ["All", "DeFi", "NFT", "Marketing", "Engagement", "Fundraising", "Tools", "Social", "Content", "Events"];
+
+interface Template {
+  id: string;
+  name: string;
+  category: string;
+  tier: 'FREE' | 'PREMIUM';
+  featured: boolean;
+  price?: number | null;
+}
+
+interface ApiTemplate {
+  id: string;
+  name: string;
+  category: string;
+  tier: 'FREE' | 'PREMIUM';
+  featured: boolean;
+  price?: number | null;
+}
 
 interface SubscriptionStatus {
   hasActiveSubscription: boolean;
@@ -51,6 +35,8 @@ export default function TemplatesPage() {
   const [showFreeOnly, setShowFreeOnly] = useState(false);
   const [subscription, setSubscription] = useState<SubscriptionStatus | null>(null);
   const [checkoutLoading, setCheckoutLoading] = useState<string | null>(null);
+  const [templates, setTemplates] = useState<Template[]>([]);
+  const [loadingTemplates, setLoadingTemplates] = useState(true);
 
   const fetchSubscription = useCallback(async () => {
     try {
@@ -64,14 +50,31 @@ export default function TemplatesPage() {
     }
   }, []);
 
+  const fetchTemplates = useCallback(async () => {
+    setLoadingTemplates(true);
+    try {
+      const res = await fetch('/api/templates?limit=100');
+      if (res.ok) {
+        const json = await res.json() as { data: { templates: ApiTemplate[] } };
+        setTemplates(json.data.templates ?? []);
+      }
+    } catch {
+      // Fallback to empty list on error
+    } finally {
+      setLoadingTemplates(false);
+    }
+  }, []);
+
   useEffect(() => {
     void fetchSubscription();
-  }, [fetchSubscription]);
+    void fetchTemplates();
+  }, [fetchSubscription, fetchTemplates]);
 
   const handlePurchase = async (templateId: string, tier: string) => {
     if (tier === 'FREE') return;
     setCheckoutLoading(templateId);
     try {
+      // templateId is a real UUID from the DB — maps to a Stripe price server-side
       await createCheckoutSession(templateId);
     } catch (e) {
       alert(e instanceof Error ? e.message : 'Checkout failed. Please try again.');
@@ -91,15 +94,15 @@ export default function TemplatesPage() {
     }
   };
 
-  const filteredTemplates = STATIC_TEMPLATES.filter((template) => {
+  const filteredTemplates = templates.filter((template) => {
     const matchesCategory = selectedCategory === "All" || template.category === selectedCategory;
     const matchesSearch = template.name.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesFree = !showFreeOnly || template.tier === "FREE";
     return matchesCategory && matchesSearch && matchesFree;
   });
 
-  const freeCount = STATIC_TEMPLATES.filter(t => t.tier === "FREE").length;
-  const paidCount = STATIC_TEMPLATES.filter(t => t.tier !== "FREE").length;
+  const freeCount = templates.filter(t => t.tier === "FREE").length;
+  const paidCount = templates.filter(t => t.tier !== "FREE").length;
   const hasPremiumAccess = subscription?.hasActiveSubscription ?? false;
 
   return (
@@ -109,7 +112,9 @@ export default function TemplatesPage() {
         <div>
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Template Gallery</h1>
           <p className="text-gray-600 dark:text-gray-400">
-            Browse {STATIC_TEMPLATES.length} professionally designed templates ({freeCount} free, {paidCount} premium)
+            {loadingTemplates
+              ? 'Loading templates…'
+              : `Browse ${templates.length} professionally designed templates (${freeCount} free, ${paidCount} premium)`}
           </p>
         </div>
         {!hasPremiumAccess && (
@@ -187,23 +192,34 @@ export default function TemplatesPage() {
 
       {/* Results count */}
       <div className="text-sm text-gray-600 dark:text-gray-400">
-        Showing {filteredTemplates.length} templates
+        {loadingTemplates
+          ? 'Loading…'
+          : `Showing ${filteredTemplates.length} templates`}
       </div>
+
+      {/* Loading skeleton */}
+      {loadingTemplates && (
+        <div className="flex justify-center py-12">
+          <Loader2 className="w-8 h-8 animate-spin text-purple-500" />
+        </div>
+      )}
 
       {/* Templates Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {filteredTemplates.map((template) => (
-          <TemplateCard
-            key={template.id}
-            template={template}
-            hasPremiumAccess={hasPremiumAccess}
-            checkoutLoading={checkoutLoading}
-            onPurchase={handlePurchase}
-          />
-        ))}
-      </div>
+      {!loadingTemplates && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {filteredTemplates.map((template) => (
+            <TemplateCard
+              key={template.id}
+              template={template}
+              hasPremiumAccess={hasPremiumAccess}
+              checkoutLoading={checkoutLoading}
+              onPurchase={handlePurchase}
+            />
+          ))}
+        </div>
+      )}
 
-      {filteredTemplates.length === 0 && (
+      {!loadingTemplates && filteredTemplates.length === 0 && (
         <div className="text-center py-12">
           <p className="text-gray-600 dark:text-gray-400">No templates found. Try adjusting your filters.</p>
         </div>
@@ -218,7 +234,7 @@ function TemplateCard({
   checkoutLoading,
   onPurchase,
 }: {
-  template: { id: string; name: string; category: string; price: string; tier: string; featured: boolean };
+  template: Template;
   hasPremiumAccess: boolean;
   checkoutLoading: string | null;
   onPurchase: (id: string, tier: string) => void;
@@ -226,6 +242,11 @@ function TemplateCard({
   const isPremium = template.tier === 'PREMIUM';
   const isLocked = isPremium && !hasPremiumAccess;
   const isLoadingThis = checkoutLoading === template.id;
+  const priceLabel = isPremium
+    ? template.price != null
+      ? `$${template.price.toFixed(2)}`
+      : '$9.99'
+    : 'Free';
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-xl transition cursor-pointer group">
@@ -265,9 +286,9 @@ function TemplateCard({
                 ? "text-green-600"
                 : "text-purple-600"
             }`}
-            aria-label={`Price: ${template.price}`}
+            aria-label={`Price: ${priceLabel}`}
           >
-            {template.price}
+            {priceLabel}
           </span>
         </div>
         <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">{template.category}</p>

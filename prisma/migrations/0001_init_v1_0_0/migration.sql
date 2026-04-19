@@ -1,6 +1,9 @@
 -- Migration: 0001_init_v1_0_0
 -- Creates the initial full schema for AiFarcaster v1.0.0
 
+-- Enable pgcrypto so gen_random_uuid() is available on all Postgres instances
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+
 -- Enums
 CREATE TYPE "Role" AS ENUM ('USER', 'DEVELOPER', 'ADMIN');
 CREATE TYPE "TemplateTier" AS ENUM ('FREE', 'PREMIUM');
@@ -187,7 +190,6 @@ CREATE TABLE "PaymentEvent" (
     CONSTRAINT "PaymentEvent_pkey" PRIMARY KEY ("id")
 );
 CREATE UNIQUE INDEX "PaymentEvent_stripeEventId_key" ON "PaymentEvent"("stripeEventId");
-CREATE INDEX "PaymentEvent_stripeEventId_idx" ON "PaymentEvent"("stripeEventId");
 CREATE INDEX "PaymentEvent_eventType_idx" ON "PaymentEvent"("eventType");
 
 -- Audit Logs

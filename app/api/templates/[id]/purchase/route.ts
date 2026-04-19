@@ -64,9 +64,9 @@ export async function POST(req: NextRequest, { params }: Params) {
     return ok({ message: 'Already purchased', purchase: existing });
   }
 
-  // Check active subscription (subscription holders get all premium templates)
+  // Check qualifying subscription (subscription holders, including trials, get all premium templates)
   const activeSub = await prisma.subscription.findFirst({
-    where: { userId: user.id, status: 'ACTIVE' },
+    where: { userId: user.id, status: { in: ['ACTIVE', 'TRIALING'] } },
   });
   if (activeSub) {
     // Record the "purchase" as subscription-fulfillment for audit trail

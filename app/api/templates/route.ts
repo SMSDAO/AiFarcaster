@@ -3,7 +3,7 @@
 import 'server-only';
 import { NextRequest } from 'next/server';
 import { prisma } from '@/lib/db';
-import { ok } from '@/lib/api-response';
+import { ok, error } from '@/lib/api-response';
 
 export const dynamic = 'force-dynamic';
 
@@ -13,8 +13,16 @@ export async function GET(req: NextRequest) {
   const tierParam = searchParams.get('tier');
   const freeOnly = searchParams.get('free') === 'true';
   const featured = searchParams.get('featured') === 'true';
-  const page = Math.max(1, parseInt(searchParams.get('page') ?? '1', 10));
-  const limit = Math.min(100, Math.max(1, parseInt(searchParams.get('limit') ?? '100', 10)));
+  const parsedPage = parseInt(searchParams.get('page') ?? '1', 10);
+  const parsedLimit = parseInt(searchParams.get('limit') ?? '100', 10);
+  const page = Math.max(1, Number.isNaN(parsedPage) ? 1 : parsedPage);
+  const limit = Math.min(100, Math.max(1, Number.isNaN(parsedLimit) ? 100 : parsedLimit));
+
+  // Validate tier query param against allowed enum values
+  const VALID_TIERS = ['FREE', 'PREMIUM'] as const;
+  if (tierParam !== null && !VALID_TIERS.includes(tierParam as typeof VALID_TIERS[number])) {
+    return error('BAD_REQUEST', `Invalid tier value. Must be one of: ${VALID_TIERS.join(', ')}`);
+  }
 
   const where = {
     active: true,

@@ -18,8 +18,10 @@ export async function GET(req: NextRequest) {
   if (!user) return unauthorized();
 
   const { searchParams } = req.nextUrl;
-  const page = Math.max(1, parseInt(searchParams.get('page') ?? '1', 10));
-  const limit = Math.min(100, Math.max(1, parseInt(searchParams.get('limit') ?? '20', 10)));
+  const parsedPage = parseInt(searchParams.get('page') ?? '1', 10);
+  const parsedLimit = parseInt(searchParams.get('limit') ?? '20', 10);
+  const page = Math.max(1, Number.isFinite(parsedPage) ? parsedPage : 1);
+  const limit = Math.min(100, Math.max(1, Number.isFinite(parsedLimit) ? parsedLimit : 20));
   const statusFilter = searchParams.get('status');
 
   const where = {
@@ -94,7 +96,7 @@ export async function POST(req: NextRequest) {
 async function checkPremiumAccess(userId: string, templateId: string): Promise<boolean> {
   const [activeSub, purchase] = await Promise.all([
     prisma.subscription.findFirst({
-      where: { userId, status: 'ACTIVE' },
+      where: { userId, status: { in: ['ACTIVE', 'TRIALING'] } },
     }),
     prisma.templatePurchase.findFirst({
       where: { userId, templateId },

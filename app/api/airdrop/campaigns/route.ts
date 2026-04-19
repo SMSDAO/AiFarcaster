@@ -7,7 +7,7 @@ import { ZodError } from 'zod';
 import { getUserFromRequest } from '@/lib/auth';
 import { prisma } from '@/lib/db';
 import { checkProfileRateLimit } from '@/lib/rate-limit';
-import { CreateAirdropCampaignSchema, AirdropRecipientsUploadSchema } from '@/lib/validation';
+import { CreateAirdropCampaignSchema } from '@/lib/validation';
 import { ok, created, unauthorized, zodError, error, rateLimited } from '@/lib/api-response';
 import { logger } from '@/lib/logger';
 
@@ -18,8 +18,10 @@ export async function GET(req: NextRequest) {
   if (!user) return unauthorized();
 
   const { searchParams } = req.nextUrl;
-  const page = Math.max(1, parseInt(searchParams.get('page') ?? '1', 10));
-  const limit = Math.min(100, Math.max(1, parseInt(searchParams.get('limit') ?? '20', 10)));
+  const parsedPage = parseInt(searchParams.get('page') ?? '1', 10);
+  const parsedLimit = parseInt(searchParams.get('limit') ?? '20', 10);
+  const page = Math.max(1, Number.isNaN(parsedPage) ? 1 : parsedPage);
+  const limit = Math.min(100, Math.max(1, Number.isNaN(parsedLimit) ? 20 : parsedLimit));
   const statusFilter = searchParams.get('status');
 
   const where = {

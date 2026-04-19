@@ -167,22 +167,29 @@ async function uploadRecipients(
     return error('BAD_REQUEST', 'Invalid recipients data');
   }
 
-  // Upsert recipients (idempotent — same address in same campaign = update amount)
-  const upserts = input.recipients.map((r) =>
-    prisma.airdropRecipient.upsert({
-      where: { campaignId_address: { campaignId, address: r.address } },
-      create: { campaignId, address: r.address, amount: r.amount },
-      update: { amount: r.amount },
-    }),
-  );
+  const RECIPIENT_UPSERT_BATCH_SIZE = 250;
+  let uploaded = 0;
 
-  const results = await prisma.$transaction(upserts);
+  // Upsert recipients in smaller batches to avoid one oversized transaction
+  // that could time out or overload the DB with thousands of individual statements.
+  for (let i = 0; i < input.recipients.length; i += RECIPIENT_UPSERT_BATCH_SIZE) {
+    const batch = input.recipients.slice(i, i + RECIPIENT_UPSERT_BATCH_SIZE);
+    const upserts = batch.map((r) =>
+      prisma.airdropRecipient.upsert({
+        where: { campaignId_address: { campaignId, address: r.address } },
+        create: { campaignId, address: r.address, amount: r.amount },
+        update: { amount: r.amount },
+      }),
+    );
+    const results = await prisma.$transaction(upserts);
+    uploaded += results.length;
+  }
 
   logger.info('airdrop.recipients.uploaded', {
     campaignId,
     userId,
-    count: results.length,
+    count: uploaded,
   });
 
-  return created({ uploaded: results.length });
+  return created({ uploaded });
 }

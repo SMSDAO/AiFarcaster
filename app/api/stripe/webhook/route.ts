@@ -98,8 +98,11 @@ export async function POST(req: NextRequest) {
       type: event.type,
       error: e instanceof Error ? e.message : String(e),
     });
-    // Return 200 to prevent Stripe retries for non-transient errors
-    return NextResponse.json({ received: true, processed: false });
+    // Return a non-2xx status so Stripe retries transient processing failures.
+    return NextResponse.json(
+      { error: 'Webhook processing failed', received: true, processed: false },
+      { status: 500 },
+    );
   }
 
   return NextResponse.json({ received: true });

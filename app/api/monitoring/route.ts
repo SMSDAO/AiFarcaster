@@ -8,14 +8,20 @@ import { NextRequest, NextResponse } from 'next/server';
 export const dynamic = 'force-dynamic';
 
 export async function GET(req: NextRequest) {
-  // Require a shared secret to access monitoring data
+  // Require MONITORING_SECRET to be configured; return 503 if missing so the
+  // endpoint is never accidentally open in production.
   const secret = process.env.MONITORING_SECRET;
-  if (secret) {
-    const authHeader = req.headers.get('authorization');
-    const provided = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null;
-    if (provided !== secret) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+  if (!secret) {
+    return NextResponse.json(
+      { error: 'Monitoring endpoint is not configured. Set MONITORING_SECRET.' },
+      { status: 503 },
+    );
+  }
+
+  const authHeader = req.headers.get('authorization');
+  const provided = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null;
+  if (provided !== secret) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   try {
