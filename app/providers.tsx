@@ -2,47 +2,53 @@
 
 import '@rainbow-me/rainbowkit/styles.css';
 import { getDefaultConfig, RainbowKitProvider } from '@rainbow-me/rainbowkit';
+import { coinbaseWallet, injectedWallet, walletConnectWallet } from '@rainbow-me/rainbowkit/wallets';
 import { WagmiProvider } from 'wagmi';
 import { base } from 'wagmi/chains';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useEffect } from 'react';
 
-/**
- * Get WalletConnect Project ID with build-time safety
- * 
- * During Next.js build (SSR/SSG), this allows a placeholder value so the build succeeds.
- * At client runtime, if the env var is missing, we log a clear error.
- * 
- * Note: `typeof window === 'undefined'` is true during:
- * - Next.js build process
- * - Server-side rendering
- * 
- * But we only want the placeholder during build, not production SSR.
- * The env var check ensures we get the real value if it exists.
- */
-const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || 
-  (typeof window === 'undefined' ? 'build-placeholder' : '');
-
-// Client-side validation (runs only in browser)
-if (typeof window !== 'undefined' && !process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID) {
-  console.error(
-    '[AiFarcaster] CRITICAL: NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID is not configured.\n' +
-    'Wallet connection features will not work.\n' +
-    'Please set this environment variable before deploying to production.\n' +
-    'See docs/ENVIRONMENT.md for configuration instructions.'
-  );
-}
+const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || 'build-placeholder';
 
 const config = getDefaultConfig({
   appName: 'AiFarcaster',
-  projectId: projectId || 'not-configured', // Fallback makes the issue obvious in wallet errors
+  projectId,
   chains: [base],
   ssr: true,
+  wallets: [
+    {
+      groupName: 'Recommended',
+      wallets: [injectedWallet, walletConnectWallet, coinbaseWallet],
+    },
+  ],
 });
 
+const createQueryClient = () => new QueryClient();
+
+let browserQueryClient: QueryClient | undefined;
+
+const getQueryClient = () => {
+  if (typeof window === 'undefined') {
+    return createQueryClient();
+  }
+
+  if (!browserQueryClient) {
+    browserQueryClient = createQueryClient();
+  }
+
+  return browserQueryClient;
+};
+
 export function Providers({ children }: { children: React.ReactNode }) {
-  // Create QueryClient per-request to avoid SSR cache leakage
-  const [queryClient] = useState(() => new QueryClient());
+  const queryClient = getQueryClient();
+
+  useEffect(() => {
+    if (!process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID) {
+      console.warn(
+        '[AiFarcaster] NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID is not configured. WalletConnect-based flows will be disabled.',
+      );
+    }
+  }, []);
 
   return (
     <WagmiProvider config={config}>
