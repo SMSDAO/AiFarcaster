@@ -20,8 +20,8 @@ export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
   const parsedPage = parseInt(searchParams.get('page') ?? '1', 10);
   const parsedLimit = parseInt(searchParams.get('limit') ?? '20', 10);
-  const page = Math.max(1, Number.isFinite(parsedPage) ? parsedPage : 1);
-  const limit = Math.min(100, Math.max(1, Number.isFinite(parsedLimit) ? parsedLimit : 20));
+  const page = Math.max(1, Number.isNaN(parsedPage) ? 1 : parsedPage);
+  const limit = Math.min(100, Math.max(1, Number.isNaN(parsedLimit) ? 20 : parsedLimit));
   const statusFilter = searchParams.get('status');
 
   const where = {
