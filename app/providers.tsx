@@ -3,7 +3,8 @@
 import '@rainbow-me/rainbowkit/styles.css';
 import { getDefaultConfig, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { coinbaseWallet, injectedWallet, walletConnectWallet } from '@rainbow-me/rainbowkit/wallets';
-import { WagmiProvider } from 'wagmi';
+import { WagmiProvider, createConfig, http } from 'wagmi';
+import { coinbaseWallet as coinbaseWalletConnector, injected as injectedConnector } from 'wagmi/connectors';
 import { base } from 'wagmi/chains';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
@@ -11,20 +12,30 @@ import { useEffect, useState } from 'react';
 const walletConnectProjectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID;
 const hasWalletConnectProjectId = Boolean(walletConnectProjectId);
 
-const config = getDefaultConfig({
-  appName: 'AiFarcaster',
-  projectId: walletConnectProjectId || '',
-  chains: [base],
-  ssr: true,
-  wallets: [
-    {
-      groupName: 'Recommended',
-      wallets: hasWalletConnectProjectId
-        ? [injectedWallet, walletConnectWallet, coinbaseWallet]
-        : [injectedWallet, coinbaseWallet],
-    },
-  ],
-});
+const config = hasWalletConnectProjectId
+  ? getDefaultConfig({
+      appName: 'AiFarcaster',
+      projectId: walletConnectProjectId!,
+      chains: [base],
+      ssr: true,
+      wallets: [
+        {
+          groupName: 'Recommended',
+          wallets: [injectedWallet, walletConnectWallet, coinbaseWallet],
+        },
+      ],
+    })
+  : createConfig({
+      chains: [base],
+      ssr: true,
+      connectors: [
+        injectedConnector(),
+        coinbaseWalletConnector({ appName: 'AiFarcaster' }),
+      ],
+      transports: {
+        [base.id]: http(),
+      },
+    });
 
 const createQueryClient = () => new QueryClient();
 
