@@ -3,9 +3,9 @@
 import {
   Bot,
   BrainCircuit,
-  ChartLine,
   Clock3,
   Frame,
+  LineChart,
   Sparkles,
   TrendingUp,
   Users,
@@ -104,7 +104,7 @@ export default function DashboardPage() {
 
         <div className="rounded-2xl border border-white/10 bg-gray-900/80 p-5 shadow-lg transition-all duration-300">
           <div className="mb-4 flex items-center gap-2">
-            <ChartLine className="h-5 w-5 text-cyan-300" />
+            <LineChart className="h-5 w-5 text-cyan-300" />
             <h3 className="text-lg font-semibold text-white">Engagement Timeline</h3>
           </div>
           <div className="h-44 rounded-xl border border-white/10 bg-gradient-to-b from-cyan-500/5 to-transparent p-4">
