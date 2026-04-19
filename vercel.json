@@ -9,6 +9,10 @@
     "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY": "@stripe-publishable-key",
     "NEXT_PUBLIC_PAYMENT_RECEIVER_ADDRESS": "@payment-receiver-address",
     "STRIPE_SECRET_KEY": "@stripe-secret-key",
+    "STRIPE_WEBHOOK_SECRET": "@stripe-webhook-secret",
+    "STRIPE_PRICE_PRO_MONTHLY": "@stripe-price-pro-monthly",
+    "STRIPE_PRICE_PRO_YEARLY": "@stripe-price-pro-yearly",
+    "STRIPE_PRICE_PREMIUM_TEMPLATE": "@stripe-price-premium-template",
     "DATABASE_URL": "@database-url",
     "OPENAI_API_KEY": "@openai-api-key",
     "UPSTASH_REDIS_REST_URL": "@upstash-redis-rest-url",
@@ -21,6 +25,10 @@
     "NEXT_PUBLIC_SUPABASE_URL": "@supabase-url",
     "NEXT_PUBLIC_SUPABASE_ANON_KEY": "@supabase-anon-key",
     "SUPABASE_SERVICE_ROLE_KEY": "@supabase-service-role-key",
-    "STRIPE_WEBHOOK_SECRET": "@stripe-webhook-secret"
+    "FARCASTER_HUB_URL": "@farcaster-hub-url",
+    "FARCASTER_SIGNER_PRIVATE_KEY": "@farcaster-signer-private-key",
+    "MONITORING_SECRET": "@monitoring-secret",
+    "FEATURE_TOKEN_LAUNCHER": "false",
+    "FEATURE_CRYPTO_PAYMENTS": "false"
   }
 }

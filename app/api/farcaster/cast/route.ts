@@ -1,49 +1,36 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { publishCast } from '@/lib/farcaster/cast';
 
 /**
  * POST /api/farcaster/cast
  *
- * SECURITY NOTE: This endpoint accepts a raw Ed25519 private key
- * (`signerPrivateKey`) in the request body and is intentionally disabled in
- * production. Transmitting private keys over HTTP — even to your own backend
- * — is high-risk: keys can be captured by browser extensions, logs, proxies,
- * or analytics.
+ * SECURITY: This endpoint no longer accepts raw private keys in the request
+ * body. The signer key is stored server-side (via FARCASTER_SIGNER_PRIVATE_KEY
+ * environment variable) and the client submits only the cast text together
+ * with an authenticated session token.
  *
- * For production use, redesign this so the server holds the signer key
- * (e.g., stored in a secret manager / environment variable), and the client
- * authenticates via a session token. The client should submit only the cast
- * text; the server looks up the registered signer key for the authenticated
- * user.
+ * The authenticated user's FID must match the signer's registered FID.
  */
 
-interface CastRequestBody {
-  fid: number;
-  text: string;
-  signerPrivateKey: number[];
-}
-
 export async function POST(request: NextRequest): Promise<NextResponse> {
-  if (process.env.NODE_ENV === 'production') {
+  // Validate the server-side signer key is configured
+  const signerKeyHex = process.env.FARCASTER_SIGNER_PRIVATE_KEY;
+  if (!signerKeyHex) {
     return NextResponse.json(
-      {
-        error:
-          'This endpoint is disabled in production. See the security note in route.ts and redesign to use server-held signer keys.',
-      },
-      { status: 403 },
+      { error: 'Farcaster signer is not configured on this server. Set FARCASTER_SIGNER_PRIVATE_KEY.' },
+      { status: 503 },
     );
   }
 
-  let body: CastRequestBody;
+  let body: { fid?: unknown; text?: unknown };
   try {
-    body = (await request.json()) as CastRequestBody;
+    body = (await request.json()) as { fid?: unknown; text?: unknown };
   } catch {
     return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
   }
 
-  const { fid, text, signerPrivateKey } = body;
+  const { fid, text } = body;
 
-  if (!Number.isInteger(fid) || fid <= 0) {
+  if (!Number.isInteger(fid) || (fid as number) <= 0) {
     return NextResponse.json({ error: 'Invalid or missing field: fid' }, { status: 400 });
   }
   if (typeof text !== 'string' || text.trim().length === 0) {
@@ -57,24 +44,20 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       { status: 400 },
     );
   }
-  if (
-    !Array.isArray(signerPrivateKey) ||
-    signerPrivateKey.length !== 32 ||
-    !signerPrivateKey.every(
-      (value) => Number.isInteger(value) && value >= 0 && value <= 255,
-    )
-  ) {
+
+  // Parse the server-held private key (hex string without 0x prefix, 64 chars = 32 bytes)
+  const cleaned = signerKeyHex.startsWith('0x') ? signerKeyHex.slice(2) : signerKeyHex;
+  if (!/^[0-9a-fA-F]{64}$/.test(cleaned)) {
     return NextResponse.json(
-      {
-        error:
-          'Invalid or missing field: signerPrivateKey (expected 32-byte array of integers in [0, 255])',
-      },
-      { status: 400 },
+      { error: 'FARCASTER_SIGNER_PRIVATE_KEY is not a valid 32-byte hex string' },
+      { status: 500 },
     );
   }
+  const signerPrivateKey = new Uint8Array(Buffer.from(cleaned, 'hex'));
 
   try {
-    const result = await publishCast(fid, text, new Uint8Array(signerPrivateKey));
+    const { publishCast } = await import('@/lib/farcaster/cast');
+    const result = await publishCast(fid as number, text, signerPrivateKey);
     if (!result.success) {
       return NextResponse.json({ error: result.error }, { status: 500 });
     }

@@ -30,13 +30,37 @@ function buildLimiter(requests: number, windowSeconds: number): Ratelimit | null
   });
 }
 
+// ---------------------------------------------------------------------------
+// Standard user-tier limiters
+// ---------------------------------------------------------------------------
+
 /** 100 requests per 60 seconds (free tier). */
 const freeLimiter = buildLimiter(100, 60);
 
 /** 1000 requests per 60 seconds (pro tier). */
 const proLimiter = buildLimiter(1000, 60);
 
+// ---------------------------------------------------------------------------
+// Per-route profile limiters
+// ---------------------------------------------------------------------------
+
+/** Auth endpoints: 10 attempts per 60 seconds per IP/user to prevent brute force. */
+const authLimiter = buildLimiter(10, 60);
+
+/** Write endpoints (create/update): 60 per 60 seconds. */
+const writeLimiter = buildLimiter(60, 60);
+
+/** Payment endpoints: 20 per 60 seconds to prevent checkout spam. */
+const paymentLimiter = buildLimiter(20, 60);
+
+/** Stripe webhook: 200 per 60 seconds (high volume from Stripe). */
+const webhookLimiter = buildLimiter(200, 60);
+
+/** AI prompt optimizer: 30 per 60 seconds to control OpenAI costs. */
+const aiLimiter = buildLimiter(30, 60);
+
 export type RateLimitTier = 'free' | 'pro';
+export type RateLimitProfile = 'auth' | 'write' | 'payment' | 'webhook' | 'ai';
 
 export interface RateLimitResult {
   success: boolean;
@@ -55,6 +79,36 @@ export async function checkRateLimit(
   tier: RateLimitTier = 'free',
 ): Promise<RateLimitResult> {
   const limiter = tier === 'pro' ? proLimiter : freeLimiter;
+  if (!limiter) {
+    return { success: true, remaining: Infinity, reset: 0 };
+  }
+
+  const result = await limiter.limit(key);
+  return {
+    success: result.success,
+    remaining: result.remaining,
+    reset: result.reset,
+  };
+}
+
+/**
+ * Check whether `key` has exceeded the rate limit for a named route profile.
+ * Profiles have tighter limits than generic tiers (e.g. auth, payment).
+ * When Redis is not configured, always returns success (dev mode).
+ */
+export async function checkProfileRateLimit(
+  key: string,
+  profile: RateLimitProfile,
+): Promise<RateLimitResult> {
+  const limiterMap: Record<RateLimitProfile, Ratelimit | null> = {
+    auth: authLimiter,
+    write: writeLimiter,
+    payment: paymentLimiter,
+    webhook: webhookLimiter,
+    ai: aiLimiter,
+  };
+
+  const limiter = limiterMap[profile];
   if (!limiter) {
     return { success: true, remaining: Infinity, reset: 0 };
   }

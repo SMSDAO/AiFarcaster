@@ -1,0 +1,89 @@
+// app/api/airdrop/campaigns/route.ts
+// GET  /api/airdrop/campaigns   – List campaigns for the authenticated user.
+// POST /api/airdrop/campaigns   – Create a new airdrop campaign.
+import 'server-only';
+import { NextRequest } from 'next/server';
+import { ZodError } from 'zod';
+import { getUserFromRequest } from '@/lib/auth';
+import { prisma } from '@/lib/db';
+import { checkProfileRateLimit } from '@/lib/rate-limit';
+import { CreateAirdropCampaignSchema, AirdropRecipientsUploadSchema } from '@/lib/validation';
+import { ok, created, unauthorized, zodError, error, rateLimited } from '@/lib/api-response';
+import { logger } from '@/lib/logger';
+
+export const dynamic = 'force-dynamic';
+
+export async function GET(req: NextRequest) {
+  const user = await getUserFromRequest(req);
+  if (!user) return unauthorized();
+
+  const { searchParams } = req.nextUrl;
+  const page = Math.max(1, parseInt(searchParams.get('page') ?? '1', 10));
+  const limit = Math.min(100, Math.max(1, parseInt(searchParams.get('limit') ?? '20', 10)));
+  const statusFilter = searchParams.get('status');
+
+  const where = {
+    userId: user.id,
+    ...(statusFilter ? { status: statusFilter as 'DRAFT' | 'PENDING' | 'IN_PROGRESS' | 'COMPLETED' | 'FAILED' } : {}),
+  };
+
+  const [campaigns, total] = await Promise.all([
+    prisma.airdropCampaign.findMany({
+      where,
+      include: { _count: { select: { recipients: true } } },
+      orderBy: { createdAt: 'desc' },
+      skip: (page - 1) * limit,
+      take: limit,
+    }),
+    prisma.airdropCampaign.count({ where }),
+  ]);
+
+  return ok({ campaigns, total, page, limit });
+}
+
+export async function POST(req: NextRequest) {
+  const user = await getUserFromRequest(req);
+  if (!user) return unauthorized();
+
+  const rl = await checkProfileRateLimit(`airdrop:create:${user.id}`, 'write');
+  if (!rl.success) return rateLimited(rl.remaining, rl.reset);
+
+  let body: unknown;
+  try {
+    body = await req.json();
+  } catch {
+    return error('BAD_REQUEST', 'Invalid JSON body');
+  }
+
+  // Check if request contains recipients for bulk upload
+  const rawBody = body as Record<string, unknown>;
+
+  if (rawBody.recipients !== undefined) {
+    // Bulk-upload recipients to an existing campaign — reject on campaign creation
+    return error('BAD_REQUEST', 'To upload recipients, POST to /api/airdrop/campaigns/:id/recipients');
+  }
+
+  let input;
+  try {
+    input = CreateAirdropCampaignSchema.parse(body);
+  } catch (err) {
+    if (err instanceof ZodError) return zodError(err);
+    return error('BAD_REQUEST', 'Invalid request body');
+  }
+
+  const campaign = await prisma.airdropCampaign.create({
+    data: {
+      userId: user.id,
+      name: input.name,
+      description: input.description,
+      tokenAddress: input.tokenAddress,
+      tokenSymbol: input.tokenSymbol,
+      totalAmount: input.totalAmount,
+      scheduledAt: input.scheduledAt ? new Date(input.scheduledAt) : undefined,
+    },
+  });
+
+  logger.info('airdrop.campaign.created', { campaignId: campaign.id, userId: user.id });
+
+  return created(campaign);
+}
