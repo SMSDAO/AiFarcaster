@@ -17,7 +17,8 @@ import {
   X,
   ShieldCheck
 } from "lucide-react";
-import { useState } from "react";
+import { Suspense, useState } from "react";
+import { DashboardRouteLoadingSkeleton } from "./components/loading-skeletons";
 
 export default function DashboardLayout({
   children,
@@ -128,7 +129,9 @@ export default function DashboardLayout({
           </div>
         </header>
 
-        <main className="p-4 lg:p-8">{children}</main>
+        <main className="p-4 lg:p-8">
+          <Suspense fallback={<DashboardRouteLoadingSkeleton />}>{children}</Suspense>
+        </main>
       </div>
     </div>
   );
