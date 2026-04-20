@@ -16,14 +16,10 @@ const nextConfig = {
     domains: ['localhost'],
   },
   webpack: (config) => {
-    // Disable Webpack filesystem cache to avoid snapshot errors on Windows
-    // and stale-cache build failures in CI.
-    config.cache = false;
-    config.resolve.fallback = {
-      ...config.resolve.fallback,
-      fs: false,
-      net: false,
-      tls: false,
+    config.resolve.fallback = { fs: false, net: false, tls: false };
+    config.resolve.alias = {
+      ...(config.resolve.alias || {}),
+      '@metamask/sdk': false,
       '@react-native-async-storage/async-storage': false,
     };
     config.externals.push(
