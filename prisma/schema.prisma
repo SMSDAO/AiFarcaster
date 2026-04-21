@@ -337,11 +337,13 @@ model AirdropMerkleRoot {
   merkleRoot String
   ipfsCid    String?  // IPFS CID of the full recipient list used to generate the root
   leafCount  Int
-  txHash     String?  // on-chain transaction that anchored this root (if applicable)
+  txHash     String?  @unique  // on-chain transaction that anchored this root; unique to prevent duplicate anchoring
+  pqcRoot    String?           // reserved slot for a future ML-DSA / post-quantum root commitment
   publishedAt DateTime @default(now())
 
   campaign AirdropCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
 
   @@unique([campaignId, merkleRoot])
   @@index([campaignId])
+  @@index([campaignId, publishedAt])
 }
