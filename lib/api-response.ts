@@ -59,7 +59,7 @@ export function rateLimited(remaining: number, reset: number): NextResponse {
       headers: {
         'X-RateLimit-Remaining': String(remaining),
         'X-RateLimit-Reset': String(reset),
-        'Retry-After': String(Math.ceil((reset - Date.now()) / 1000)),
+        'Retry-After': String(Math.max(0, Math.ceil((reset - Date.now()) / 1000))),
       },
     },
   );
