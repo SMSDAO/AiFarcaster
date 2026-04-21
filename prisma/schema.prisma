@@ -52,16 +52,17 @@ model User {
   role      Role     @default(USER)
   createdAt DateTime @default(now())
 
-  prompts          Prompt[]
-  sessions         Session[]
-  usage            Usage[]
-  contracts        Contract[]
-  frames           Frame[]
+  prompts           Prompt[]
+  sessions          Session[]
+  usage             Usage[]
+  contracts         Contract[]
+  frames            Frame[]
   templatePurchases TemplatePurchase[]
-  subscriptions    Subscription[]
-  airdropCampaigns AirdropCampaign[]
-  auditLogs        AuditLog[]
-  paymentEvents    PaymentEvent[]
+  subscriptions     Subscription[]
+  airdropCampaigns  AirdropCampaign[]
+  auditLogs         AuditLog[]
+  paymentEvents     PaymentEvent[]
+  socialGraphCache  SocialGraphCache?
 }
 
 model Prompt {
@@ -130,11 +131,33 @@ model Frame {
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
 
-  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  template Template? @relation(fields: [templateId], references: [id])
+  user     User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  template Template?   @relation(fields: [templateId], references: [id])
+  events   FrameEvent[]
 
   @@index([userId])
   @@index([status])
+}
+
+// Tracks individual interaction events emitted by a Farcaster Frame
+model FrameEvent {
+  id        String   @id @default(uuid())
+  frameId   String
+  userId    String?  // null for unauthenticated interactions
+  eventType String   // e.g. "button_click", "cast", "recast", "like", "follow"
+  buttonIndex Int?
+  inputText String?
+  castHash  String?  // Farcaster cast hash when event originates from a cast
+  fid       Int?     // Farcaster FID of the acting user
+  payload   Json     @default("{}")
+  createdAt DateTime @default(now())
+
+  frame Frame @relation(fields: [frameId], references: [id], onDelete: Cascade)
+
+  @@index([frameId])
+  @@index([eventType])
+  @@index([fid])
+  @@index([createdAt])
 }
 
 // ---------------------------------------------------------------------------
@@ -217,8 +240,9 @@ model AirdropCampaign {
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
 
-  user       User              @relation(fields: [userId], references: [id], onDelete: Cascade)
-  recipients AirdropRecipient[]
+  user        User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  recipients  AirdropRecipient[]
+  merkleRoots AirdropMerkleRoot[]
 
   @@index([userId])
   @@index([status])
@@ -278,4 +302,46 @@ model AuditLog {
   @@index([userId])
   @@index([action])
   @@index([createdAt])
+}
+
+// ---------------------------------------------------------------------------
+// Social Graph Cache
+// ---------------------------------------------------------------------------
+
+// Cached Farcaster social graph snapshot for a user (refreshed via background job)
+model SocialGraphCache {
+  id           String   @id @default(uuid())
+  userId       String   @unique
+  fid          Int      @unique
+  followingFids Int[]   // FIDs this user follows
+  followerFids  Int[]   // FIDs that follow this user
+  mutualFids    Int[]   // intersection of following + followers
+  lastSyncedAt DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([fid])
+}
+
+// ---------------------------------------------------------------------------
+// Airdrop Merkle Roots
+// ---------------------------------------------------------------------------
+
+// Immutable record of each merkle root published for an airdrop campaign.
+// Multiple roots may exist per campaign (e.g. after adding late recipients).
+model AirdropMerkleRoot {
+  id         String   @id @default(uuid())
+  campaignId String
+  merkleRoot String
+  ipfsCid    String?  // IPFS CID of the full recipient list used to generate the root
+  leafCount  Int
+  txHash     String?  // on-chain transaction that anchored this root (if applicable)
+  publishedAt DateTime @default(now())
+
+  campaign AirdropCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  @@unique([campaignId, merkleRoot])
+  @@index([campaignId])
 }
