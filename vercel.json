@@ -29,6 +29,6 @@
     "FARCASTER_SIGNER_PRIVATE_KEY": "@farcaster-signer-private-key",
     "MONITORING_SECRET": "@monitoring-secret",
     "FEATURE_TOKEN_LAUNCHER": "false",
-    "FEATURE_CRYPTO_PAYMENTS": "false"
+    "NEXT_PUBLIC_FEATURE_CRYPTO_PAYMENTS": "false"
   }
 }

@@ -12,11 +12,10 @@ import { checkProfileRateLimit } from '@/lib/rate-limit';
 import { logger } from '@/lib/logger';
 import { getStripeWebhookSecret, isStripeConfigured } from '@/lib/env';
 
-export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
 
 // Stripe requires the raw request body for signature verification.
-// Next.js App Router: disable body parsing so we can read raw bytes.
-export const config = { api: { bodyParser: false } };
+// In App Router route handlers use `await req.text()` to read it.
 
 function getStripeClient(): Stripe | null {
   const secretKey = process.env.STRIPE_SECRET_KEY;

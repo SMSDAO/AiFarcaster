@@ -13,6 +13,7 @@ interface Template {
   tier: 'FREE' | 'PREMIUM';
   featured: boolean;
   price?: number | null;
+  hasAccess: boolean;
 }
 
 interface ApiTemplate {
@@ -22,6 +23,7 @@ interface ApiTemplate {
   tier: 'FREE' | 'PREMIUM';
   featured: boolean;
   price?: number | null;
+  hasAccess: boolean;
 }
 
 interface SubscriptionStatus {
@@ -211,7 +213,6 @@ export default function TemplatesPage() {
             <TemplateCard
               key={template.id}
               template={template}
-              hasPremiumAccess={hasPremiumAccess}
               checkoutLoading={checkoutLoading}
               onPurchase={handlePurchase}
             />
@@ -230,17 +231,16 @@ export default function TemplatesPage() {
 
 function TemplateCard({
   template,
-  hasPremiumAccess,
   checkoutLoading,
   onPurchase,
 }: {
   template: Template;
-  hasPremiumAccess: boolean;
   checkoutLoading: string | null;
   onPurchase: (id: string, tier: string) => void;
 }) {
   const isPremium = template.tier === 'PREMIUM';
-  const isLocked = isPremium && !hasPremiumAccess;
+  // Use the per-template `hasAccess` from the API (accounts for subscription AND individual purchases)
+  const isLocked = isPremium && !template.hasAccess;
   const isLoadingThis = checkoutLoading === template.id;
   const priceLabel = isPremium
     ? template.price != null
@@ -297,7 +297,7 @@ function TemplateCard({
           <button className="w-full py-2 rounded-lg font-semibold transition bg-green-600 text-white hover:bg-green-700">
             Use Template
           </button>
-        ) : hasPremiumAccess ? (
+        ) : template.hasAccess ? (
           <button className="w-full py-2 rounded-lg font-semibold transition bg-purple-600 text-white hover:bg-purple-700">
             Use Template
           </button>

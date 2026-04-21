@@ -1,8 +1,8 @@
 // app/api/airdrop/campaigns/[id]/route.ts
-// GET    /api/airdrop/campaigns/:id            – Get campaign + recipients.
-// PATCH  /api/airdrop/campaigns/:id            – Update campaign metadata/status.
-// DELETE /api/airdrop/campaigns/:id            – Delete a DRAFT campaign.
-// POST   /api/airdrop/campaigns/:id/recipients – Bulk upload recipients (JSON).
+// GET    /api/airdrop/campaigns/:id  – Get campaign + recipients.
+// PATCH  /api/airdrop/campaigns/:id  – Update campaign metadata/status.
+// DELETE /api/airdrop/campaigns/:id  – Delete a DRAFT campaign.
+// POST   /api/airdrop/campaigns/:id  – Bulk upload recipients (JSON body with `recipients` array).
 import 'server-only';
 import { NextRequest } from 'next/server';
 import { ZodError } from 'zod';

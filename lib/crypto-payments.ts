@@ -106,13 +106,13 @@ function encodeERC20Transfer(to: `0x${string}`, amount: bigint): `0x${string}` {
  * or `useWriteContract` hooks.
  *
  * @throws Error if NEXT_PUBLIC_PAYMENT_RECEIVER_ADDRESS is not set.
- * @throws Error if FEATURE_CRYPTO_PAYMENTS is not enabled.
+ * @throws Error if NEXT_PUBLIC_FEATURE_CRYPTO_PAYMENTS is not enabled.
  */
 export function preparePayment(request: PaymentRequest): PreparedPayment {
-  if (process.env.FEATURE_CRYPTO_PAYMENTS !== 'true') {
+  if (process.env.NEXT_PUBLIC_FEATURE_CRYPTO_PAYMENTS !== 'true') {
     throw new Error(
       'Crypto payments are currently disabled. ' +
-      'Set FEATURE_CRYPTO_PAYMENTS=true to enable after security review.',
+      'Set NEXT_PUBLIC_FEATURE_CRYPTO_PAYMENTS=true to enable after security review.',
     );
   }
 
@@ -161,7 +161,7 @@ export async function verifyPayment(
   expectedRecipient?: string,
   expectedMinAmount?: string,
 ): Promise<boolean> {
-  if (process.env.FEATURE_CRYPTO_PAYMENTS !== 'true') {
+  if (process.env.NEXT_PUBLIC_FEATURE_CRYPTO_PAYMENTS !== 'true') {
     throw new Error('Crypto payments are currently disabled.');
   }
 

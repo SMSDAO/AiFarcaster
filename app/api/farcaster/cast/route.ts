@@ -9,9 +9,8 @@ import { getUserFromRequest } from '@/lib/auth';
  * and the client submits only the cast text together with an authenticated
  * session token.
  *
- * The fid field is optional — when omitted the server uses its own registered
- * FID. When supplied, the authenticated user must match the requested FID to
- * prevent cross-user impersonation.
+ * Body: { fid: number; text: string }
+ * `fid` is required — it must be the FID registered with the server-held signer key.
  */
 
 export async function POST(request: NextRequest): Promise<NextResponse> {

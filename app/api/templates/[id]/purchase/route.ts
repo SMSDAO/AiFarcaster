@@ -33,7 +33,7 @@ export async function POST(req: NextRequest, { params }: Params) {
   if (!rl.success) return rateLimited(rl.remaining, rl.reset);
 
   const { id: templateId } = await params;
-  const template = await prisma.template.findUnique({ where: { id: templateId, active: true } });
+  const template = await prisma.template.findFirst({ where: { id: templateId, active: true } });
   if (!template) return notFound('Template');
 
   // Free templates don't need purchase

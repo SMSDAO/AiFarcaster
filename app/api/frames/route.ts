@@ -24,9 +24,14 @@ export async function GET(req: NextRequest) {
   const limit = Math.min(100, Math.max(1, Number.isNaN(parsedLimit) ? 20 : parsedLimit));
   const statusFilter = searchParams.get('status');
 
+  const ALLOWED_STATUSES = ['DRAFT', 'ACTIVE', 'ARCHIVED'] as const;
+  if (statusFilter !== null && !ALLOWED_STATUSES.includes(statusFilter as typeof ALLOWED_STATUSES[number])) {
+    return error('BAD_REQUEST', `Invalid status value. Must be one of: ${ALLOWED_STATUSES.join(', ')}`);
+  }
+
   const where = {
     userId: user.id,
-    ...(statusFilter ? { status: statusFilter as 'DRAFT' | 'ACTIVE' | 'ARCHIVED' } : {}),
+    ...(statusFilter ? { status: statusFilter as typeof ALLOWED_STATUSES[number] } : {}),
   };
 
   const [frames, total] = await Promise.all([

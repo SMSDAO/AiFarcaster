@@ -13,7 +13,7 @@ type Params = { params: Promise<{ id: string }> };
 export async function GET(req: NextRequest, { params }: Params) {
   const { id } = await params;
 
-  const template = await prisma.template.findUnique({ where: { id, active: true } });
+  const template = await prisma.template.findFirst({ where: { id, active: true } });
   if (!template) return notFound('Template');
 
   // Optionally include entitlement info if authenticated

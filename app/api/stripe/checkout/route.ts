@@ -97,7 +97,7 @@ export async function POST(req: NextRequest) {
     // Treat productId as a template UUID — look up in DB
     try {
       const { prisma } = await import('@/lib/db');
-      const template = await prisma.template.findUnique({
+      const template = await prisma.template.findFirst({
         where: { id: input.productId, active: true },
       });
       if (!template) {
@@ -106,10 +106,9 @@ export async function POST(req: NextRequest) {
       if (template.tier === 'FREE') {
         return error('BAD_REQUEST', 'Free templates do not require payment');
       }
-      // Use the template's stored Stripe price ID if available, otherwise
-      // fall back to the default premium template price.
-      priceId =
-        process.env.STRIPE_PRICE_PREMIUM_TEMPLATE ?? undefined;
+      // Use the server-configured Stripe price for paid templates.
+      // Template records do not store a per-template Stripe price ID.
+      priceId = process.env.STRIPE_PRICE_PREMIUM_TEMPLATE ?? undefined;
 
       if (!priceId) {
         logger.warn('stripe.checkout.missing_template_price', { templateId: input.productId });

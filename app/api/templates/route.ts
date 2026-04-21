@@ -1,7 +1,10 @@
 // app/api/templates/route.ts
 // GET /api/templates – List templates (optionally filtered by category, tier).
+// For authenticated users, each template includes a `hasAccess` field that
+// reflects whether the user can use it (subscription, trial, or individual purchase).
 import 'server-only';
 import { NextRequest } from 'next/server';
+import { getUserFromRequest } from '@/lib/auth';
 import { prisma } from '@/lib/db';
 import { ok, error } from '@/lib/api-response';
 
@@ -42,5 +45,40 @@ export async function GET(req: NextRequest) {
     prisma.template.count({ where }),
   ]);
 
-  return ok({ templates, total, page, limit });
+  // If authenticated, enrich each template with per-user access info in a single
+  // pair of queries (avoid N+1 queries over the template list).
+  const user = await getUserFromRequest(req);
+  if (user) {
+    const premiumTemplateIds = templates
+      .filter((t) => t.tier === 'PREMIUM')
+      .map((t) => t.id);
+
+    // One query for active/trialing subscription; one for purchased template IDs.
+    const [activeSub, purchases] = await Promise.all([
+      prisma.subscription.findFirst({
+        where: { userId: user.id, status: { in: ['ACTIVE', 'TRIALING'] } },
+      }),
+      premiumTemplateIds.length > 0
+        ? prisma.templatePurchase.findMany({
+            where: { userId: user.id, templateId: { in: premiumTemplateIds } },
+            select: { templateId: true },
+          })
+        : Promise.resolve([]),
+    ]);
+
+    const purchasedIds = new Set(purchases.map((p) => p.templateId));
+    const hasSubscription = Boolean(activeSub);
+
+    const enriched = templates.map((t) => ({
+      ...t,
+      hasAccess:
+        t.tier === 'FREE' || hasSubscription || purchasedIds.has(t.id),
+    }));
+
+    return ok({ templates: enriched, total, page, limit });
+  }
+
+  // Unauthenticated: free templates are accessible, premium are not
+  const enriched = templates.map((t) => ({ ...t, hasAccess: t.tier === 'FREE' }));
+  return ok({ templates: enriched, total, page, limit });
 }

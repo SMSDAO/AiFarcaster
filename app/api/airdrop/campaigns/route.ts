@@ -24,9 +24,14 @@ export async function GET(req: NextRequest) {
   const limit = Math.min(100, Math.max(1, Number.isNaN(parsedLimit) ? 20 : parsedLimit));
   const statusFilter = searchParams.get('status');
 
+  const ALLOWED_STATUSES = ['DRAFT', 'PENDING', 'IN_PROGRESS', 'COMPLETED', 'FAILED'] as const;
+  if (statusFilter !== null && !ALLOWED_STATUSES.includes(statusFilter as typeof ALLOWED_STATUSES[number])) {
+    return error('BAD_REQUEST', `Invalid status value. Must be one of: ${ALLOWED_STATUSES.join(', ')}`);
+  }
+
   const where = {
     userId: user.id,
-    ...(statusFilter ? { status: statusFilter as 'DRAFT' | 'PENDING' | 'IN_PROGRESS' | 'COMPLETED' | 'FAILED' } : {}),
+    ...(statusFilter ? { status: statusFilter as typeof ALLOWED_STATUSES[number] } : {}),
   };
 
   const [campaigns, total] = await Promise.all([
@@ -62,7 +67,10 @@ export async function POST(req: NextRequest) {
 
   if (rawBody.recipients !== undefined) {
     // Bulk-upload recipients to an existing campaign — reject on campaign creation
-    return error('BAD_REQUEST', 'To upload recipients, POST to /api/airdrop/campaigns/:id/recipients');
+    return error(
+      'BAD_REQUEST',
+      'POST /api/airdrop/campaigns does not accept a recipients field. Create the campaign without recipients, then POST to /api/airdrop/campaigns/:id with a recipients field.',
+    );
   }
 
   let input;
