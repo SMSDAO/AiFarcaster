@@ -22,7 +22,7 @@ const TOOLS = [
     description: "Launch ERC-20 tokens on Base with built-in liquidity and fair launch mechanisms",
     icon: Rocket,
     color: "purple",
-    status: "Available",
+    status: "Coming Soon",
   },
   {
     id: 2,
@@ -126,23 +126,25 @@ export default function ToolsPage() {
       </div>
 
       {/* Featured Tool */}
-      <div className="bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg shadow-lg p-8 text-white">
+      <div className="bg-gradient-to-r from-gray-600 to-gray-700 rounded-lg shadow-lg p-8 text-white">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between">
           <div className="mb-4 md:mb-0">
             <div className="flex items-center mb-3">
-              <Rocket className="w-8 h-8 mr-3" />
+              <Rocket className="w-8 h-8 mr-3 opacity-70" />
               <h2 className="text-2xl font-bold">Token Launcher</h2>
+              <span className="ml-3 bg-gray-500 text-gray-100 text-xs font-semibold px-2 py-1 rounded-full">Coming Soon</span>
             </div>
             <p className="mb-4 opacity-90 max-w-2xl">
               Launch your token on Base mainnet with just a few clicks. Includes smart contract
-              deployment, liquidity pool setup, and marketing tools.
+              deployment, liquidity pool setup, and marketing tools. Currently undergoing security
+              review before production release.
             </p>
-            <button className="bg-white text-purple-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition">
-              Launch Your Token
+            <button disabled className="bg-gray-400 text-gray-200 px-6 py-3 rounded-lg font-semibold cursor-not-allowed opacity-60">
+              Coming Soon
             </button>
           </div>
-          <div className="text-right">
-            <div className="text-sm opacity-75 mb-1">Gas Estimate</div>
+          <div className="text-right opacity-60">
+            <div className="text-sm mb-1">Gas Estimate</div>
             <div className="text-3xl font-bold">~0.01 ETH</div>
           </div>
         </div>

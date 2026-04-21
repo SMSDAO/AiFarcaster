@@ -3,6 +3,10 @@ const { version } = require('./package.json');
 
 const nextConfig = {
   reactStrictMode: true,
+  // Standalone output bundles all dependencies for Docker / serverless containers.
+  // On Vercel this is optional (Vercel handles bundling), but it enables
+  // self-hosted Docker deployments without any extra configuration.
+  output: process.env.NEXT_OUTPUT_STANDALONE === 'true' ? 'standalone' : undefined,
   env: {
     // Bake the package.json version into the build so it is available in all
     // runtimes (next start, standalone containers, etc.) via process.env.APP_VERSION.

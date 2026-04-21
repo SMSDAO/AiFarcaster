@@ -7,100 +7,77 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [Unreleased] — upcoming v1.0.0
-
-> **Note:** The entries below are staged for the `v1.0.0` release. `package.json` will be bumped to `1.0.0` when the release tag is created.
+## [1.0.0] — 2026-04-19
 
 ### Added
 
-#### Core Platform
-- Initial production release of AiFarcaster — AI-powered Farcaster Frame Builder & Token Launcher
-- Next.js 15 application with App Router, React 19, TypeScript 5, and Tailwind CSS
-- Supabase integration for authentication and database (`@supabase/ssr`, `@supabase/supabase-js`)
-- RainbowKit + wagmi wallet connection for Base mainnet and Base Sepolia
+#### Data Layer
+- New Prisma models: `Template`, `TemplatePurchase`, `Subscription`, `AirdropCampaign`, `AirdropRecipient`, `Frame`, `PaymentEvent`, `AuditLog`
+- New enums: `TemplateTier`, `SubscriptionStatus`, `SubscriptionPlan`, `AirdropStatus`, `FrameStatus`
+- Initial production migration: `prisma/migrations/0001_init_v1_0_0/migration.sql`
 
-#### User Dashboard
-- Stats overview cards: Total Frames, Active Projects, Engagement, Revenue
-- Quick Actions panel: New Frame, New Project, Browse Templates, AI Assistant
-- Recent Activity feed with event type badges
-- Frames Timeline with status indicators (Active / Draft)
-- Sidebar navigation: Overview, Frames, Projects, Templates, AI Prompts, Tools
-- Mobile-responsive layout with hamburger menu
+#### API Foundation
+- `lib/api-errors.ts` — centralised error code type and `apiError()` helper
+- `lib/api-response.ts` — `ok()`, `created()`, `error()`, `unauthorized()`, `forbidden()`, `notFound()`, `paymentRequired()`, `rateLimited()`, `internalError()` response helpers
+- `lib/logger.ts` — structured JSON logger (JSON-lines in production, pretty-print in dev)
+- `lib/env.ts` — server-only environment variable validation with feature flags (`FEATURE_TOKEN_LAUNCHER`, `FEATURE_CRYPTO_PAYMENTS`)
+- Extended `lib/validation.ts` with Zod schemas for frames, templates, purchases, subscriptions, airdrop campaigns, and airdrop recipients
+- Extended `lib/rate-limit.ts` with per-route profiles: `auth` (10/min), `write` (60/min), `payment` (20/min), `webhook` (200/min), `ai` (30/min)
 
-#### Admin Panel (`/admin`)
-- System Overview dashboard with KPI cards: Total Users, Active Agents, Revenue (MTD), API Calls (24h) — **UI scaffolding with mock data**
-- Recent Activity log with user attribution and timestamps — **mock data**
-- System Health indicator panel: API, Database, Auth, Storage — **mock data; `/api/health` endpoint reports `services.api` only**
-- User Management table with search, plan badges, and status indicators — **read-only mock data; Edit/Ban/Restore actions are planned**
-- Agent Management page (`/admin/agents`) — **UI scaffolding with mock data**
-- Billing & Payments dashboard (`/admin/billing`) — **UI scaffolding with mock data; no Stripe/crypto integration yet**
-- Wallet management (`/admin/wallets`) — **UI scaffolding**
-- Oracle management (`/admin/oracles`) — **UI scaffolding**
-- API Key management (`/admin/api-keys`) — **UI scaffolding with mock data; no key generation/revocation yet**
-- Audit Logs viewer (`/admin/logs`) — **UI scaffolding with mock data; no persistent log storage yet**
-- Add-on marketplace (`/admin/addons`) — **UI scaffolding**
-- Settings with change-password flow (`/admin/settings`, `/admin/settings/change-password`) — **change-password implemented via Supabase**
-- Admin login page with Supabase authentication (`/admin/login`) — **implemented**
+#### API Routes (Real Implementations)
+- `GET/POST /api/frames` — list and create user frames with authentication, rate limiting, and premium template gating
+- `GET/PATCH/DELETE /api/frames/[id]` — get, update, delete individual frames
+- `GET /api/templates` — list all active templates with filtering (category, tier, featured)
+- `GET /api/templates/[id]` — get single template with user entitlement info
+- `POST /api/templates/[id]/purchase` — fulfill template purchase; subscription-holders bypass payment
+- `GET /api/subscriptions/status` — return authenticated user's subscription plan and status
+- `GET/POST /api/airdrop/campaigns` — list and create airdrop campaigns
+- `GET/PATCH/DELETE/POST /api/airdrop/campaigns/[id]` — full CRUD + recipient bulk upload (up to 10,000 recipients per campaign, idempotent upsert)
 
-#### Farcaster Integration
-- Hub client with SSL gRPC connection via `@farcaster/hub-nodejs`
-- API routes: `/api/farcaster/auth`, `/api/farcaster/feed`, `/api/farcaster/user`, `/api/farcaster/cast`
-- Singleton hub client with configurable `FARCASTER_HUB_URL`
+#### Payments
+- `POST /api/stripe/checkout` — creates Stripe Checkout Session from a server-side `productId → priceId` mapping; client never controls the price
+- `POST /api/stripe/webhook` — verifies Stripe-Signature header, stores events idempotently in `PaymentEvent`, fulfills subscriptions and one-time template purchases
+- Updated `lib/stripe.ts` — `createCheckoutSession(productId)` sends `productId` (not `priceId`) to prevent client-side price manipulation
 
-#### Payment Processing
-- Stripe integration for fiat payments (`stripe`, `@stripe/stripe-js`)
-- Crypto payments on Base mainnet: ETH, USDC, platform tokens (`viem`, `wagmi`)
-- Base Sepolia testnet support for development
+#### Premium Gating
+- Templates page: fetches `/api/subscriptions/status` on load; locks premium templates behind a padlock icon for free-tier users
+- Inline upgrade prompt in the templates page header for non-subscribers
+- Frame creation API: enforces `hasActiveSubscription || hasTemplatePurchase` before allowing use of premium templates
 
-#### Security & Middleware
-- Route protection middleware enforcing authentication on `/admin/*` routes only (dashboard routes are not protected by middleware)
-- Supabase session refresh in middleware
-- Admin-only route guard redirecting unauthenticated users to `/admin/login`
+#### Security Hardening
+- `app/api/farcaster/cast/route.ts` — rewritten to use server-held signer key (`FARCASTER_SIGNER_PRIVATE_KEY` env var); raw private keys are no longer accepted in request bodies
+- `lib/crypto-payments.ts` — fully implemented using viem (`encodeFunctionData`, `parseEther`, `parseUnits`, `createPublicClient`); gated behind `FEATURE_CRYPTO_PAYMENTS=true` feature flag
 
-#### Developer Experience
-- Build system with Next.js 15 and webpack externals for gRPC compatibility
-- ESLint configuration with `eslint-config-next`
-- TypeScript strict mode
-- CI/CD pipeline with Node.js 20.x, 22.x, 24.x matrix testing
-- Dependency caching and parallel execution in GitHub Actions
-- Security audit step (`npm audit`) in CI
+#### Observability
+- `GET /api/health` — enhanced with live checks for database, Redis, Stripe, and OpenAI readiness; returns `ok`, `degraded`, or `down` with per-service latency
+- `GET /api/monitoring` — platform metrics endpoint (user count, frames, subscriptions, purchases, 24 h prompt volume); protected by `MONITORING_SECRET` env var
 
-#### Documentation
-- `README.md` with feature overview, quick-start, architecture, and screenshots
-- `docs/ADMIN_GUIDE.md` — Enterprise admin guide with admin dashboard screenshot
-- `docs/USER_GUIDE.md` — User guide with user dashboard screenshot
-- `docs/API.md` — API documentation
-- `docs/DEPLOYMENT.md` — Vercel and manual deployment guide
-- `docs/ENVIRONMENT.md` — Complete environment variable reference
-- `docs/PAYMENTS.md` — Payment integration documentation
-- `CHANGELOG.md` — This file
-
-#### Assets
-- `public/logos/aifarcaster-logo.svg` — Platform logo
-- `public/screenshots/user-dashboard.svg` — User dashboard UI screenshot
-- `public/screenshots/admin-dashboard.svg` — Admin dashboard UI screenshot
+#### Deployment
+- `next.config.js` — optional standalone output via `NEXT_OUTPUT_STANDALONE=true` env var for self-hosted Docker deployments
+- `vercel.json` — added `MONITORING_SECRET`, `FARCASTER_SIGNER_PRIVATE_KEY`, `FEATURE_TOKEN_LAUNCHER`, `FEATURE_CRYPTO_PAYMENTS`, Stripe price ID env refs
 
 ### Changed
 
-- Upgraded from create-next-app scaffold to full enterprise platform
-- Replaced placeholder dashboard with functional stat cards and activity feeds
-- Extended webpack configuration with `@grpc/grpc-js`, `bufferutil`, `utf-8-validate` externals
-- Updated `package.json` engines to require Node >=20.0.0 and npm >=10.0.0
-
-### Fixed
-
-- `next.config.js`: removed deprecated `swcMinify` option (removed in Next.js 15)
-- Webpack resolve fallback for `fs`, `net`, `tls` to prevent browser bundle errors
-- Build-time placeholder pattern for `NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID` to allow CI builds without secrets
+- `app/dashboard/templates/page.tsx` — replaced static hardcoded templates with subscription-aware gating; premium templates show a padlock and Purchase CTA for non-subscribers; subscribers see "Use Template" for all
+- `app/dashboard/tools/page.tsx` — Token Launcher marked as "Coming Soon" until security review completes; featured hero section updated to reflect disabled state
 
 ### Security
 
-- Admin routes protected by Supabase session authentication
-- Password hashing delegated to Supabase (bcrypt-based)
-- NEXT_PUBLIC_ variables validated at client runtime with clear error messages
-- No secrets committed to source control; all credentials via environment variables
-- `.env.example` provided with placeholder values only
-- `npm audit` integrated into CI pipeline
+- Raw private keys are no longer accepted by any API endpoint
+- Stripe checkout no longer exposes price IDs to the client
+- Payment verification route enforces feature flag before processing crypto payments
+- All new API routes use `server-only` imports to prevent accidental client bundling
+- Rate limiting applied on auth, write, payment, and webhook routes
+
+---
+
+## [Unreleased — pre-1.0 scaffolding notes]
+
+> The following items were present as scaffolding/mock data in v0.x and are
+> either now implemented (above) or remain pending for a future release.
+
+- Admin panel pages (`/admin/*`) still use mock data (users, agents, billing, API keys, logs, wallets, oracles); live Supabase queries are planned for v1.1
+- Farcaster client page `/client` — compose and feed display are functional; persistent drafts not yet implemented
 
 ---
 
@@ -113,5 +90,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-[Unreleased]: https://github.com/SMSDAO/AiFarcaster/compare/v0.1.0...HEAD
+[1.0.0]: https://github.com/SMSDAO/AiFarcaster/compare/v0.1.0...v1.0.0
 [0.1.0]: https://github.com/SMSDAO/AiFarcaster/releases/tag/v0.1.0
