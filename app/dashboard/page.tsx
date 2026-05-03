@@ -8,7 +8,14 @@ import { EngagementChart } from "@/components/dashboard/EngagementChart";
 import { FramesTable } from "@/components/dashboard/FramesTable";
 
 // Mock data — easily replaceable with Firebase / API
-const stats = {
+interface DashboardStats {
+  frames: number;
+  projects: number;
+  engagement: number;
+  revenue: number;
+}
+
+const stats: DashboardStats = {
   frames: 124,
   projects: 18,
   engagement: 8.4,

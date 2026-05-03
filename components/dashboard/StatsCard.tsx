@@ -42,6 +42,7 @@ const accentConfig: Record<
     iconColor: string;
     valueColor: string;
     sparkColor: string;
+    hoverBorderClass: string;
   }
 > = {
   purple: {
@@ -50,6 +51,7 @@ const accentConfig: Record<
     iconColor: "text-purple-light",
     valueColor: "text-textPrimary",
     sparkColor: "#a855f7",
+    hoverBorderClass: "hover:border-purple-DEFAULT/40",
   },
   blue: {
     borderClass: "gradient-border-top-blue",
@@ -57,6 +59,7 @@ const accentConfig: Record<
     iconColor: "text-blue-light",
     valueColor: "text-textPrimary",
     sparkColor: "#60a5fa",
+    hoverBorderClass: "hover:border-blue-DEFAULT/40",
   },
   green: {
     borderClass: "gradient-border-top-green",
@@ -64,6 +67,7 @@ const accentConfig: Record<
     iconColor: "text-green-light",
     valueColor: "text-textPrimary",
     sparkColor: "#34d399",
+    hoverBorderClass: "hover:border-green-DEFAULT/40",
   },
   orange: {
     borderClass: "gradient-border-top-orange",
@@ -71,6 +75,7 @@ const accentConfig: Record<
     iconColor: "text-orange-light",
     valueColor: "text-textPrimary",
     sparkColor: "#fbbf24",
+    hoverBorderClass: "hover:border-orange-DEFAULT/40",
   },
 };
 
@@ -97,7 +102,7 @@ export function StatsCard({
 
   return (
     <div
-      className={`relative rounded-xl bg-card border border-border/60 p-5 shadow-soft hover:border-${accent}-DEFAULT/40 transition-all duration-200 overflow-hidden ${cfg.borderClass}`}
+      className={`relative rounded-xl bg-card border border-border/60 p-5 shadow-soft transition-all duration-200 overflow-hidden ${cfg.borderClass} ${cfg.hoverBorderClass}`}
     >
       {/* Subtle glow effect in top-left */}
       <div
