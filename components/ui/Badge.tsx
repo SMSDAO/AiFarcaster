@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -5,16 +6,16 @@ type BadgeVariant = "purple" | "blue" | "green" | "orange" | "muted";
 
 interface BadgeProps {
   variant?: BadgeVariant;
-  children: React.ReactNode;
+  children: ReactNode;
   className?: string;
   pulse?: boolean;
 }
 
 const variantStyles: Record<BadgeVariant, string> = {
-  purple: "bg-purple-DEFAULT/20 text-purple-light border-purple-DEFAULT/30",
-  blue: "bg-blue-DEFAULT/20 text-blue-light border-blue-DEFAULT/30",
-  green: "bg-green-DEFAULT/20 text-green-light border-green-DEFAULT/30",
-  orange: "bg-orange-DEFAULT/20 text-orange-light border-orange-DEFAULT/30",
+  purple: "bg-purple/20 text-purple-light border-purple/30",
+  blue: "bg-blue/20 text-blue-light border-blue/30",
+  green: "bg-green/20 text-green-light border-green/30",
+  orange: "bg-orange/20 text-orange-light border-orange/30",
   muted: "bg-white/5 text-textSecondary border-border/40",
 };
 

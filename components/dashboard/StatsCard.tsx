@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { TrendingUp, TrendingDown } from "lucide-react";
 
 type AccentColor = "purple" | "blue" | "green" | "orange";
@@ -47,35 +48,35 @@ const accentConfig: Record<
 > = {
   purple: {
     borderClass: "gradient-border-top-purple",
-    iconBg: "bg-purple-DEFAULT/20",
+    iconBg: "bg-purple/20",
     iconColor: "text-purple-light",
     valueColor: "text-textPrimary",
     sparkColor: "#a855f7",
-    hoverBorderClass: "hover:border-purple-DEFAULT/40",
+    hoverBorderClass: "hover:border-purple/40",
   },
   blue: {
     borderClass: "gradient-border-top-blue",
-    iconBg: "bg-blue-DEFAULT/20",
+    iconBg: "bg-blue/20",
     iconColor: "text-blue-light",
     valueColor: "text-textPrimary",
     sparkColor: "#60a5fa",
-    hoverBorderClass: "hover:border-blue-DEFAULT/40",
+    hoverBorderClass: "hover:border-blue/40",
   },
   green: {
     borderClass: "gradient-border-top-green",
-    iconBg: "bg-green-DEFAULT/20",
+    iconBg: "bg-green/20",
     iconColor: "text-green-light",
     valueColor: "text-textPrimary",
     sparkColor: "#34d399",
-    hoverBorderClass: "hover:border-green-DEFAULT/40",
+    hoverBorderClass: "hover:border-green/40",
   },
   orange: {
     borderClass: "gradient-border-top-orange",
-    iconBg: "bg-orange-DEFAULT/20",
+    iconBg: "bg-orange/20",
     iconColor: "text-orange-light",
     valueColor: "text-textPrimary",
     sparkColor: "#fbbf24",
-    hoverBorderClass: "hover:border-orange-DEFAULT/40",
+    hoverBorderClass: "hover:border-orange/40",
   },
 };
 
@@ -84,7 +85,7 @@ interface StatsCardProps {
   value: string;
   trend: string;
   trendPositive?: boolean;
-  icon: React.ReactNode;
+  icon: ReactNode;
   accent: AccentColor;
   sparkline?: number[];
 }

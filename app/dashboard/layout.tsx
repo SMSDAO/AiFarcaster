@@ -1,5 +1,6 @@
 'use client';
 
+import type { ReactNode } from "react";
 import { Suspense, useState } from "react";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { Header } from "@/components/layout/Header";
@@ -8,7 +9,7 @@ import { DashboardRouteLoadingSkeleton } from "./components/loading-skeletons";
 export default function DashboardLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -20,7 +21,7 @@ export default function DashboardLayout({
       {/* Main content area */}
       <div className="lg:pl-sidebar flex flex-col min-h-screen">
         {/* Header */}
-        <Header onMenuOpen={() => setSidebarOpen(true)} />
+        <Header onMenuOpen={() => setSidebarOpen(true)} open={sidebarOpen} />
 
         {/* Page content */}
         <main className="flex-1 p-4 lg:p-6 overflow-x-hidden">

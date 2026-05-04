@@ -1,13 +1,12 @@
+import type { ElementType } from "react";
 import { Badge } from "@/components/ui/Badge";
 import {
   Zap,
   BarChart2,
   Bot,
   CheckCircle,
-  AlertCircle,
   Clock,
   Upload,
-  Loader2,
 } from "lucide-react";
 
 type StatusVariant = "purple" | "blue" | "green" | "orange";
@@ -18,7 +17,7 @@ interface ActivityEvent {
   subtitle: string;
   status: string;
   statusVariant: StatusVariant;
-  icon: React.ElementType;
+  icon: ElementType;
   iconBg: string;
   iconColor: string;
 }
@@ -31,7 +30,7 @@ const events: ActivityEvent[] = [
     status: "Published",
     statusVariant: "green",
     icon: Zap,
-    iconBg: "bg-green-DEFAULT/20",
+    iconBg: "bg-green/20",
     iconColor: "text-green-light",
   },
   {
@@ -41,7 +40,7 @@ const events: ActivityEvent[] = [
     status: "Live",
     statusVariant: "blue",
     icon: BarChart2,
-    iconBg: "bg-blue-DEFAULT/20",
+    iconBg: "bg-blue/20",
     iconColor: "text-blue-light",
   },
   {
@@ -51,7 +50,7 @@ const events: ActivityEvent[] = [
     status: "Completed",
     statusVariant: "orange",
     icon: CheckCircle,
-    iconBg: "bg-orange-DEFAULT/20",
+    iconBg: "bg-orange/20",
     iconColor: "text-orange-light",
   },
   {
@@ -61,7 +60,7 @@ const events: ActivityEvent[] = [
     status: "Done",
     statusVariant: "green",
     icon: CheckCircle,
-    iconBg: "bg-green-DEFAULT/20",
+    iconBg: "bg-green/20",
     iconColor: "text-green-light",
   },
   {
@@ -71,7 +70,7 @@ const events: ActivityEvent[] = [
     status: "Queued",
     statusVariant: "purple",
     icon: Bot,
-    iconBg: "bg-purple-DEFAULT/20",
+    iconBg: "bg-purple/20",
     iconColor: "text-purple-light",
   },
   {
@@ -81,7 +80,7 @@ const events: ActivityEvent[] = [
     status: "Exported",
     statusVariant: "blue",
     icon: Upload,
-    iconBg: "bg-blue-DEFAULT/20",
+    iconBg: "bg-blue/20",
     iconColor: "text-blue-light",
   },
 ];

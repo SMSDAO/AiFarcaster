@@ -2,14 +2,12 @@
 
 import { useState, useMemo } from "react";
 import {
-  AreaChart,
   Area,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  Legend,
   Line,
   ComposedChart,
 } from "recharts";
@@ -17,8 +15,15 @@ import { LineChart as LineChartIcon } from "lucide-react";
 
 type Period = "7d" | "30d" | "90d";
 
-const generateData = (days: number) => {
-  const result = [];
+interface ChartDataPoint {
+  date: string;
+  views: number;
+  clicks: number;
+  mints: number;
+}
+
+const generateData = (days: number): ChartDataPoint[] => {
+  const result: ChartDataPoint[] = [];
   const now = new Date();
   for (let i = days - 1; i >= 0; i--) {
     const d = new Date(now);
@@ -82,7 +87,7 @@ export function EngagementChart() {
               onClick={() => setPeriod(p)}
               className={`px-2.5 py-1 text-xs font-medium rounded-md transition-all duration-150 ${
                 period === p
-                  ? "bg-purple-DEFAULT/80 text-white"
+                  ? "bg-purple/80 text-white"
                   : "text-textMuted hover:text-textSecondary"
               }`}
             >

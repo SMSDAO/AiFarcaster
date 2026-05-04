@@ -16,9 +16,10 @@ const routeLabels: Record<string, string> = {
 
 interface HeaderProps {
   onMenuOpen: () => void;
+  open: boolean;
 }
 
-export function Header({ onMenuOpen }: HeaderProps) {
+export function Header({ onMenuOpen, open }: HeaderProps) {
   const pathname = usePathname();
   const [searchFocused, setSearchFocused] = useState(false);
   const pageTitle = routeLabels[pathname] ?? "Dashboard";
@@ -44,7 +45,7 @@ export function Header({ onMenuOpen }: HeaderProps) {
           className="lg:hidden text-textSecondary hover:text-textPrimary transition-colors"
           onClick={onMenuOpen}
           aria-label="Open navigation menu"
-          aria-expanded="false"
+          aria-expanded={open}
           aria-controls="sidebar"
         >
           <Menu className="w-5 h-5" />
@@ -63,7 +64,7 @@ export function Header({ onMenuOpen }: HeaderProps) {
 
       {/* Center: search */}
       <div className={`hidden md:flex items-center gap-2 bg-card/80 border rounded-lg px-3 py-1.5 transition-all duration-200 ${
-        searchFocused ? "border-purple-DEFAULT/60 shadow-[0_0_0_2px_rgba(124,58,237,0.15)]" : "border-border/60"
+        searchFocused ? "border-purple/60 shadow-[0_0_0_2px_rgba(124,58,237,0.15)]" : "border-border/60"
       }`}
         style={{ width: searchFocused ? "280px" : "220px" }}
       >
@@ -71,6 +72,7 @@ export function Header({ onMenuOpen }: HeaderProps) {
         <input
           type="search"
           placeholder="Search..."
+          aria-label="Search dashboard"
           className="bg-transparent text-sm text-textPrimary placeholder:text-textMuted outline-none w-full"
           onFocus={() => setSearchFocused(true)}
           onBlur={() => setSearchFocused(false)}

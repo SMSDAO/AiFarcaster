@@ -1,3 +1,4 @@
+import type { ElementType } from "react";
 import { Badge } from "@/components/ui/Badge";
 import { Frame, FileText, Sparkles, Eye, Clock } from "lucide-react";
 
@@ -11,7 +12,7 @@ interface FrameRow {
   views: number;
   status: FrameStatus;
   updated: string;
-  icon: React.ElementType;
+  icon: ElementType;
   iconColor: string;
 }
 

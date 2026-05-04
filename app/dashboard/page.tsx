@@ -43,7 +43,7 @@ export default function DashboardPage() {
         </div>
         <div className="flex items-center gap-2 self-start sm:self-auto">
           <div
-            className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium text-purple-light border border-purple-DEFAULT/30"
+            className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium text-purple-light border border-purple/30"
             style={{ background: "rgba(124,58,237,0.12)" }}
           >
             <Zap className="h-3 w-3" />

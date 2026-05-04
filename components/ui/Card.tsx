@@ -1,8 +1,9 @@
+import type { ReactNode } from "react";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
 interface CardProps {
-  children: React.ReactNode;
+  children: ReactNode;
   className?: string;
   glass?: boolean;
 }
