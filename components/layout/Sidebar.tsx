@@ -29,11 +29,12 @@ const navigation = [
   { name: "Tools", href: "/dashboard/tools", icon: Rocket },
 ];
 
-const workspace = [
-  { name: "Airdrop", href: "#", icon: Gift },
-  { name: "Monitor", href: "#", icon: Wallet },
-  { name: "Track PNL", href: "#", icon: TrendingUp },
-  { name: "Admin Panel", href: "/admin", icon: ShieldCheck },
+// Items with a real href render as Link; items without href are placeholders rendered as buttons
+const workspace: { name: string; icon: typeof Gift; href?: string }[] = [
+  { name: "Airdrop", icon: Gift },
+  { name: "Monitor", icon: Wallet },
+  { name: "Track PNL", icon: TrendingUp },
+  { name: "Admin Panel", icon: ShieldCheck, href: "/admin" },
 ];
 
 interface SidebarProps {
@@ -69,7 +70,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
       {/* Mobile overlay */}
       {open && (
         <div
-          className="lg:hidden fixed inset-0 z-30 bg-black/60 backdrop-blur-sm"
+          className="lg:hidden fixed inset-0 z-[35] bg-black/60 backdrop-blur-sm"
           onClick={onClose}
           aria-hidden="true"
         />
@@ -125,7 +126,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
                 aria-current={isActive ? "page" : undefined}
               >
                 <item.icon
-                  className={`w-4.5 h-4.5 flex-shrink-0 transition-colors ${
+                  className={`flex-shrink-0 transition-colors ${
                     isActive ? "text-purple-light" : "text-textMuted group-hover:text-textSecondary"
                   }`}
                   style={{ width: "18px", height: "18px" }}
@@ -139,20 +140,34 @@ export function Sidebar({ open, onClose }: SidebarProps) {
           <p className="px-3 mt-5 mb-2 text-[10px] font-semibold uppercase tracking-widest text-textMuted">
             Workspace
           </p>
-          {workspace.map((item) => (
-            <Link
-              key={item.name}
-              href={item.href}
-              onClick={onClose}
-              className="sidebar-item group"
-            >
-              <item.icon
-                className="text-textMuted group-hover:text-textSecondary transition-colors flex-shrink-0"
-                style={{ width: "18px", height: "18px" }}
-              />
-              <span>{item.name}</span>
-            </Link>
-          ))}
+          {workspace.map((item) =>
+            item.href ? (
+              <Link
+                key={item.name}
+                href={item.href}
+                onClick={onClose}
+                className="sidebar-item group"
+              >
+                <item.icon
+                  className="text-textMuted group-hover:text-textSecondary transition-colors flex-shrink-0"
+                  style={{ width: "18px", height: "18px" }}
+                />
+                <span>{item.name}</span>
+              </Link>
+            ) : (
+              <button
+                key={item.name}
+                type="button"
+                className="sidebar-item group"
+              >
+                <item.icon
+                  className="text-textMuted group-hover:text-textSecondary transition-colors flex-shrink-0"
+                  style={{ width: "18px", height: "18px" }}
+                />
+                <span>{item.name}</span>
+              </button>
+            )
+          )}
         </nav>
 
         {/* User panel */}

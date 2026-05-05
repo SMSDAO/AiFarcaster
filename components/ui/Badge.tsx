@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
-import { clsx } from "clsx";
-import { twMerge } from "tailwind-merge";
+import { cn } from "@/lib/utils";
 
 type BadgeVariant = "purple" | "blue" | "green" | "orange" | "muted";
 
@@ -22,13 +21,11 @@ const variantStyles: Record<BadgeVariant, string> = {
 export function Badge({ variant = "muted", children, className, pulse = false }: BadgeProps) {
   return (
     <span
-      className={twMerge(
-        clsx(
+      className={cn(
           "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border",
           variantStyles[variant],
           className
-        )
-      )}
+        )}
     >
       {pulse && (
         <span className="relative flex h-1.5 w-1.5">
