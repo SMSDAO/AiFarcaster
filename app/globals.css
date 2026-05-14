@@ -3,14 +3,14 @@
 @tailwind utilities;
 
 :root {
-  --background: #0a0a0a;
-  --foreground: #ededed;
+  --background: #0d0d1a;
+  --foreground: #f0eeff;
 }
 
 @media (prefers-color-scheme: light) {
   :root {
-    --background: #ffffff;
-    --foreground: #171717;
+    --background: #0d0d1a;
+    --foreground: #f0eeff;
   }
 }
 
@@ -25,3 +25,64 @@ body {
     text-wrap: balance;
   }
 }
+
+@layer components {
+  .glass-card {
+    @apply bg-card/80 backdrop-blur-sm border border-border/60;
+  }
+
+  .glow-purple {
+    box-shadow: 0 0 12px rgba(124, 58, 237, 0.6);
+  }
+
+  .glow-blue {
+    box-shadow: 0 0 12px rgba(37, 99, 235, 0.5);
+  }
+
+  .glow-green {
+    box-shadow: 0 0 12px rgba(5, 150, 105, 0.5);
+  }
+
+  .glow-orange {
+    box-shadow: 0 0 12px rgba(217, 119, 6, 0.5);
+  }
+
+  .shadow-soft {
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5), 0 1px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .gradient-border-top-purple {
+    border-top: 4px solid #7c3aed;
+  }
+
+  .gradient-border-top-blue {
+    border-top: 4px solid #2563eb;
+  }
+
+  .gradient-border-top-green {
+    border-top: 4px solid #059669;
+  }
+
+  .gradient-border-top-orange {
+    border-top: 4px solid #d97706;
+  }
+
+  .sidebar-active {
+    background: linear-gradient(90deg, rgba(124, 58, 237, 0.25) 0%, rgba(124, 58, 237, 0.05) 100%);
+    border-left: 3px solid #7c3aed;
+    box-shadow: 0 0 12px rgba(124, 58, 237, 0.2);
+  }
+
+  .sidebar-item {
+    @apply flex items-center gap-3 px-4 py-2.5 rounded-lg text-textSecondary text-sm font-medium transition-all duration-200 cursor-pointer;
+  }
+
+  .sidebar-item:hover {
+    @apply bg-white/5 text-textPrimary;
+  }
+
+  .sidebar-item:hover svg {
+    filter: brightness(1.3);
+  }
+}
+
